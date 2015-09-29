@@ -1984,7 +1984,7 @@ png_icc_check_header(png_const_structrp png_ptr, png_colorspacerp colorspace,
     */
 
    /* Data checks (could be skipped).  These checks must be independent of the
-    * version number; however, the version number doesn't accomodate changes in
+    * version number; however, the version number doesn't accommodate changes in
     * the header fields (just the known tags and the interpretation of the
     * data.)
     */
@@ -2625,7 +2625,7 @@ png_check_IHDR(png_const_structrp png_ptr,
 
 #if defined(PNG_sCAL_SUPPORTED) || defined(PNG_pCAL_SUPPORTED)
 /* ASCII to fp functions */
-/* Check an ASCII formated floating point value, see the more detailed
+/* Check an ASCII formatted floating point value, see the more detailed
  * comments in pngpriv.h
  */
 /* The following is used internally to preserve the sticky flags */

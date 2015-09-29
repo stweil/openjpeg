@@ -75,7 +75,7 @@
    OJPEGSubsamplingCorrect, making no note of any other data, reporting no warnings
    or errors, up to the point where either these values are read, or it's clear they
    aren't there. This means that some of the data is read twice, but we feel speed
-   in correcting these values is important enough to warrant this sacrifice. Allthough
+   in correcting these values is important enough to warrant this sacrifice. Although
    there is currently no define or other configuration mechanism to disable this behaviour,
    the actual header scanning is build to robustly respond with error report if it
    should encounter an uncorrected mismatch of subsampling values. See
@@ -1381,7 +1381,7 @@ OJPEGReadHeaderInfoSec(TIFF* tif)
 static int
 OJPEGReadHeaderInfoSecStreamDri(TIFF* tif)
 {
-	/* this could easilly cause trouble in some cases... but no such cases have occured sofar */
+	/* this could easilly cause trouble in some cases... but no such cases have occurred sofar */
 	static const char module[]="OJPEGReadHeaderInfoSecStreamDri";
 	OJPEGState* sp=(OJPEGState*)tif->tif_data;
 	uint16 m;

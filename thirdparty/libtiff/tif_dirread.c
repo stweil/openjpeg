@@ -3463,7 +3463,7 @@ TIFFReadDirectory(TIFF* tif)
 	 * the fields to check type and tag information,
 	 * and to extract info required to size data
 	 * structures.  A second pass is made afterwards
-	 * to read in everthing not taken in the first pass.
+	 * to read in everything not taken in the first pass.
 	 * But we must process the Compression tag first
 	 * in order to merge in codec-private tag definitions (otherwise
 	 * we may get complaints about unknown tags).  However, the
