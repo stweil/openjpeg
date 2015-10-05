@@ -181,7 +181,7 @@ static void bmpmask32toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 	OPJ_UINT32 width, height;
 	OPJ_UINT32 x, y;
 	const OPJ_UINT8 *pSrc = NULL;
-	OPJ_BOOL hasAlpha = OPJ_FALSE;
+	OPJ_BOOL hasAlpha = image->numcomps > 3U;
 	OPJ_UINT32 redShift,   redPrec;
 	OPJ_UINT32 greenShift, greenPrec;
 	OPJ_UINT32 blueShift,  bluePrec;
@@ -239,7 +239,7 @@ static void bmpmask16toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 	OPJ_UINT32 width, height;
 	OPJ_UINT32 x, y;
 	const OPJ_UINT8 *pSrc = NULL;
-	OPJ_BOOL hasAlpha = OPJ_FALSE;
+	OPJ_BOOL hasAlpha = image->numcomps > 3U;
 	OPJ_UINT32 redShift,   redPrec;
 	OPJ_UINT32 greenShift, greenPrec;
 	OPJ_UINT32 blueShift,  bluePrec;
