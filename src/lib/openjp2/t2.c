@@ -537,13 +537,12 @@ static OPJ_BOOL opj_t2_decode_packet(  opj_t2_t* p_t2,
                 return OPJ_FALSE;
         }
 
-        p_src += l_nb_bytes_read;
         l_nb_total_bytes_read += l_nb_bytes_read;
-        p_max_length -= l_nb_bytes_read;
 
         /* we should read data for the packet */
         if (l_read_data) {
-                l_nb_bytes_read = 0;
+                p_src += l_nb_bytes_read;
+                p_max_length -= l_nb_bytes_read;
 
                 if (! opj_t2_read_packet_data(p_t2,p_tile,p_pi,p_src,&l_nb_bytes_read,p_max_length,p_pack_info, p_manager)) {
                         return OPJ_FALSE;
@@ -813,7 +812,6 @@ static OPJ_BOOL opj_t2_skip_packet( opj_t2_t* p_t2,
                 return OPJ_FALSE;
         }
 
-        p_src += l_nb_bytes_read;
         l_nb_total_bytes_read += l_nb_bytes_read;
         p_max_length -= l_nb_bytes_read;
 

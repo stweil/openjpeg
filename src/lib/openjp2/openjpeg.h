@@ -107,9 +107,11 @@ defined with this macro as being exported.
 #	endif /* OPJ_EXPORTS */
 #endif /* !OPJ_STATIC || !_WIN32 */
 
-typedef int OPJ_BOOL;
-#define OPJ_TRUE 1
-#define OPJ_FALSE 0
+#include <stdbool.h>
+
+typedef bool OPJ_BOOL;
+#define OPJ_TRUE true
+#define OPJ_FALSE false
 
 typedef char          OPJ_CHAR;
 typedef float         OPJ_FLOAT32;
@@ -639,6 +641,8 @@ typedef struct opj_image_comp {
 	OPJ_UINT32 x0;
 	/** y component offset compared to the whole image */
 	OPJ_UINT32 y0;
+	/** image component data */
+	OPJ_INT32 *data;
 	/** precision */
 	OPJ_UINT32 prec;
 	/** image depth in bits */
@@ -649,8 +653,6 @@ typedef struct opj_image_comp {
 	OPJ_UINT32 resno_decoded;
 	/** number of division by 2 of the out image compared to the original size of image */
 	OPJ_UINT32 factor;
-	/** image component data */
-	OPJ_INT32 *data;
   /** alpha channel */
   OPJ_UINT16 alpha;
 } opj_image_comp_t;

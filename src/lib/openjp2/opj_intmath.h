@@ -106,12 +106,12 @@ static INLINE OPJ_INT32 opj_int_clamp(OPJ_INT32 a, OPJ_INT32 min, OPJ_INT32 max)
 		return max;
 	return a;
 }
+
 /**
 @return Get absolute value of integer
 */
-static INLINE OPJ_INT32 opj_int_abs(OPJ_INT32 a) {
-	return a < 0 ? -a : a;
-}
+#define opj_int_abs(a) abs(a)
+
 /**
 Divide an integer and round upwards
 @return Returns a divided by b

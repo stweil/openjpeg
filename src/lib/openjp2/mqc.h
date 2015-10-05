@@ -75,8 +75,8 @@ typedef struct opj_mqc {
 	OPJ_BYTE *bp;
 	OPJ_BYTE *start;
 	OPJ_BYTE *end;
-	opj_mqc_state_t *ctxs[MQC_NUMCTXS];
-	opj_mqc_state_t **curctx;
+	const opj_mqc_state_t *ctxs[MQC_NUMCTXS];
+	const opj_mqc_state_t **curctx;
 #ifdef MQC_PERF_OPT
 	unsigned char *buffer;
 #endif
