@@ -1642,15 +1642,10 @@ int main(int argc, char **argv) {
     if(img_fol.set_imgdir==1){
         num_images=get_num_images(img_fol.imgdirpath);
         dirptr=(dircnt_t*)malloc(sizeof(dircnt_t));
-        if(dirptr){
-            dirptr->filename_buf = (char*)malloc(num_images*OPJ_PATH_LEN*sizeof(char));	/* Stores at max 10 image file names*/
-            dirptr->filename = (char**) malloc(num_images*sizeof(char*));
-            if(!dirptr->filename_buf){
-                return 0;
-            }
-            for(i=0;i<num_images;i++){
-                dirptr->filename[i] = dirptr->filename_buf + i*OPJ_PATH_LEN;
-            }
+        dirptr->filename_buf = (char*)malloc(num_images*OPJ_PATH_LEN*sizeof(char));	/* Stores at max 10 image file names*/
+        dirptr->filename = (char**) malloc(num_images*sizeof(char*));
+        for(i=0;i<num_images;i++){
+            dirptr->filename[i] = dirptr->filename_buf + i*OPJ_PATH_LEN;
         }
         if(load_images(dirptr,img_fol.imgdirpath)==1){
             return 0;
@@ -1851,7 +1846,7 @@ int main(int argc, char **argv) {
             assert( l_data );
             for (i=0;i<l_nb_tiles;++i) {
                 if (! opj_write_tile(l_codec,i,l_data,l_data_size,l_stream)) {
-                    fprintf(stderr, "ERROR -> test_tile_encoder: failed to write the tile %d!\n",i);
+                    fprintf(stderr, "ERROR -> test_tile_encoder: failed to write the tile %u!\n",i);
                     opj_stream_destroy(l_stream);
                     opj_destroy_codec(l_codec);
                     opj_image_destroy(image);

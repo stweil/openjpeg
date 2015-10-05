@@ -1210,18 +1210,12 @@ int main(int argc, char **argv)
 		num_images=get_num_images(img_fol.imgdirpath);
 
 		dirptr=(dircnt_t*)malloc(sizeof(dircnt_t));
-		if(dirptr){
-			dirptr->filename_buf = (char*)malloc((size_t)num_images*OPJ_PATH_LEN*sizeof(char));	/* Stores at max 10 image file names*/
-			dirptr->filename = (char**) malloc((size_t)num_images*sizeof(char*));
+                dirptr->filename_buf = (char*)malloc((size_t)num_images*OPJ_PATH_LEN*sizeof(char));	/* Stores at max 10 image file names*/
+                dirptr->filename = (char**) malloc((size_t)num_images*sizeof(char*));
 
-			if(!dirptr->filename_buf){
-				destroy_parameters(&parameters);
-				return EXIT_FAILURE;
-			}
-			for(it_image=0;it_image<num_images;it_image++){
-				dirptr->filename[it_image] = dirptr->filename_buf + it_image*OPJ_PATH_LEN;
-			}
-		}
+                for(it_image=0;it_image<num_images;it_image++){
+                        dirptr->filename[it_image] = dirptr->filename_buf + it_image*OPJ_PATH_LEN;
+                }
 		if(load_images(dirptr,img_fol.imgdirpath)==1){
 			destroy_parameters(&parameters);
 			return EXIT_FAILURE;
