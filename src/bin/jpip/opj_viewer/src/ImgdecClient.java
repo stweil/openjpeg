@@ -32,7 +32,7 @@ import java.io.*;
 import java.net.*;
 
 public class ImgdecClient{
-    
+
     private String hostname;
     private int portNo;
 
@@ -54,23 +54,23 @@ public class ImgdecClient{
 	send_JPIPstream( jpipstream, j2kfilename, tid, cid);
 	return get_PNMstream( cid, tid, fw, fh);
     }
-    
+
     public void send_JPIPstream( byte[] jpipstream)
     {
 	try{
 	    Socket imgdecSocket = new Socket( hostname, portNo);
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
 	    DataInputStream  is = new DataInputStream( imgdecSocket.getInputStream());
-      
+
 	    System.err.println("Sending " + jpipstream.length + "Data Bytes to decodingServer");
-	    
+
 	    os.writeBytes("JPIP-stream\n");
 	    os.writeBytes("version 1.2\n");
-	    os.writeBytes( jpipstream.length + "\n"); 
+	    os.writeBytes( jpipstream.length + "\n");
 	    os.write( jpipstream, 0, jpipstream.length);
-      
+
 	    byte signal = is.readByte();
-      
+
 	    if( signal == 0)
 		System.err.println("    failed");
 	} catch (UnknownHostException e) {
@@ -87,12 +87,12 @@ public class ImgdecClient{
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
 	    DataInputStream  is = new DataInputStream( imgdecSocket.getInputStream());
 	    int length = 0;
-	    
+
 	    if( jpipstream != null)
 		length = jpipstream.length;
-	    
+
 	    System.err.println("Sending " + length + "Data Bytes to decodingServer");
-      
+
 	    os.writeBytes("JPIP-stream\n");
 	    os.writeBytes("version 1.2\n");
 	    os.writeBytes( j2kfilename + "\n");
@@ -106,9 +106,9 @@ public class ImgdecClient{
 		os.writeBytes( cid + "\n");
 	    os.writeBytes( length + "\n");
 	    os.write( jpipstream, 0, length);
-	    
+
 	    byte signal = is.readByte();
-      
+
 	    if( signal == 0)
 		System.err.println("    failed");
 	} catch (UnknownHostException e) {
@@ -117,17 +117,17 @@ public class ImgdecClient{
 	    System.err.println("IOException: " + e);
 	}
     }
-    
+
     public PnmImage get_PNMstream( String cid, String tid, int fw, int fh)
     {
 	PnmImage pnmstream = null;
-	
+
 	try {
 	    Socket imgdecSocket = new Socket( hostname, portNo);
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
 	    DataInputStream is = new DataInputStream( imgdecSocket.getInputStream());
 	    byte []header = new byte[7];
-	    
+
 	    os.writeBytes("PNM request\n");
 	    if( cid != null)
 		os.writeBytes( cid + "\n");
@@ -140,9 +140,9 @@ public class ImgdecClient{
 	    os.writeBytes( fh + "\n");
 
 	    read_stream( is, header, 7);
-	    
+
 	    if( header[0] == 80){
-		// P5: gray, P6: color  
+		// P5: gray, P6: color
 		byte magicknum = header[1];
 		if( magicknum == 5 || magicknum == 6){
 		    int c = magicknum==6 ? 3: 1;
@@ -150,7 +150,7 @@ public class ImgdecClient{
 		    int h = (header[4]&0xff)<<8 | (header[5]&0xff);
 		    int maxval = header[6]&0xff;
 		    int length = w*h*c;
-		    
+
 		    if( maxval == 255 && length != 0){
 			pnmstream = new PnmImage( c, w, h);
 			read_stream( is, pnmstream.get_data(), length);
@@ -163,7 +163,7 @@ public class ImgdecClient{
 	    }
 	    else
 		System.err.println("Error in get_PNMstream(), Not starting with P");
-	    
+
 	    os.close();
 	    is.close();
 	    imgdecSocket.close();
@@ -184,15 +184,15 @@ public class ImgdecClient{
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
 	    DataInputStream is = new DataInputStream( imgdecSocket.getInputStream());
 	    byte []header = new byte[5];
-	    
+
 	    os.writeBytes("XML request\n");
 	    os.writeBytes( cid + "\n");
-      
+
 	    read_stream( is, header, 5);
-	    
+
 	    if( header[0] == 88 && header[1] == 77 && header[2] == 76){
 		int length = (header[3]&0xff)<<8 | (header[4]&0xff);
-	
+
 		xmldata = new byte[ length];
 		read_stream( is, xmldata, length);
 	    }
@@ -229,7 +229,7 @@ public class ImgdecClient{
     public String query_id( String reqmsghead, String j2kfilename, int[] retmsglabel)
     {
 	String id = null;
-	
+
 	try{
 	    Socket imgdecSocket = new Socket( hostname, portNo);
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
@@ -240,12 +240,12 @@ public class ImgdecClient{
 	    os.writeBytes( j2kfilename + "\n");
 
 	    read_stream( is, header, 4);
-	    
+
 	    if( header[0] == retmsglabel[0] && header[1] == retmsglabel[1] && header[2] == retmsglabel[2]){
 		int length = header[3]&0xff;
 
 		if( length > 0){
-		
+
 		    byte []iddata = new byte[ length];
 		    read_stream( is, iddata, length);
 		    id = new String( iddata);
@@ -260,7 +260,7 @@ public class ImgdecClient{
 	    System.err.println("IOException: " + e);
 	}
 
-	return id;	
+	return id;
     }
 
     public java.awt.Dimension query_imagesize( String cid, String tid)
@@ -284,9 +284,9 @@ public class ImgdecClient{
 		os.writeBytes( cid + "\n");
 
 	    read_stream( is, header, 3);
-	    
+
 	    if( header[0] == 83 && header[1] == 73 && header[2] == 90){
-		
+
 		byte []data = new byte[ 3];
 		read_stream( is, data, 3);
 		int w = (data[0]&0xff)<<16 | (data[1]&0xff)<<8 | (data[2]&0xff);
@@ -305,7 +305,7 @@ public class ImgdecClient{
 
 	return dim;
     }
-  
+
     private static void read_stream( DataInputStream is, byte []stream, int length)
     {
 	int remlen = length;
@@ -314,7 +314,7 @@ public class ImgdecClient{
 	try{
 	    while( remlen > 0){
 		int redlen = is.read( stream, off, remlen);
-		
+
 		if( redlen == -1){
 		    System.err.println("    failed to read_stream()");
 		    break;
@@ -333,12 +333,12 @@ public class ImgdecClient{
 	    Socket imgdecSocket = new Socket( hostname, portNo);
 	    DataOutputStream os = new DataOutputStream( imgdecSocket.getOutputStream());
 	    DataInputStream  is = new DataInputStream( imgdecSocket.getInputStream());
-	    
+
 	    os.writeBytes("CID destroy\n");
 	    os.writeBytes( cid + "\n");
-	    
+
 	    byte signal = is.readByte();
-      
+
 	    if( signal == 0)
 		System.err.println("    failed");
 	} catch (UnknownHostException e) {

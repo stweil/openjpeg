@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -244,27 +244,27 @@ bool OPJViewerApp::OnInit(void)
 	OPJconfig->Read(wxT("encode/rates"), &m_rates, (wxString) wxT("20,10,5"));
 	OPJconfig->Read(wxT("encode/quality"), &m_quality, (wxString) wxT("30,35,40"));
 	OPJconfig->Read(wxT("encode/enablequality"), &m_enablequality, (bool) false);
-	OPJconfig->Read(wxT("encode/multicomp"), &m_multicomp, (bool) false);	
-	OPJconfig->Read(wxT("encode/irreversible"), &m_irreversible, (bool) false);	
-	OPJconfig->Read(wxT("encode/resolutions"), &m_resolutions, (int) 6);	
-	OPJconfig->Read(wxT("encode/progression"), &m_progression, (int) 0);	
+	OPJconfig->Read(wxT("encode/multicomp"), &m_multicomp, (bool) false);
+	OPJconfig->Read(wxT("encode/irreversible"), &m_irreversible, (bool) false);
+	OPJconfig->Read(wxT("encode/resolutions"), &m_resolutions, (int) 6);
+	OPJconfig->Read(wxT("encode/progression"), &m_progression, (int) 0);
 	OPJconfig->Read(wxT("encode/cbsize"), &m_cbsize, (wxString) wxT("32,32"));
 	OPJconfig->Read(wxT("encode/prsize"), &m_prsize, (wxString) wxT("[128,128],[128,128]"));
 	OPJconfig->Read(wxT("encode/tsize"), &m_tsize, (wxString) wxT(""));
 	OPJconfig->Read(wxT("encode/torigin"), &m_torigin, (wxString) wxT("0,0"));
-	OPJconfig->Read(wxT("encode/enablesop"), &m_enablesop, (bool) false);	
-	OPJconfig->Read(wxT("encode/enableeph"), &m_enableeph, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablebypass"), &m_enablebypass, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablereset"), &m_enablereset, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablerestart"), &m_enablerestart, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablevsc"), &m_enablevsc, (bool) false);	
-	OPJconfig->Read(wxT("encode/enableerterm"), &m_enableerterm, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablesegmark"), &m_enablesegmark, (bool) false);	
-	OPJconfig->Read(wxT("encode/enablecomm"), &m_enablecomm, (bool) true);	
-	OPJconfig->Read(wxT("encode/enablepoc"), &m_enablepoc, (bool) false);	
+	OPJconfig->Read(wxT("encode/enablesop"), &m_enablesop, (bool) false);
+	OPJconfig->Read(wxT("encode/enableeph"), &m_enableeph, (bool) false);
+	OPJconfig->Read(wxT("encode/enablebypass"), &m_enablebypass, (bool) false);
+	OPJconfig->Read(wxT("encode/enablereset"), &m_enablereset, (bool) false);
+	OPJconfig->Read(wxT("encode/enablerestart"), &m_enablerestart, (bool) false);
+	OPJconfig->Read(wxT("encode/enablevsc"), &m_enablevsc, (bool) false);
+	OPJconfig->Read(wxT("encode/enableerterm"), &m_enableerterm, (bool) false);
+	OPJconfig->Read(wxT("encode/enablesegmark"), &m_enablesegmark, (bool) false);
+	OPJconfig->Read(wxT("encode/enablecomm"), &m_enablecomm, (bool) true);
+	OPJconfig->Read(wxT("encode/enablepoc"), &m_enablepoc, (bool) false);
 	OPJconfig->Read(wxT("encode/comment"), &m_comment, (wxString) wxT(""));
 	OPJconfig->Read(wxT("encode/poc"), &m_poc, (wxString) wxT("T1=0,0,1,5,3,CPRL/T1=5,0,1,6,3,CPRL"));
-	OPJconfig->Read(wxT("encode/enableidx"), &m_enableidx, (bool) false);	
+	OPJconfig->Read(wxT("encode/enableidx"), &m_enableidx, (bool) false);
 	OPJconfig->Read(wxT("encode/index"), &m_index, (wxString) wxT("index.txt"));
 #ifdef USE_JPWL
 	OPJconfig->Read(wxT("encode/enablejpwl"), &m_enablejpwle, (bool) true);
@@ -696,7 +696,7 @@ OPJFrame::OPJFrame(wxWindow *parent, const wxWindowID id, const wxString& title,
 	tool_bar->AddTool(OPJFRAME_VIEWALLCOMPS, bmpAllcomps, wxT("All components"));
 	tool_bar->AddTool(OPJFRAME_VIEWNEXTCOMP, bmpNextcomp, wxT("Next component"));
 	tool_bar->Realize();
-	
+
 	// associate the toolbar with the frame
 	SetToolBar(tool_bar);
 
@@ -1402,7 +1402,7 @@ void OPJFrame::OnMemoryOpen(wxCommandEvent& WXUNUSED(event))
 {
 	// do nothing
 	return;
-	
+
 	wxTextEntryDialog dialog(this, wxT("Memory HEX address range: start_address-stop_address"),
 							wxT("Decode a memory buffer"),
 							wxT("0x-0x"),
@@ -1652,7 +1652,7 @@ void OPJChildFrame::OnLostFocus(wxFocusEvent& event)
 
 
 ////////////////////////////////
-// drag and drop 
+// drag and drop
 ////////////////////////////////
 
 bool OPJDnDFile::OnDropFiles(wxCoord, wxCoord, const wxArrayString& filenames)

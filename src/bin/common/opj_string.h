@@ -40,7 +40,7 @@
 static size_t opj_strnlen_s(const char *src, size_t max_len)
 {
 	size_t len;
-	
+
 	if (src == NULL) {
 		return 0U;
 	}

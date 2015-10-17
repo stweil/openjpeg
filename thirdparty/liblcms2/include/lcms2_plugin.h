@@ -220,11 +220,11 @@ typedef struct _cmsPluginBaseStruct {
 
 // Memory handler. Each new plug-in type replaces current behaviour
 
-typedef void* (* _cmsMallocFnPtrType)(cmsContext ContextID, cmsUInt32Number size); 
+typedef void* (* _cmsMallocFnPtrType)(cmsContext ContextID, cmsUInt32Number size);
 typedef void  (* _cmsFreeFnPtrType)(cmsContext ContextID, void *Ptr);
 typedef void* (* _cmsReallocFnPtrType)(cmsContext ContextID, void* Ptr, cmsUInt32Number NewSize);
 
-typedef void* (* _cmsMalloZerocFnPtrType)(cmsContext ContextID, cmsUInt32Number size); 
+typedef void* (* _cmsMalloZerocFnPtrType)(cmsContext ContextID, cmsUInt32Number size);
 typedef void* (* _cmsCallocFnPtrType)(cmsContext ContextID, cmsUInt32Number num, cmsUInt32Number size);
 typedef void* (* _cmsDupFnPtrType)(cmsContext ContextID, const void* Org, cmsUInt32Number size);
 
@@ -604,7 +604,7 @@ typedef struct {
 }  cmsPluginTransform;
 
 //----------------------------------------------------------------------------------------------------------
-// Mutex 
+// Mutex
 
 typedef void*    (* _cmsCreateMutexFnPtrType)(cmsContext ContextID);
 typedef void     (* _cmsDestroyMutexFnPtrType)(cmsContext ContextID, void* mtx);

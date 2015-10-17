@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -86,8 +86,8 @@ The functions in J2K.C have for goal to read/write the several parts of the code
 /* UniPG>> */
 #ifdef USE_JPWL
 #define J2K_MS_EPC 0xff68	/**< EPC marker value (Part 11: JPEG 2000 for Wireless) */
-#define J2K_MS_EPB 0xff66	/**< EPB marker value (Part 11: JPEG 2000 for Wireless) */ 
-#define J2K_MS_ESD 0xff67	/**< ESD marker value (Part 11: JPEG 2000 for Wireless) */ 
+#define J2K_MS_EPB 0xff66	/**< EPB marker value (Part 11: JPEG 2000 for Wireless) */
+#define J2K_MS_ESD 0xff67	/**< ESD marker value (Part 11: JPEG 2000 for Wireless) */
 #define J2K_MS_RED 0xff69	/**< RED marker value (Part 11: JPEG 2000 for Wireless) */
 #endif /* USE_JPWL */
 #ifdef USE_JPSEC
@@ -100,8 +100,8 @@ The functions in J2K.C have for goal to read/write the several parts of the code
 /* ----------------------------------------------------------------------- */
 
 /**
-Values that specify the status of the decoding process when decoding the main header. 
-These values may be combined with a | operator. 
+Values that specify the status of the decoding process when decoding the main header.
+These values may be combined with a | operator.
 */
 typedef enum J2K_STATUS {
 	J2K_STATE_MHSOC  = 0x0001, /**< a SOC marker is expected */
@@ -116,8 +116,8 @@ typedef enum J2K_STATUS {
 
 /* ----------------------------------------------------------------------- */
 
-/** 
-T2 encoding mode 
+/**
+T2 encoding mode
 */
 typedef enum T2_MODE {
 	THRESH_CALC = 0,	/** Function called in Rate allocation process*/
@@ -161,11 +161,11 @@ typedef struct opj_tccp {
 	/** precinct width */
 	int prcw[J2K_MAXRLVLS];
 	/** precinct height */
-	int prch[J2K_MAXRLVLS];	
+	int prch[J2K_MAXRLVLS];
 } opj_tccp_t;
 
 /**
-Tile coding parameters : 
+Tile coding parameters :
 this structure is used to store coding/decoding parameters common to all
 tiles (information like COD, COC in main header)
 */
@@ -332,26 +332,26 @@ typedef struct opj_j2k {
 	/** Total number of tileparts of the current tile*/
 	int *cur_totnum_tp;
 	/**
-	locate the start position of the TLM marker  
-	after encoding the tilepart, a jump (in j2k_write_sod) is done to the TLM marker to store the value of its length. 
+	locate the start position of the TLM marker
+	after encoding the tilepart, a jump (in j2k_write_sod) is done to the TLM marker to store the value of its length.
 	*/
 	int tlm_start;
 	/** Total num of tile parts in whole image = num tiles* num tileparts in each tile*/
 	/** used in TLMmarker*/
-	int totnum_tp;	
-	/** 
-	locate the position of the end of the tile in the codestream, 
+	int totnum_tp;
+	/**
+	locate the position of the end of the tile in the codestream,
 	used to detect a truncated codestream (in j2k_read_sod)
 	*/
 	unsigned char *eot;
 	/**
-	locate the start position of the SOT marker of the current coded tile:  
-	after encoding the tile, a jump (in j2k_write_sod) is done to the SOT marker to store the value of its length. 
+	locate the start position of the SOT marker of the current coded tile:
+	after encoding the tile, a jump (in j2k_write_sod) is done to the SOT marker to store the value of its length.
 	*/
 	int sot_start;
 	int sod_start;
 	/**
-	as the J2K-file is written in several parts during encoding, 
+	as the J2K-file is written in several parts during encoding,
 	it enables to make the right correction in position return by cio_tell
 	*/
 	int pos_correction;
@@ -359,8 +359,8 @@ typedef struct opj_j2k {
 	unsigned char **tile_data;
 	/** array used to store the length of each tile */
 	int *tile_len;
-	/** 
-	decompression only : 
+	/**
+	decompression only :
 	store decoding parameters common to all tiles (information like COD, COC in main header)
 	*/
 	opj_tcp_t *default_tcp;
@@ -390,7 +390,7 @@ Destroy a J2K decompressor handle
 void j2k_destroy_decompress(opj_j2k_t *j2k);
 /**
 Setup the decoder decoding parameters using user parameters.
-Decoding parameters are returned in j2k->cp. 
+Decoding parameters are returned in j2k->cp.
 @param j2k J2K decompressor handle
 @param parameters decompression parameters
 */
@@ -423,8 +423,8 @@ Destroy a J2K compressor handle
 */
 void j2k_destroy_compress(opj_j2k_t *j2k);
 /**
-Setup the encoder parameters using the current image and using user parameters. 
-Coding parameters are returned in j2k->cp. 
+Setup the encoder parameters using the current image and using user parameters.
+Coding parameters are returned in j2k->cp.
 @param j2k J2K compressor handle
 @param parameters compression parameters
 @param image input filled image

@@ -1,12 +1,12 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
  * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2014, Professor Benoit Macq
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,7 @@ void info_callback(const char *msg, void *client_data) {
 
 
 int main(int argc, char *argv[]) {
-	opj_dinfo_t* dinfo; 
+	opj_dinfo_t* dinfo;
 	opj_event_mgr_t event_mgr;		/* event manager */
   int tnum;
   unsigned int snum;
@@ -82,13 +82,13 @@ int main(int argc, char *argv[]) {
 	mj2_dparameters_t parameters;
 
   if (argc != 3) {
-    printf("Usage: %s mj2filename output_location\n",argv[0]); 
+    printf("Usage: %s mj2filename output_location\n",argv[0]);
     printf("Example: %s foreman.mj2 output/foreman\n",argv[0]);
     return 1;
   }
-  
+
   file = fopen(argv[1], "rb");
-  
+
   if (!file) {
     fprintf(stderr, "failed to open %s for reading\n", argv[1]);
     return 1;
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 	dinfo = mj2_create_decompress();
 
 	/* catch events using our callbacks and give a local context */
-	opj_set_event_mgr((opj_common_ptr)dinfo, &event_mgr, stderr);		
+	opj_set_event_mgr((opj_common_ptr)dinfo, &event_mgr, stderr);
 
 	/* setup the decoder decoding parameters using user parameters */
 	memset(&parameters, 0, sizeof(mj2_dparameters_t));
@@ -145,11 +145,11 @@ int main(int argc, char *argv[]) {
     }
   fclose(file);
   fprintf(stdout, "%d frames correctly extracted\n", snum);
-	
+
 	/* free remaining structures */
 	if(dinfo) {
 		mj2_destroy_decompress((opj_mj2_t*)dinfo->mj2_handle);
 	}
-	
+
   return 0;
 }

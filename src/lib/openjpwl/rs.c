@@ -1,6 +1,6 @@
  /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -45,7 +45,7 @@
 /**
  * Reed-Solomon coding and decoding
  * Phil Karn (karn@ka9q.ampr.org) September 1996
- * 
+ *
  * This file is derived from the program "new_rs_erasures.c" by Robert
  * Morelos-Zaragoza (robert@spectra.eng.hawaii.edu) and Hari Thirumoorthy
  * (harit@spectra.eng.hawaii.edu), Aug 1995
@@ -207,7 +207,7 @@ void init_rs(int k)
 		printf("KK must be less than 2**MM - 1\n");
 		exit(1);
 	}
-	
+
 	generate_gf();
 	gen_poly();
 }
@@ -232,7 +232,7 @@ void init_rs(int k)
         a(0) + a(1) @ + a(2) @^2 + ... + a(m-1) @^(m-1)
    we consider the integer "i" whose binary representation with a(0) being LSB
    and a(m-1) MSB is (a(0),a(1),...,a(m-1)) and locate the entry
-   "index_of[i]". Now, @^index_of[i] is that element whose polynomial 
+   "index_of[i]". Now, @^index_of[i] is that element whose polynomial
     representation is (a(0),a(1),a(2),...,a(m-1)).
    NOTE:
         The element alpha_to[2^m-1] = 0 always signifying that the
@@ -240,7 +240,7 @@ void init_rs(int k)
         Similarly, the element index_of[0] = A0 always signifying
    that the power of alpha which has the polynomial representation
    (0,0,...,0) is "infinity".
- 
+
 */
 
 void
@@ -361,7 +361,7 @@ encode_rs(dtype *data, dtype *bb)
  *
  * Return number of symbols corrected, or -1 if codeword is illegal
  * or uncorrectable.
- * 
+ *
  * First "no_eras" erasures are declared by the calling program. Then, the
  * maximum # of errors correctable is t_after_eras = floor((NN-KK-no_eras)/2).
  * If the number of channel errors is not greater than "t_after_eras" the
@@ -376,10 +376,10 @@ eras_dec_rs(dtype *data, int *eras_pos, int no_eras)
 	gf u,q,tmp,num1,num2,den,discr_r;
 	gf recd[NN];
 	/* Err+Eras Locator poly and syndrome poly */
-	/*gf lambda[NN-KK + 1], s[NN-KK + 1];	
+	/*gf lambda[NN-KK + 1], s[NN-KK + 1];
 	gf b[NN-KK + 1], t[NN-KK + 1], omega[NN-KK + 1];
 	gf root[NN-KK], reg[NN-KK + 1], loc[NN-KK];*/
-	gf lambda[NN + 1], s[NN + 1];	
+	gf lambda[NN + 1], s[NN + 1];
 	gf b[NN + 1], t[NN + 1], omega[NN + 1];
 	gf root[NN], reg[NN + 1], loc[NN];
 	int syn_error, count;

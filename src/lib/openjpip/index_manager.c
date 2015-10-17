@@ -80,12 +80,12 @@ index_param_t * parse_jp2file( int fd)
 
   if( !(filesize = (Byte8_t)get_filesize( fd)))
     return NULL;
-  
+
   if( !(toplev_boxlist = get_boxstructure( fd, 0, filesize))){
     fprintf( FCGI_stderr, "Error: Not correctl JP2 format\n");
     return NULL;
   }
-  
+
   if( !check_JP2boxidx( toplev_boxlist)){
     fprintf( FCGI_stderr, "Index format not supported\n");
     delete_boxlist( &toplev_boxlist);
@@ -99,7 +99,7 @@ index_param_t * parse_jp2file( int fd)
   }
 
   jp2idx = (index_param_t *)opj_malloc( sizeof(index_param_t));
-  
+
   if( !set_cidxdata( cidx, jp2idx)){
     fprintf( FCGI_stderr, "Error: Not correctl format in cidx box\n");
     opj_free(jp2idx);
@@ -107,14 +107,14 @@ index_param_t * parse_jp2file( int fd)
     return NULL;
   }
   delete_boxlist( &toplev_boxlist);
-  
+
   metadatalist = const_metadatalist( fd);
   jp2idx->metadatalist = metadatalist;
 
 #ifndef SERVER
     fprintf( logstream, "local log: code index created\n");
 #endif
-  
+
   return jp2idx;
 }
 
@@ -126,10 +126,10 @@ void print_index( index_param_t index)
   fprintf( logstream, "\tCodestream  Offset: %#" PRIx64 "\n", index.offset);
   fprintf( logstream, "\t            Length: %#" PRIx64 "\n", index.length);
   fprintf( logstream, "\tMain header Length: %#" PRIx64 "\n", index.mhead_length);
-  
+
   print_SIZ( index.SIZ);
   print_COD( index.COD);
-  
+
   fprintf( logstream, "Tile part information: \n");
   print_faixbox( index.tilepart);
 
@@ -158,7 +158,7 @@ void print_SIZ( SIZmarker_param_t SIZ)
   fprintf( logstream, "\t    XTOsiz, YTOsiz: (%d,%d) = (%#x, %#x)\n", SIZ.XTOsiz, SIZ.YTOsiz, SIZ.XTOsiz, SIZ.YTOsiz);
   fprintf( logstream, "\t    XTnum, YTnum: (%d,%d)\n", SIZ.XTnum, SIZ.YTnum);
   fprintf( logstream, "\t Num of Components: %d\n", SIZ.Csiz);
-  
+
   for( i=0; i<SIZ.Csiz; i++)
     fprintf( logstream, "\t[%d] (Ssiz, XRsiz, YRsiz): (%d, %d, %d) = (%#x, %#x, %#x)\n", i, SIZ.Ssiz[i], SIZ.XRsiz[i], SIZ.YRsiz[i], SIZ.Ssiz[i], SIZ.XRsiz[i], SIZ.YRsiz[i]);
 }
@@ -171,7 +171,7 @@ void print_COD( CODmarker_param_t COD)
   fprintf( logstream, "\t Progression order: %d [ LRCP=0, RLCP=1, RPCL=2, PCRL=3, CPRL=4]\n", COD.prog_order);
   fprintf( logstream, "\t     Num of layers: %d\n", COD.numOflayers);
   fprintf( logstream, "\t Decomposition lvl: %d\n", COD.numOfdecomp);
-  
+
   for( i=0; i<=((COD.Scod & 0x01) ? COD.numOfdecomp:0); i++){
     fprintf( logstream, "\t  [%d] XPsiz, YPsiz: (%d,%d) = (%#x, %#x)\n",i, COD.XPsiz[i], COD.YPsiz[i], COD.XPsiz[i], COD.YPsiz[i]);
   }
@@ -184,17 +184,17 @@ void delete_index( index_param_t **index)
   delete_metadatalist( &((*index)->metadatalist));
 
   delete_COD( (*index)->COD);
-  
+
   delete_faixbox( &((*index)->tilepart));
 
   for( i=0; i< (int)((*index)->SIZ.XTnum*(*index)->SIZ.YTnum);i++)
     delete_mhixbox( &((*index)->tileheader[i]));
   opj_free( (*index)->tileheader);
-  
+
   for( i=0; i<(*index)->SIZ.Csiz; i++)
     delete_faixbox( &((*index)->precpacket[i]));
   opj_free( (*index)->precpacket);
-  
+
   opj_free(*index);
 }
 
@@ -242,14 +242,14 @@ OPJ_BOOL check_JP2boxidx( boxlist_param_t *toplev_boxlist)
     fprintf( FCGI_stderr, "Reference jp2c header in prxy box not correct\n");
   pos += obh->headlen;
   opj_free(obh);
-  
+
   ni = fetch_DBox1byte( prxy, pos);
   if( ni != 1){
     fprintf( FCGI_stderr, "Multiple indexes not supported\n");
     return OPJ_FALSE;
-  }  
+  }
   pos += 1;
-  
+
   ioff = fetch_DBox8bytebigendian( prxy, pos);
   if( ioff != (Byte8_t)cidx->offset)
     fprintf( FCGI_stderr, "Reference cidx offset in prxy box not correct\n");
@@ -260,7 +260,7 @@ OPJ_BOOL check_JP2boxidx( boxlist_param_t *toplev_boxlist)
     fprintf( FCGI_stderr, "Reference cidx header in prxy box not correct\n");
   pos += ibh->headlen;
   opj_free(ibh);
-  
+
   opj_free(prxy);
 
   return OPJ_TRUE;
@@ -371,24 +371,24 @@ OPJ_BOOL set_cptrdata( box_param_t *cidx_box, index_param_t *jp2idx)
 
   if( !(box = gene_boxbyType( cidx_box->fd, get_DBoxoff( cidx_box), get_DBoxlen( cidx_box), "cptr")))
     return OPJ_FALSE;
-  
+
   /* DR: Data Reference. */
   /* If 0, the codestream or its Fragment Table box exists in the current file*/
   if(( dr = fetch_DBox2bytebigendian( box, 0))){
     fprintf( FCGI_stderr, "Error: Codestream not present in current file\n");
     opj_free( box);
-    return OPJ_FALSE;  
+    return OPJ_FALSE;
   }
-  
+
   /* CONT: Container Type*/
   /* If 0, the entire codestream appears as a contiguous range of*/
   /* bytes within its file or resource.*/
   if(( cont = fetch_DBox2bytebigendian( box, 2))){
     fprintf( FCGI_stderr, "Error: Can't cope with fragmented codestreams yet\n");
     opj_free( box);
-    return OPJ_FALSE;  
+    return OPJ_FALSE;
   }
-    
+
   jp2idx->offset = (OPJ_OFF_T)fetch_DBox8bytebigendian( box, 4);
   jp2idx->length = fetch_DBox8bytebigendian( box, 12);
 
@@ -452,7 +452,7 @@ OPJ_BOOL set_tpixdata( box_param_t *cidx_box, index_param_t *jp2idx)
 {
   box_param_t *tpix_box;   /**< tpix box*/
   box_param_t *faix_box;   /**< faix box*/
-  
+
   if( !(tpix_box = gene_boxbyType( cidx_box->fd, get_DBoxoff( cidx_box), get_DBoxlen( cidx_box), "tpix"))){
     fprintf( FCGI_stderr, "Error: tpix box not present in cidx box\n");
     return OPJ_FALSE;
@@ -464,7 +464,7 @@ OPJ_BOOL set_tpixdata( box_param_t *cidx_box, index_param_t *jp2idx)
   }
 
   jp2idx->tilepart = gene_faixbox( faix_box);
-  
+
   opj_free( tpix_box);
   opj_free( faix_box);
 
@@ -480,25 +480,25 @@ OPJ_BOOL set_thixdata( box_param_t *cidx_box, index_param_t *jp2idx)
   Byte8_t pos;
   OPJ_OFF_T mhixseqoff;
   Byte2_t tile_no;
-  
+
   if( !(thix_box = gene_boxbyType( cidx_box->fd, get_DBoxoff( cidx_box), get_DBoxlen( cidx_box), "thix"))){
     fprintf( FCGI_stderr, "Error: thix box not present in cidx box\n");
     return OPJ_FALSE;
   }
-  
+
   if( !(manf_box = gene_boxbyType( thix_box->fd, get_DBoxoff( thix_box), get_DBoxlen( thix_box), "manf"))){
     fprintf( FCGI_stderr, "Error: manf box not present in thix box\n");
     opj_free( thix_box);
     return OPJ_FALSE;
   }
-  
+
   manf = gene_manfbox( manf_box);
   ptr = manf->first;
   mhixseqoff = manf_box->offset+(OPJ_OFF_T)manf_box->length;
   pos = 0;
   tile_no = 0;
   jp2idx->tileheader = (mhixbox_param_t **)opj_malloc( jp2idx->SIZ.XTnum*jp2idx->SIZ.YTnum*sizeof(mhixbox_param_t *));
-    
+
   while( ptr){
     if( !(mhix_box = gene_boxbyType( thix_box->fd, mhixseqoff+(OPJ_OFF_T)pos, get_DBoxlen( thix_box)-manf_box->length-pos, "mhix"))){
       fprintf( FCGI_stderr, "Error: mhix box not present in thix box\n");
@@ -549,7 +549,7 @@ OPJ_BOOL set_ppixdata( box_param_t *cidx_box, index_param_t *jp2idx)
   manf = gene_manfbox( manf_box);
   bh = search_boxheader( "faix", manf);
   inbox_offset = manf_box->offset + (OPJ_OFF_T)manf_box->length;
-  
+
   opj_free( manf_box);
 
   jp2idx->precpacket = (faixbox_param_t **)opj_malloc( jp2idx->SIZ.Csiz*sizeof(faixbox_param_t *));
@@ -564,14 +564,14 @@ OPJ_BOOL set_ppixdata( box_param_t *cidx_box, index_param_t *jp2idx)
       fprintf( FCGI_stderr, "Error: faix box not present in ppix box\n");
       return OPJ_FALSE;
     }
-  
+
     faix = gene_faixbox( faix_box);
     jp2idx->precpacket[comp_idx] = faix;
 
     inbox_offset = faix_box->offset + (OPJ_OFF_T)faix_box->length;
-    opj_free( faix_box);   
+    opj_free( faix_box);
   }
-  
+
   delete_manfbox( &manf);
 
   return OPJ_TRUE;
@@ -590,7 +590,7 @@ OPJ_BOOL set_SIZmkrdata( markeridx_param_t *sizmkidx, codestream_param_t codestr
     fprintf( FCGI_stderr, "Error: marker %#x index is not correct\n", sizmkidx->code);
     return OPJ_FALSE;
   }
-  
+
   SIZ->Rsiz   = fetch_marker2bytebigendian( sizmkr, 2);
   SIZ->Xsiz   = fetch_marker4bytebigendian( sizmkr, 4);
   SIZ->Ysiz   = fetch_marker4bytebigendian( sizmkr, 8);
@@ -604,7 +604,7 @@ OPJ_BOOL set_SIZmkrdata( markeridx_param_t *sizmkidx, codestream_param_t codestr
 
   SIZ->XTnum  = ( SIZ->Xsiz-SIZ->XTOsiz+SIZ->XTsiz-1)/SIZ->XTsiz;
   SIZ->YTnum  = ( SIZ->Ysiz-SIZ->YTOsiz+SIZ->YTsiz-1)/SIZ->YTsiz;
-  
+
   for( i=0; i<(int)SIZ->Csiz; i++){
     SIZ->Ssiz[i]  = fetch_marker1byte( sizmkr, 38+i*3);
     SIZ->XRsiz[i] = fetch_marker1byte( sizmkr, 39+i*3);
@@ -631,7 +631,7 @@ OPJ_BOOL set_CODmkrdata( markeridx_param_t *codmkidx, codestream_param_t codestr
   COD->prog_order  = fetch_marker1byte( codmkr, 3);
   COD->numOflayers = fetch_marker2bytebigendian( codmkr, 4);
   COD->numOfdecomp = fetch_marker1byte( codmkr, 7);
-  
+
   if(COD->Scod & 0x01){
     COD->XPsiz = (Byte4_t *)opj_malloc( (OPJ_SIZE_T)(COD->numOfdecomp+1)*sizeof(Byte4_t));
     COD->YPsiz = (Byte4_t *)opj_malloc( (OPJ_SIZE_T)(COD->numOfdecomp+1)*sizeof(Byte4_t));

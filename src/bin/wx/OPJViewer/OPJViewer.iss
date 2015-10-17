@@ -44,5 +44,5 @@ Name: {userdesktop}\OPJViewer; Filename: {app}\OPJViewer.exe; Tasks: desktopicon
 Filename: {app}\OPJViewer.exe; Description: {cm:LaunchProgram,OPJViewer}; Flags: nowait postinstall skipifsilent; WorkingDir: {app}
 
 [Registry]
-Root: HKCU; Subkey: Software\OpenJPEG; ValueType: none; ValueData: 1; Flags: uninsdeletekey; Tasks: ; Languages: 
-Root: HKCU; Subkey: Software\OpenJPEG\OPJViewer; ValueType: none; ValueData: 1; Flags: uninsdeletekey; Tasks: ; Languages: 
+Root: HKCU; Subkey: Software\OpenJPEG; ValueType: none; ValueData: 1; Flags: uninsdeletekey; Tasks: ; Languages:
+Root: HKCU; Subkey: Software\OpenJPEG\OPJViewer; ValueType: none; ValueData: 1; Flags: uninsdeletekey; Tasks: ; Languages:

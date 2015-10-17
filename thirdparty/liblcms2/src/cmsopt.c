@@ -409,11 +409,11 @@ cmsBool  PatchLUT(cmsStage* CLUT, cmsUInt16Number At[], cmsUInt16Number Value[],
             px = ((cmsFloat64Number) At[0] * (p16->Domain[0])) / 65535.0;
             py = ((cmsFloat64Number) At[1] * (p16->Domain[1])) / 65535.0;
             pz = ((cmsFloat64Number) At[2] * (p16->Domain[2])) / 65535.0;
-           
+
             x0 = (int) floor(px);
             y0 = (int) floor(py);
             z0 = (int) floor(pz);
-           
+
             if (((px - x0) != 0) ||
                 ((py - y0) != 0) ||
                 ((pz - z0) != 0)) return FALSE;  // Not on exact node
@@ -426,9 +426,9 @@ cmsBool  PatchLUT(cmsStage* CLUT, cmsUInt16Number At[], cmsUInt16Number Value[],
             if (nChannelsIn == 1) {
 
                 px = ((cmsFloat64Number) At[0] * (p16->Domain[0])) / 65535.0;
-                
+
                 x0 = (int) floor(px);
-                
+
                 if (((px - x0) != 0)) return FALSE; // Not on exact node
 
                 index = p16 -> opta[0] * x0;
@@ -513,7 +513,7 @@ cmsBool FixWhiteMisalignment(cmsPipeline* Lut, cmsColorSpaceSignature EntryColor
 
             cmsToneCurve* InversePostLin = cmsReverseToneCurve(Curves[i]);
             if (InversePostLin == NULL) {
-                WhiteOut[i] = WhitePointOut[i];    
+                WhiteOut[i] = WhitePointOut[i];
 
             } else {
 
@@ -1329,7 +1329,7 @@ cmsBool OptimizeByJoiningCurves(cmsPipeline** Lut, cmsUInt32Number Intent, cmsUI
             _cmsStageToneCurvesData* Data = (_cmsStageToneCurvesData*) ObtainedCurves ->Data;
              Curves16Data* c16 = CurvesAlloc(Dest ->ContextID, Data ->nCurves, 256, Data ->TheCurves);
 
-             if (c16 == NULL) goto Error; 
+             if (c16 == NULL) goto Error;
              *dwFlags |= cmsFLAGS_NOCACHE;
             _cmsPipelineSetOptimizationParameters(Dest, FastEvaluateCurves8, c16, CurvesFree, CurvesDup);
 
@@ -1339,7 +1339,7 @@ cmsBool OptimizeByJoiningCurves(cmsPipeline** Lut, cmsUInt32Number Intent, cmsUI
             _cmsStageToneCurvesData* Data = (_cmsStageToneCurvesData*) cmsStageData(ObtainedCurves);
              Curves16Data* c16 = CurvesAlloc(Dest ->ContextID, Data ->nCurves, 65536, Data ->TheCurves);
 
-             if (c16 == NULL) goto Error; 
+             if (c16 == NULL) goto Error;
              *dwFlags |= cmsFLAGS_NOCACHE;
             _cmsPipelineSetOptimizationParameters(Dest, FastEvaluateCurves16, c16, CurvesFree, CurvesDup);
         }
@@ -1644,7 +1644,7 @@ _cmsOptimizationPluginChunkType _cmsOptimizationPluginChunk = { NULL };
 
 // Duplicates the zone of memory used by the plug-in in the new context
 static
-void DupPluginOptimizationList(struct _cmsContext_struct* ctx, 
+void DupPluginOptimizationList(struct _cmsContext_struct* ctx,
                                const struct _cmsContext_struct* src)
 {
    _cmsOptimizationPluginChunkType newHead = { NULL };
@@ -1661,15 +1661,15 @@ void DupPluginOptimizationList(struct _cmsContext_struct* ctx,
         entry = entry ->Next) {
 
             _cmsOptimizationCollection *newEntry = ( _cmsOptimizationCollection *) _cmsSubAllocDup(ctx ->MemPool, entry, sizeof(_cmsOptimizationCollection));
-   
-            if (newEntry == NULL) 
+
+            if (newEntry == NULL)
                 return;
 
             // We want to keep the linked list order, so this is a little bit tricky
             newEntry -> Next = NULL;
             if (Anterior)
                 Anterior -> Next = newEntry;
-     
+
             Anterior = newEntry;
 
             if (newHead.OptimizationCollection == NULL)
@@ -1679,7 +1679,7 @@ void DupPluginOptimizationList(struct _cmsContext_struct* ctx,
   ctx ->chunks[OptimizationPlugin] = _cmsSubAllocDup(ctx->MemPool, &newHead, sizeof(_cmsOptimizationPluginChunkType));
 }
 
-void  _cmsAllocOptimizationPluginChunk(struct _cmsContext_struct* ctx, 
+void  _cmsAllocOptimizationPluginChunk(struct _cmsContext_struct* ctx,
                                          const struct _cmsContext_struct* src)
 {
   if (src != NULL) {
@@ -1764,7 +1764,7 @@ cmsBool _cmsOptimizePipeline(cmsContext ContextID,
     if (*dwFlags & cmsFLAGS_NOOPTIMIZE)
         return FALSE;
 
-    // Try plug-in optimizations 
+    // Try plug-in optimizations
     for (Opts = ctx->OptimizationCollection;
          Opts != NULL;
          Opts = Opts ->Next) {
@@ -1776,14 +1776,14 @@ cmsBool _cmsOptimizePipeline(cmsContext ContextID,
             }
     }
 
-   // Try built-in optimizations 
+   // Try built-in optimizations
     for (Opts = DefaultOptimization;
          Opts != NULL;
          Opts = Opts ->Next) {
 
             if (Opts ->OptimizePtr(PtrLut, Intent, InputFormat, OutputFormat, dwFlags)) {
 
-                return TRUE;  
+                return TRUE;
             }
     }
 

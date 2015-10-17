@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -128,7 +128,7 @@ static void opj_pi_update_encode_not_poc (  opj_cp_t *p_cp,
                                             OPJ_UINT32 p_dy_min);
 /**
  * Gets the encoding parameters needed to update the coding parameters and all the pocs.
- * 
+ *
  * @param	p_image			the image being encoded.
  * @param	p_cp			the coding parameters.
  * @param	tileno			the tile index of the tile being encoded.
@@ -188,7 +188,7 @@ static void opj_get_all_encoding_parameters(const opj_image_t *p_image,
 /**
  * Allocates memory for a packet iterator. Data and data sizes are set by this operation.
  * No other data is set. The include section of the packet  iterator is not allocated.
- * 
+ *
  * @param	p_image		the image used to initialize the packet iterator (in fact only the number of components is relevant.
  * @param	p_cp		the coding parameters.
  * @param	tileno	the index of the tile from which creating the packet iterator.
@@ -234,7 +234,7 @@ static OPJ_BOOL opj_pi_next_lrcp(opj_pi_iterator_t * pi) {
 	opj_pi_comp_t *comp = NULL;
 	opj_pi_resolution_t *res = NULL;
 	OPJ_UINT32 index = 0;
-	
+
 	if (!pi->first) {
 		comp = &pi->comps[pi->compno];
 		res = &comp->resolutions[pi->resno];
@@ -266,7 +266,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -305,7 +305,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -361,16 +361,16 @@ if (!pi->tp_on){
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (OPJ_INT32)(comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (OPJ_INT32)(comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
 						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
+
 					prci = opj_int_floordivpow2(opj_int_ceildiv(pi->x, (OPJ_INT32)(comp->dx << levelno)), (OPJ_INT32)res->pdx)
 						 - opj_int_floordivpow2(trx0, (OPJ_INT32)res->pdx);
 					prcj = opj_int_floordivpow2(opj_int_ceildiv(pi->y, (OPJ_INT32)(comp->dy << levelno)), (OPJ_INT32)res->pdy)
@@ -388,7 +388,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -442,16 +442,16 @@ static OPJ_BOOL opj_pi_next_pcrl(opj_pi_iterator_t * pi) {
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (OPJ_INT32)(comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (OPJ_INT32)(comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
 						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
+
 					prci = opj_int_floordivpow2(opj_int_ceildiv(pi->x, (OPJ_INT32)(comp->dx << levelno)), (OPJ_INT32)res->pdx)
 						 - opj_int_floordivpow2(trx0, (OPJ_INT32)res->pdx);
 					prcj = opj_int_floordivpow2(opj_int_ceildiv(pi->y, (OPJ_INT32)(comp->dy << levelno)), (OPJ_INT32)res->pdy)
@@ -462,14 +462,14 @@ static OPJ_BOOL opj_pi_next_pcrl(opj_pi_iterator_t * pi) {
 						if (!pi->include[index]) {
 							pi->include[index] = 1;
 							return OPJ_TRUE;
-						}	
+						}
 LABEL_SKIP:;
 					}
 				}
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -521,16 +521,16 @@ static OPJ_BOOL opj_pi_next_cprl(opj_pi_iterator_t * pi) {
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (OPJ_INT32)(comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (OPJ_INT32)(comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
 						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
+
 					prci = opj_int_floordivpow2(opj_int_ceildiv(pi->x, (OPJ_INT32)(comp->dx << levelno)), (OPJ_INT32)res->pdx)
 						 - opj_int_floordivpow2(trx0, (OPJ_INT32)res->pdx);
 					prcj = opj_int_floordivpow2(opj_int_ceildiv(pi->y, (OPJ_INT32)(comp->dy << levelno)), (OPJ_INT32)res->pdy)
@@ -548,7 +548,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -776,7 +776,7 @@ static void opj_get_all_encoding_parameters(   const opj_image_t *p_image,
 			*lResolutionPtr++ = l_pw;
 			*lResolutionPtr++ = l_ph;
 			l_product = l_pw * l_ph;
-			
+
             /* update precision*/
 			if (l_product > *p_max_prec) {
 				*p_max_prec = l_product;
@@ -1872,6 +1872,6 @@ OPJ_BOOL opj_pi_next(opj_pi_iterator_t * pi) {
 		case OPJ_PROG_UNKNOWN:
 			return OPJ_FALSE;
 	}
-	
+
 	return OPJ_FALSE;
 }

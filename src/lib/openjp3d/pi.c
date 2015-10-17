@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -45,31 +45,31 @@
 /**
 Get next packet in layer-resolution-component-precinct order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static bool pi_next_lrcp(opj_pi_iterator_t * pi);
 /**
 Get next packet in resolution-layer-component-precinct order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static bool pi_next_rlcp(opj_pi_iterator_t * pi);
 /**
 Get next packet in resolution-precinct-component-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static bool pi_next_rpcl(opj_pi_iterator_t * pi);
 /**
 Get next packet in precinct-component-resolution-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static bool pi_next_pcrl(opj_pi_iterator_t * pi);
 /**
 Get next packet in component-precinct-resolution-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static bool pi_next_cprl(opj_pi_iterator_t * pi);
 
@@ -77,7 +77,7 @@ static bool pi_next_cprl(opj_pi_iterator_t * pi);
 
 /*@}*/
 
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
@@ -106,9 +106,9 @@ static bool pi_next_lrcp(opj_pi_iterator_t * pi) {
 				res = &comp->resolutions[pi->resno];
 				/*for (pi->precno = 0; pi->precno < (res->prctno[0] * res->prctno[1]); pi->precno++) {*/
 				for (pi->precno = 0; pi->precno < (res->prctno[0] * res->prctno[1] * res->prctno[2]); pi->precno++) {
-					index = pi->layno * pi->step_l 
-						+ pi->resno * pi->step_r 
-						+ pi->compno * pi->step_c 
+					index = pi->layno * pi->step_l
+						+ pi->resno * pi->step_r
+						+ pi->compno * pi->step_c
 						+ pi->precno * pi->step_p;
 					if (!pi->include[index]) {
 						pi->include[index] = 1;
@@ -120,7 +120,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return false;
 }
 
@@ -157,7 +157,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return false;
 }
 
@@ -225,14 +225,14 @@ static bool pi_next_rpcl(opj_pi_iterator_t * pi) {
 							continue;
 						}
 						if ((res->prctno[0]==0)||(res->prctno[1]==0)||(res->prctno[2]==0)) continue;
-						
+
 						if ((trx0==trx1)||(try0==try1)||(trz0==trz1)) continue;
-						
-						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx) 
+
+						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx)
 							- int_floordivpow2(trx0, res->pdx);
-						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy) 
+						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy)
 							- int_floordivpow2(try0, res->pdy);
-						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz) 
+						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz)
 							- int_floordivpow2(trz0, res->pdz);
 						pi->precno = prci + prcj * res->prctno[0] + prck * res->prctno[0] * res->prctno[1];
 						for (pi->layno = 0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -248,7 +248,7 @@ static bool pi_next_rpcl(opj_pi_iterator_t * pi) {
 			}
 		}
 	}
-	
+
 	return false;
 }
 
@@ -319,14 +319,14 @@ for (pi->z = pi->tz0; pi->z < pi->tz1; pi->z += pi->dz - (pi->z % pi->dz)) {
 							continue;
 						}
 						if ((res->prctno[0]==0)||(res->prctno[1]==0)||(res->prctno[2]==0)) continue;
-						
+
 						if ((trx0==trx1)||(try0==try1)||(trz0==trz1)) continue;
-						
-						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx) 
+
+						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx)
 							- int_floordivpow2(trx0, res->pdx);
-						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy) 
+						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy)
 							- int_floordivpow2(try0, res->pdy);
-						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz) 
+						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz)
 							- int_floordivpow2(trz0, res->pdz);
 						pi->precno = prci + prcj * res->prctno[0] + prck * res->prctno[0] * res->prctno[1];
 						for (pi->layno = 0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -334,7 +334,7 @@ for (pi->z = pi->tz0; pi->z < pi->tz1; pi->z += pi->dz - (pi->z % pi->dz)) {
 							if (!pi->include[index]) {
 								pi->include[index] = 1;
 								return true;
-							}	
+							}
 LABEL_SKIP:;
 					}
 				}
@@ -342,7 +342,7 @@ LABEL_SKIP:;
 		}
 	}
 }
-	
+
 	return false;
 }
 
@@ -410,14 +410,14 @@ static bool pi_next_cprl(opj_pi_iterator_t * pi) {
 							continue;
 						}
 						if ((res->prctno[0]==0)||(res->prctno[1]==0)||(res->prctno[2]==0)) continue;
-						
+
 						if ((trx0==trx1)||(try0==try1)||(trz0==trz1)) continue;
-						
-						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx) 
+
+						prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelnox), res->pdx)
 							- int_floordivpow2(trx0, res->pdx);
-						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy) 
+						prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelnoy), res->pdy)
 							- int_floordivpow2(try0, res->pdy);
-						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz) 
+						prck = int_floordivpow2(int_ceildiv(pi->z, comp->dz << levelnoz), res->pdz)
 							- int_floordivpow2(trz0, res->pdz);
 						pi->precno = prci + prcj * res->prctno[0] + prck * res->prctno[0] * res->prctno[1];
 						for (pi->layno = 0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -433,11 +433,11 @@ static bool pi_next_cprl(opj_pi_iterator_t * pi) {
 			}
 		}
 	}
-	
+
 	return false;
 }
 
-/* 
+/*
 ==========================================================
    Packet iterator interface
 ==========================================================
@@ -450,7 +450,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 	opj_tcp_t *tcp = NULL;
 	opj_tccp_t *tccp = NULL;
 	size_t array_size;
-	
+
 	tcp = &cp->tcps[tileno];
 
 	array_size = (tcp->numpocs + 1) * sizeof(opj_pi_iterator_t);
@@ -459,7 +459,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 		fprintf(stdout,"[ERROR] Malloc of opj_pi_iterator failed \n");
 		return NULL;
 	}
-	
+
 	for (pino = 0; pino < tcp->numpocs + 1; pino++) {	/* change */
 		int maxres = 0;
 		int maxprec = 0;
@@ -483,13 +483,13 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 			return NULL;
 		}
 		memset(pi[pino].comps, 0, array_size);
-		
+
 		for (compno = 0; compno < pi->numcomps; compno++) {
 			int tcx0, tcx1, tcy0, tcy1, tcz0, tcz1;
 			int i;
 			opj_pi_comp_t *comp = &pi[pino].comps[compno];
 			tccp = &tcp->tccps[compno];
-			
+
 			comp->dx = volume->comps[compno].dx;
 			comp->dy = volume->comps[compno].dy;
 			comp->dz = volume->comps[compno].dz;
@@ -513,7 +513,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 			tcx1 = int_ceildiv(pi->tx1, comp->dx);
 			tcy1 = int_ceildiv(pi->ty1, comp->dy);
 			tcz1 = int_ceildiv(pi->tz1, comp->dz);
-			
+
 			for (resno = 0; resno < comp->numresolution[0]; resno++) {
 				int levelnox, levelnoy, levelnoz, diff;
 				int rx0, ry0, rz0, rx1, ry1, rz1;
@@ -531,7 +531,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 				levelnox = comp->numresolution[0] - 1 - resno;
 				levelnoy = comp->numresolution[1] - 1 - resno;
         levelnoz = comp->numresolution[2] - 1 - resno;
-				if (levelnoz < 0) levelnoz = 0; 
+				if (levelnoz < 0) levelnoz = 0;
 				diff = comp->numresolution[0] - comp->numresolution[2];
 
 				rx0 = int_ceildivpow2(tcx0, levelnox);
@@ -555,13 +555,13 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 				}
 			}
 		}
-		
+
 		tccp = &tcp->tccps[0];
 		pi[pino].step_p = 1;
 		pi[pino].step_c = maxprec * pi[pino].step_p;
 		pi[pino].step_r = volume->numcomps * pi[pino].step_c;
 		pi[pino].step_l = maxres * pi[pino].step_r;
-		
+
 		if (pino == 0) {
 			array_size = volume->numcomps * maxres * tcp->numlayers * maxprec * sizeof(short int);
 			pi[pino].include = (short int *) opj_malloc(array_size);
@@ -574,7 +574,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 		else {
 			pi[pino].include = pi[pino - 1].include;
 		}
-		
+
 		if (tcp->POC == 0) {
 			pi[pino].first = 1;
 			pi[pino].poc.resno0 = 0;
@@ -593,7 +593,7 @@ opj_pi_iterator_t *pi_create(opj_volume_t *volume, opj_cp_t *cp, int tileno) {
 			pi[pino].poc.prg = tcp->pocs[pino].prg;
 		}
 	}
-	
+
 	return pi;
 }
 
@@ -601,7 +601,7 @@ void pi_destroy(opj_pi_iterator_t *pi, opj_cp_t *cp, int tileno) {
 	int compno, pino;
 	opj_tcp_t *tcp = &cp->tcps[tileno];
 	if(pi) {
-		for (pino = 0; pino < tcp->numpocs + 1; pino++) {	
+		for (pino = 0; pino < tcp->numpocs + 1; pino++) {
 			if(pi[pino].comps) {
 				for (compno = 0; compno < pi->numcomps; compno++) {
 					opj_pi_comp_t *comp = &pi[pino].comps[compno];
@@ -632,7 +632,7 @@ bool pi_next(opj_pi_iterator_t * pi) {
 		case CPRL:
 			return pi_next_cprl(pi);
 	}
-	
+
 	return false;
 }
 

@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,12 +8,12 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
  * Copyright (c) 2008, Jerome Fimes, Communications & Systemes <jerome.fimes@c-s.fr>
- * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+ * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France
  * Copyright (c) 2012, CS Systemes d'Information, France
  *
  * All rights reserved.
@@ -99,8 +99,8 @@ The functions in J2K.C have for goal to read/write the several parts of the code
 /* UniPG>> */
 #ifdef USE_JPWL
 #define J2K_MS_EPC 0xff68	/**< EPC marker value (Part 11: JPEG 2000 for Wireless) */
-#define J2K_MS_EPB 0xff66	/**< EPB marker value (Part 11: JPEG 2000 for Wireless) */ 
-#define J2K_MS_ESD 0xff67	/**< ESD marker value (Part 11: JPEG 2000 for Wireless) */ 
+#define J2K_MS_EPB 0xff66	/**< EPB marker value (Part 11: JPEG 2000 for Wireless) */
+#define J2K_MS_ESD 0xff67	/**< ESD marker value (Part 11: JPEG 2000 for Wireless) */
 #define J2K_MS_RED 0xff69	/**< RED marker value (Part 11: JPEG 2000 for Wireless) */
 #endif /* USE_JPWL */
 #ifdef USE_JPSEC
@@ -152,8 +152,8 @@ typedef enum MCT_ARRAY_TYPE
 
 /* ----------------------------------------------------------------------- */
 
-/** 
-T2 encoding mode 
+/**
+T2 encoding mode
 */
 typedef enum T2_MODE {
 	THRESH_CALC = 0,	/** Function called in Rate allocation process*/
@@ -260,12 +260,12 @@ typedef struct opj_tcp
 	OPJ_UINT32 numpocs;
 	/** progression order changes */
 	opj_poc_t pocs[32];
-	
+
 	/** number of ppt markers (reserved size) */
 	OPJ_UINT32 ppt_markers_count;
 	/** ppt markers data (table indexed by Zppt) */
 	opj_ppx* ppt_markers;
-	
+
 	/** packet header store there for future use in t2_decode_packet */
 	OPJ_BYTE *ppt_data;
 	/** used to keep a track of the allocated memory */
@@ -375,7 +375,7 @@ typedef struct opj_cp
 	OPJ_UINT32 ppm_markers_count;
 	/** ppm markers data (table indexed by Zppm) */
 	opj_ppx* ppm_markers;
-	
+
 	/** packet header store there for future use in t2_decode_packet */
 	OPJ_BYTE *ppm_data;
 	/** size of the ppm_data*/
@@ -601,7 +601,7 @@ opj_j2k_t;
 
 /**
 Setup the decoder decoding parameters using user parameters.
-Decoding parameters are returned in j2k->cp. 
+Decoding parameters are returned in j2k->cp.
 @param j2k J2K decompressor handle
 @param parameters decompression parameters
 */
@@ -806,7 +806,7 @@ OPJ_BOOL opj_j2k_get_tile(	opj_j2k_t *p_j2k,
 					    	opj_event_mgr_t * p_manager,
 						    OPJ_UINT32 tile_index );
 
-OPJ_BOOL opj_j2k_set_decoded_resolution_factor(opj_j2k_t *p_j2k, 
+OPJ_BOOL opj_j2k_set_decoded_resolution_factor(opj_j2k_t *p_j2k,
                                                OPJ_UINT32 res_factor,
                                                opj_event_mgr_t * p_manager);
 

@@ -1,6 +1,6 @@
  /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -39,7 +39,7 @@
 #ifndef OPENJPEG_H
 #define OPENJPEG_H
 
-/* 
+/*
 ==========================================================
    Compiler directives
 ==========================================================
@@ -58,10 +58,10 @@
 #else
 #define OPJ_CALLCONV __stdcall
 /*
-The following ifdef block is the standard way of creating macros which make exporting 
+The following ifdef block is the standard way of creating macros which make exporting
 from a DLL simpler. All files within this DLL are compiled with the OPJ_EXPORTS
 symbol defined on the command line. this symbol should not be defined on any project
-that uses this DLL. This way any other project whose source files include this file see 
+that uses this DLL. This way any other project whose source files include this file see
 OPJ_API functions as being imported from a DLL, whereas this DLL sees symbols
 defined with this macro as being exported.
 */
@@ -78,7 +78,7 @@ typedef int opj_bool;
 
 /* Avoid compile-time warning because parameter is not used */
 #define OPJ_ARG_NOT_USED(x) (void)(x)
-/* 
+/*
 ==========================================================
    Useful constant definitions
 ==========================================================
@@ -100,12 +100,12 @@ typedef int opj_bool;
 #define JPWL_MAXIMUM_EPB_ROOM 65450 /**< Expect this maximum number of bytes for composition of EPBs */
 /* <<UniPG */
 
-/* 
+/*
 ==========================================================
    enum definitions
 ==========================================================
 */
-/** 
+/**
 Rsiz Capabilities
 */
 typedef enum RSIZ_CAPABILITIES {
@@ -114,8 +114,8 @@ typedef enum RSIZ_CAPABILITIES {
 	CINEMA4K = 4		/** Profile name for a 4K image*/
 } OPJ_RSIZ_CAPABILITIES;
 
-/** 
-Digital cinema operation mode 
+/**
+Digital cinema operation mode
 */
 typedef enum CINEMA_MODE {
 	OFF = 0,					/** Not Digital Cinema*/
@@ -124,8 +124,8 @@ typedef enum CINEMA_MODE {
 	CINEMA4K_24 = 3		/** 4K Digital Cinema at 24 fps*/
 }OPJ_CINEMA_MODE;
 
-/** 
-Progression order 
+/**
+Progression order
 */
 typedef enum PROG_ORDER {
 	PROG_UNKNOWN = -1,	/**< place-holder */
@@ -141,7 +141,7 @@ Supported image color spaces
 */
 typedef enum COLOR_SPACE {
 	CLRSPC_UNKNOWN = -1,	/**< not supported by the library */
-	CLRSPC_UNSPECIFIED = 0, /**< not specified in the codestream */ 
+	CLRSPC_UNSPECIFIED = 0, /**< not specified in the codestream */
 	CLRSPC_SRGB = 1,		/**< sRGB */
 	CLRSPC_GRAY = 2,		/**< grayscale */
 	CLRSPC_SYCC = 3			/**< YUV */
@@ -161,8 +161,8 @@ typedef enum CODEC_FORMAT {
 	CODEC_JP2  = 2 		/**< JPEG-2000 file format : read/write */
 } OPJ_CODEC_FORMAT;
 
-/** 
-Limit decoding to certain portions of the codestream. 
+/**
+Limit decoding to certain portions of the codestream.
 */
 typedef enum LIMIT_DECODING {
 	NO_LIMITATION = 0,				  /**< No limitation for the decoding. The entire codestream will de decoded */
@@ -170,7 +170,7 @@ typedef enum LIMIT_DECODING {
 	DECODE_ALL_BUT_PACKETS = 2	/**< Decode everything except the JPEG 2000 packets */
 } OPJ_LIMIT_DECODING;
 
-/* 
+/*
 ==========================================================
    event manager typedef definitions
 ==========================================================
@@ -179,13 +179,13 @@ typedef enum LIMIT_DECODING {
 /**
 Callback function prototype for events
 @param msg Event message
-@param client_data 
+@param client_data
 */
 typedef void (*opj_msg_callback) (const char *msg, void *client_data);
 
 /**
 Message handler object
-used for 
+used for
 <ul>
 <li>Error messages
 <li>Warning messages
@@ -202,7 +202,7 @@ typedef struct opj_event_mgr {
 } opj_event_mgr_t;
 
 
-/* 
+/*
 ==========================================================
    codec typedef definitions
 ==========================================================
@@ -371,19 +371,19 @@ typedef struct opj_cparameters {
 Decompression parameters
 */
 typedef struct opj_dparameters {
-	/** 
-	Set the number of highest resolution levels to be discarded. 
-	The image resolution is effectively divided by 2 to the power of the number of discarded levels. 
+	/**
+	Set the number of highest resolution levels to be discarded.
+	The image resolution is effectively divided by 2 to the power of the number of discarded levels.
 	The reduce factor is limited by the smallest total number of decomposition levels among tiles.
-	if != 0, then original dimension divided by 2^(reduce); 
-	if == 0 or not used, image is decoded to the full resolution 
+	if != 0, then original dimension divided by 2^(reduce);
+	if == 0 or not used, image is decoded to the full resolution
 	*/
 	int cp_reduce;
-	/** 
-	Set the maximum number of quality layers to decode. 
+	/**
+	Set the maximum number of quality layers to decode.
 	If there are less quality layers than the specified number, all the quality layers are decoded.
-	if != 0, then only the first "layer" layers are decoded; 
-	if == 0 or not used, all the quality layers are decoded 
+	if != 0, then only the first "layer" layers are decoded;
+	if == 0 or not used, all the quality layers are decoded
 	*/
 	int cp_layer;
 
@@ -411,11 +411,11 @@ typedef struct opj_dparameters {
 	/*@}*/
 /* <<UniPG */
 
-	/** 
+	/**
 	Specify whether the decoding should be done on the entire codestream, or be limited to the main header
 	Limiting the decoding to the main header makes it possible to extract the characteristics of the codestream
-	if == NO_LIMITATION, the entire codestream is decoded; 
-	if == LIMIT_TO_MAIN_HEADER, only the main header is decoded; 
+	if == NO_LIMITATION, the entire codestream is decoded;
+	if == LIMIT_TO_MAIN_HEADER, only the main header is decoded;
 	*/
 	OPJ_LIMIT_DECODING cp_limit_decoding;
 
@@ -432,7 +432,7 @@ typedef struct opj_dparameters {
 	void *j2k_handle;			/**< pointer to the J2K codec */\
 	void *jp2_handle;			/**< pointer to the JP2 codec */\
 	void *mj2_handle			/**< pointer to the MJ2 codec */
-	
+
 /* Routines that are to be used by both halves of the library are declared
  * to receive a pointer to this structure.  There are no actual instances of
  * opj_common_struct_t, only of opj_cinfo_t and opj_dinfo_t.
@@ -452,7 +452,7 @@ Compression context info
 */
 typedef struct opj_cinfo {
 	/** Fields shared with opj_dinfo_t */
-	opj_common_fields;	
+	opj_common_fields;
 	/* other specific fields go here */
 } opj_cinfo_t;
 
@@ -461,11 +461,11 @@ Decompression context info
 */
 typedef struct opj_dinfo {
 	/** Fields shared with opj_cinfo_t */
-	opj_common_fields;	
+	opj_common_fields;
 	/* other specific fields go here */
 } opj_dinfo_t;
 
-/* 
+/*
 ==========================================================
    I/O stream typedef definitions
 ==========================================================
@@ -501,7 +501,7 @@ typedef struct opj_cio {
 	unsigned char *bp;
 } opj_cio_t;
 
-/* 
+/*
 ==========================================================
    image typedef definitions
 ==========================================================
@@ -537,7 +537,7 @@ typedef struct opj_image_comp {
 	int *data;
 } opj_image_comp_t;
 
-/** 
+/**
 Defines image data and characteristics
 */
 typedef struct opj_image {
@@ -585,7 +585,7 @@ typedef struct opj_image_comptparm {
 	int sgnd;
 } opj_image_cmptparm_t;
 
-/* 
+/*
 ==========================================================
    Information on the JPEG 2000 codestream
 ==========================================================
@@ -637,7 +637,7 @@ typedef struct opj_tp_info {
 } opj_tp_info_t;
 
 /**
-Index structure : information regarding tiles 
+Index structure : information regarding tiles
 */
 typedef struct opj_tile_info {
 	/** value of thresh for each layer by tile cfr. Marcela   */
@@ -733,7 +733,7 @@ extern "C" {
 #endif
 
 
-/* 
+/*
 ==========================================================
    openjpeg version
 ==========================================================
@@ -741,7 +741,7 @@ extern "C" {
 
 OPJ_API const char * OPJ_CALLCONV opj_version(void);
 
-/* 
+/*
 ==========================================================
    image functions definitions
 ==========================================================
@@ -762,18 +762,18 @@ Deallocate any resources associated with an image
 */
 OPJ_API void OPJ_CALLCONV opj_image_destroy(opj_image_t *image);
 
-/* 
+/*
 ==========================================================
    stream functions definitions
 ==========================================================
 */
 
 /**
-Open and allocate a memory stream for read / write. 
-On reading, the user must provide a buffer containing encoded data. The buffer will be 
-wrapped by the returned CIO handle. 
-On writing, buffer parameters must be set to 0: a buffer will be allocated by the library 
-to contain encoded data. 
+Open and allocate a memory stream for read / write.
+On reading, the user must provide a buffer containing encoded data. The buffer will be
+wrapped by the returned CIO handle.
+On writing, buffer parameters must be set to 0: a buffer will be allocated by the library
+to contain encoded data.
 @param cinfo Codec context info
 @param buffer Reading: buffer address. Writing: NULL
 @param length Reading: buffer length. Writing: 0
@@ -800,7 +800,7 @@ Set position in byte stream
 */
 OPJ_API void OPJ_CALLCONV cio_seek(opj_cio_t *cio, int pos);
 
-/* 
+/*
 ==========================================================
    event manager functions definitions
 ==========================================================
@@ -808,7 +808,7 @@ OPJ_API void OPJ_CALLCONV cio_seek(opj_cio_t *cio, int pos);
 
 OPJ_API opj_event_mgr_t* OPJ_CALLCONV opj_set_event_mgr(opj_common_ptr cinfo, opj_event_mgr_t *event_mgr, void *context);
 
-/* 
+/*
 ==========================================================
    codec functions definitions
 ==========================================================
@@ -831,13 +831,13 @@ Set decoding parameters to default values
 OPJ_API void OPJ_CALLCONV opj_set_default_decoder_parameters(opj_dparameters_t *parameters);
 /**
 Setup the decoder decoding parameters using user parameters.
-Decoding parameters are returned in j2k->cp. 
+Decoding parameters are returned in j2k->cp.
 @param dinfo decompressor handle
 @param parameters decompression parameters
 */
 OPJ_API void OPJ_CALLCONV opj_setup_decoder(opj_dinfo_t *dinfo, opj_dparameters_t *parameters);
 /**
-Decode an image from a JPEG-2000 codestream 
+Decode an image from a JPEG-2000 codestream
 @param dinfo decompressor handle
 @param cio Input buffer stream
 @return Returns a decoded image if successful, returns NULL otherwise
@@ -864,7 +864,7 @@ Destroy a compressor handle
 */
 OPJ_API void OPJ_CALLCONV opj_destroy_compress(opj_cinfo_t *cinfo);
 /**
-Set encoding parameters to default values, that means : 
+Set encoding parameters to default values, that means :
 <ul>
 <li>Lossless
 <li>1 tile
@@ -886,7 +886,7 @@ Set encoding parameters to default values, that means :
 */
 OPJ_API void OPJ_CALLCONV opj_set_default_encoder_parameters(opj_cparameters_t *parameters);
 /**
-Setup the encoder parameters using the current image and using user parameters. 
+Setup the encoder parameters using the current image and using user parameters.
 @param cinfo Compressor handle
 @param parameters Compression parameters
 @param image Input filled image

@@ -48,7 +48,7 @@ Byte_t * update_JPIPstream( Byte_t *newstream, OPJ_SIZE_T newstreamlen, Byte_t *
 
   if(cache_stream)
     opj_free( cache_stream);
-  
+
   return stream;
 }
 
@@ -61,7 +61,7 @@ void save_codestream( Byte_t *codestream, OPJ_SIZE_T streamlen, const char *fmt)
 
   time(&timer);
   t_st = localtime( &timer);
-  
+
   sprintf( filename, "%4d%02d%02d%02d%02d%02d.%.3s", t_st->tm_year+1900, t_st->tm_mon+1, t_st->tm_mday, t_st->tm_hour, t_st->tm_min, t_st->tm_sec, fmt);
 
   fp = fopen( filename, "wb");
@@ -85,7 +85,7 @@ Byte_t * jpipstream_to_pnm( Byte_t *jpipstream, msgqueue_param_t *msgqueue, Byte
     {
     return NULL;
     }
-  j2kstream = recons_j2k( msgqueue, jpipstream, csn, fw, fh, &j2klen); 
+  j2kstream = recons_j2k( msgqueue, jpipstream, csn, fw, fh, &j2klen);
   if( !j2kstream )
     {
     fclose(fp);
@@ -128,7 +128,7 @@ ihdrbox_param_t * get_SIZ_from_jpipstream( Byte_t *jpipstream, msgqueue_param_t 
   ihdrbox->height = SIZ.Ysiz;
   ihdrbox->nc = SIZ.Csiz;
   ihdrbox->bpc = SIZ.Ssiz[0];
-  
+
   opj_free( j2kstream);
 
   return ihdrbox;

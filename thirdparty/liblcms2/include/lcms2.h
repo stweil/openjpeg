@@ -1292,7 +1292,7 @@ CMSAPI cmsBool           CMSEXPORT cmsMLUtranslationsCodes(const cmsMLU* mlu,
                                                              cmsUInt32Number idx,
                                                              char LanguageCode[3],
                                                              char CountryCode[3]);
- 
+
 // Undercolorremoval & black generation -------------------------------------------------------------------------------------
 
 typedef struct {
@@ -1731,9 +1731,9 @@ CMSAPI void             CMSEXPORT cmsSetAlarmCodes(const cmsUInt16Number NewAlar
 CMSAPI void             CMSEXPORT cmsGetAlarmCodes(cmsUInt16Number NewAlarm[cmsMAXCHANNELS]);
 
 
-CMSAPI void             CMSEXPORT cmsSetAlarmCodesTHR(cmsContext ContextID, 
+CMSAPI void             CMSEXPORT cmsSetAlarmCodesTHR(cmsContext ContextID,
                                                           const cmsUInt16Number AlarmCodes[cmsMAXCHANNELS]);
-CMSAPI void             CMSEXPORT cmsGetAlarmCodesTHR(cmsContext ContextID, 
+CMSAPI void             CMSEXPORT cmsGetAlarmCodesTHR(cmsContext ContextID,
                                                           cmsUInt16Number AlarmCodes[cmsMAXCHANNELS]);
 
 

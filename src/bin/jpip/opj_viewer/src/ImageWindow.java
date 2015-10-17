@@ -36,13 +36,13 @@ public class ImageWindow extends JFrame
 {
     private ImageViewer imgviewer;
     private ImageManager imgmanager;
-    
+
     public ImageWindow( String uri, String j2kfilename, String host, int port, boolean session, boolean jppstream, int aux)
     {
 	super( j2kfilename);
 
 	imgmanager = new ImageManager( uri, host, port);
-	
+
 	imgviewer = new ImageViewer( j2kfilename, imgmanager, session, jppstream, aux);
 	imgviewer.setOpaque(true); //content panes must be opaque
 
@@ -51,7 +51,7 @@ public class ImageWindow extends JFrame
 	panel.add( imgviewer, BorderLayout.CENTER);
 
 	setContentPane( panel);
-        
+
 	addWindowListener(new WindowMyAdapter());
     }
 
@@ -69,31 +69,31 @@ public class ImageWindow extends JFrame
 	String j2kfilename, uri, host;
 	boolean session, jppstream;
 	int port, aux; // 0: none, 1: tcp, 2: udp
-	
+
 	if(s.length >= 2){
 	    uri = s[0];
 	    j2kfilename = s[1];
-	    
+
 	    if( s.length > 2)
 		host = s[2];
 	    else
 		host = "localhost";
-	    
+
 	    if( s.length > 3)
 		port = Integer.valueOf( s[3]).intValue();
 	    else
 		port = 50000;
-	    
+
 	    if( s.length > 4)
 		session = !s[4].equalsIgnoreCase( "stateless");
 	    else
 		session = true;
-	    
+
 	    if( s.length > 5)
 		jppstream = !s[5].equalsIgnoreCase( "JPT");
 	    else
 		jppstream = true;
-	    
+
 	    if( s.length > 6){
 		if( s[6].equalsIgnoreCase("udp"))
 		    aux = 2;
@@ -108,9 +108,9 @@ public class ImageWindow extends JFrame
 	    return;
 	}
 	ImageWindow frame = new ImageWindow( uri, j2kfilename, host, port, session, jppstream, aux);
-    
+
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
+
 	//Display the window.
 	frame.pack();
 	frame.setSize(new Dimension(400,200));

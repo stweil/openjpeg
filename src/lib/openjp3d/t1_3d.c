@@ -148,7 +148,7 @@ static int t1_3d_getnmsedec_sig(opj_t1_3d_t *t1, int x, int bitpos) {
 	if (bitpos > T1_NMSEDEC_FRACBITS) {
 		return t1->lut_nmsedec_sig[(x >> (bitpos - T1_NMSEDEC_FRACBITS)) & ((1 << T1_NMSEDEC_BITS) - 1)];
 	}
-	
+
 	return t1->lut_nmsedec_sig0[x & ((1 << T1_NMSEDEC_BITS) - 1)];
 }
 
@@ -167,7 +167,7 @@ static void t1_3d_updateflags(unsigned int *fp, int s) {
 	unsigned int *bwp = fp + ((T1_MAXCBLKW + 2)*(T1_MAXCBLKH +2));
 	unsigned int *bnp = bwp - (T1_MAXCBLKW + 2);
 	unsigned int *bsp = bwp + (T1_MAXCBLKW + 2);
-	
+
 	unsigned int *fwp = fp - ((T1_MAXCBLKW + 2)*(T1_MAXCBLKH +2));
 	unsigned int *fnp = fwp - (T1_MAXCBLKW + 2);
 	unsigned int *fsp = fwp + (T1_MAXCBLKW + 2);
@@ -217,7 +217,7 @@ static void t1_3d_enc_sigpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 	unsigned int flag;
 
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if ((flag & T1_3D_SIG_OTH) && !(flagsvr & (T1_3D_SIG | T1_3D_VISIT))) {
@@ -249,10 +249,10 @@ static void t1_3d_enc_sigpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 static void t1_3d_dec_sigpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr, int *dp, int orient, int oneplushalf, char type, int vsc) {
 	int v, flagsvr;
 	unsigned int flag;
-	
+
 	opj_raw_t *raw = t1->raw;	/* RAW component */
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if ((flag & T1_3D_SIG_OTH) && !(flagsvr & (T1_3D_SIG | T1_3D_VISIT))) {
@@ -315,7 +315,7 @@ static void t1_3d_enc_refpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 	unsigned int flag;
 
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if ((flagsvr & (T1_3D_SIG | T1_3D_VISIT)) == T1_3D_SIG) {
@@ -338,7 +338,7 @@ static void t1_3d_dec_refpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
 	opj_raw_t *raw = t1->raw;	/* RAW component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if ((flagsvr & (T1_3D_SIG | T1_3D_VISIT)) == T1_3D_SIG) {
@@ -368,7 +368,7 @@ static void t1_3d_enc_refpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, in
 				}
 			}
 		}
-	}	
+	}
 }
 
 static void t1_3d_dec_refpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, char type, int cblksty) {
@@ -394,7 +394,7 @@ static void t1_3d_enc_clnpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 	unsigned int flag;
 
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if (partial) {
@@ -422,7 +422,7 @@ static void t1_3d_dec_clnpass_step(opj_t1_3d_t *t1, unsigned int *fp, int *fsvr,
 	unsigned int flag;
 
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	flag = vsc ? ((*fp) & (~(T1_3D_SIG_S | T1_3D_SIG_SE | T1_3D_SIG_SW | (T1_3D_SGN_S << 16)))) : (*fp);
 	flagsvr = (*fsvr);
 	if (partial) {
@@ -444,9 +444,9 @@ LABEL_PARTIAL:
 
 static void t1_3d_enc_clnpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, int orient, int *nmsedec, int cblksty) {
 	int i, j, k, m, one, agg, runlen, vsc;
-	
+
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	*nmsedec = 0;
 	one = 1 << (bpno + T1_NMSEDEC_FRACBITS);
 	for (m = 0; m < l; m++) {
@@ -498,9 +498,9 @@ static void t1_3d_enc_clnpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, in
 static void t1_3d_dec_clnpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, int orient, int cblksty) {
 	int i, j, k, m, one, half, oneplushalf, agg, runlen, vsc;
 	int segsym = cblksty & J3D_CCP_CBLKSTY_SEGSYM;
-	
+
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	one = 1 << bpno;
 	half = one >> 1;
 	oneplushalf = one | half;
@@ -554,7 +554,7 @@ static void t1_3d_dec_clnpass(opj_t1_3d_t *t1, int w, int h, int l, int bpno, in
 		/*
 		if (v!=0xa) {
 			opj_event_msg(t1->cinfo, EVT_WARNING, "Bad segmentation symbol %x\n", v);
-		} 
+		}
 		*/
 	}
 }				/* VSC and  BYPASS by Antonin */
@@ -569,9 +569,9 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 	int nmsedec = 0;
 	double cumwmsedec = 0;
 	char type = T1_TYPE_MQ;
-	
+
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	w = cblk->x1 - cblk->x0;
 	h = cblk->y1 - cblk->y0;
 	l = cblk->z1 - cblk->z0;
@@ -592,21 +592,21 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 			}
 		}
 	}
-	
+
 	cblk->numbps = max ? (int_floorlog2(max) + 1) - T1_NMSEDEC_FRACBITS : 0;
-	
+
 	bpno = cblk->numbps - 1;
 	passtype = 2;
-	
+
 	mqc_reset_enc(mqc);
 	mqc_init_enc(mqc, cblk->data);
-	
+
 	for (passno = 0; bpno >= 0; passno++) {
 		opj_tcd_pass_t *pass = &cblk->passes[passno];
 		int correction = 3;
 		double tmpwmsedec;
 		type = ((bpno < (cblk->numbps - 4)) && (passtype < 2) && (cblksty & J3D_CCP_CBLKSTY_LAZY)) ? T1_TYPE_RAW : T1_TYPE_MQ;
-		
+
 		switch (passtype) {
 			case 0:
 				t1_3d_enc_sigpass(t1, w, h, l, bpno, orient, &nmsedec, type, cblksty);
@@ -621,12 +621,12 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 					mqc_segmark_enc(mqc);
 				break;
 		}
-		
+
 		/* fixed_quality */
 		tmpwmsedec = t1_getwmsedec(nmsedec, compno, level, orient, bpno, stepsize, numcomps, dwtid);
 		cumwmsedec += tmpwmsedec;
 		tile->distotile += tmpwmsedec;
-		
+
 		/* Code switch "RESTART" (i.e. TERMALL) */
 		if ((cblksty & J3D_CCP_CBLKSTY_TERMALL)	&& !((passtype == 2) && (bpno - 1 < 0))) {
 			if (type == T1_TYPE_RAW) {
@@ -639,12 +639,12 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 			}
 			pass->term = 1;
 		} else {
-			if (((bpno < (cblk->numbps - 4) && (passtype > 0)) 
+			if (((bpno < (cblk->numbps - 4) && (passtype > 0))
 				|| ((bpno == (cblk->numbps - 4)) && (passtype == 2))) && (cblksty & J3D_CCP_CBLKSTY_LAZY)) {
 				if (type == T1_TYPE_RAW) {
 					mqc_flush(mqc);
 					correction = 1;
-				} else {	
+				} else {
 					mqc_flush(mqc);
 					correction = 1;
 				}
@@ -653,12 +653,12 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 				pass->term = 0;
 			}
 		}
-		
+
 		if (++passtype == 3) {
 			passtype = 0;
 			bpno--;
 		}
-		
+
 		if (pass->term && bpno > 0) {
 			type = ((bpno < (cblk->numbps - 4)) && (passtype < 2) && (cblksty & J3D_CCP_CBLKSTY_LAZY)) ? T1_TYPE_RAW : T1_TYPE_MQ;
 			if (type == T1_TYPE_RAW)
@@ -666,7 +666,7 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 			else
 				mqc_restart_init_enc(mqc);
 		}
-		
+
 		pass->distortiondec = cumwmsedec;
 		pass->rate = mqc_numbytes(mqc) + correction;	/* FIXME */
 		pass->len = pass->rate - (passno == 0 ? 0 : cblk->passes[passno - 1].rate);
@@ -675,13 +675,13 @@ static void t1_3d_encode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 		if (cblksty & J3D_CCP_CBLKSTY_RESET)
 			mqc_reset_enc(mqc);
 	}
-	
+
 	/* Code switch "ERTERM" (i.e. PTERM) */
 	if (cblksty & J3D_CCP_CBLKSTY_PTERM)
 		mqc_erterm_enc(mqc);
 	else /* Default coding */ if (!(cblksty & J3D_CCP_CBLKSTY_LAZY))
 		mqc_flush(mqc);
-	
+
 	cblk->totalpasses = passno;
 }
 
@@ -693,7 +693,7 @@ static void t1_3d_decode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 	char type = T1_TYPE_MQ; /* BYPASS mode */
 	opj_raw_t *raw = t1->raw;	/* RAW component */
 	opj_mqc_t *mqc = t1->mqc;	/* MQC component */
-	
+
 	w = cblk->x1 - cblk->x0;
 	h = cblk->y1 - cblk->y0;
 	l = cblk->z1 - cblk->z0;
@@ -705,7 +705,7 @@ static void t1_3d_decode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 			}
 		}
 	}
-	
+
 	for (k = 0; k <= l; k++) {
 		for (j = 0; j <= h; j++) {
 			for (i = 0; i <= w; i++) {
@@ -715,15 +715,15 @@ static void t1_3d_decode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 		}
 	}
 
-	
+
 	bpno = roishift + cblk->numbps - 1;
 	passtype = 2;
-	
+
 	mqc_reset_enc(mqc);
-	
+
 	for (segno = 0; segno < cblk->numsegs; segno++) {
 		opj_tcd_seg_t *seg = &cblk->segs[segno];
-		
+
 		/* BYPASS mode */
 		type = ((bpno <= (cblk->numbps - 1) - 4) && (passtype < 2) && (cblksty & J3D_CCP_CBLKSTY_LAZY)) ? T1_TYPE_RAW : T1_TYPE_MQ;
 		if (type == T1_TYPE_RAW) {
@@ -731,7 +731,7 @@ static void t1_3d_decode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 		} else {
 			mqc_init_dec(mqc, seg->data, seg->len);
 		}
-		
+
 		for (passno = 0; passno < seg->numpasses; passno++) {
 			switch (passtype) {
 				case 0:
@@ -744,7 +744,7 @@ static void t1_3d_decode_cblk(opj_t1_3d_t *t1, opj_tcd_cblk_t * cblk, int orient
 					t1_3d_dec_clnpass(t1, w, h, l, bpno+1, orient, cblksty);
 					break;
 			}
-			
+
 			if ((cblksty & J3D_CCP_CBLKSTY_RESET) && type == T1_TYPE_MQ) {
 				mqc_reset_enc(mqc);
 			}
@@ -769,9 +769,9 @@ static int t1_3d_init_ctxno_zc(unsigned int f, int orient) {
 	d2xy = ((f & T1_3D_SIG_NW) != 0) + ((f & T1_3D_SIG_NE) != 0) + ((f & T1_3D_SIG_SE) != 0) + ((f & T1_3D_SIG_SW) != 0);
 	d2xz = ((f & T1_3D_SIG_FW) != 0) + ((f & T1_3D_SIG_BW) != 0) + ((f & T1_3D_SIG_FE) != 0) + ((f & T1_3D_SIG_BE) != 0);
 	d2yz = ((f & T1_3D_SIG_FN) != 0) + ((f & T1_3D_SIG_FS) != 0) + ((f & T1_3D_SIG_BN) != 0) + ((f & T1_3D_SIG_BS) != 0);
-    d3 = ((f & T1_3D_SIG_FNW) != 0) + ((f & T1_3D_SIG_FNE) != 0) + ((f & T1_3D_SIG_FSE) != 0) + ((f & T1_3D_SIG_FSW) != 0) 
+    d3 = ((f & T1_3D_SIG_FNW) != 0) + ((f & T1_3D_SIG_FNE) != 0) + ((f & T1_3D_SIG_FSE) != 0) + ((f & T1_3D_SIG_FSW) != 0)
 		+ ((f & T1_3D_SIG_BNW) != 0) + ((f & T1_3D_SIG_BNE) != 0) + ((f & T1_3D_SIG_BSE) != 0) + ((f & T1_3D_SIG_BSW) != 0);
-	
+
 	switch (orient) {
 		case 0: /*LLL*/
 		case 7: /*HHH*/
@@ -814,15 +814,15 @@ static int t1_3d_init_ctxno_zc(unsigned int f, int orient) {
             if (!hc) {
 				if (!v) {
 					if (!d2xy) {
-						n = (!d2xy2yz) ? ((!d3) ? 0 : 1) : ((!d3) ? 2 : 3);	
+						n = (!d2xy2yz) ? ((!d3) ? 0 : 1) : ((!d3) ? 2 : 3);
 					} else if (d2xy == 1) {
-						n = (!d2xy2yz) ? ((!d3) ? 4 : 5) : 6;	
+						n = (!d2xy2yz) ? ((!d3) ? 4 : 5) : 6;
 					} else { /*>=2*/
                         n = 7;
 					}
 				} else {
 					n = (v == 1) ? 8 : 9; /* =1 or =2*/
-				} 
+				}
 			} else if (hc == 1) {
 				n = (!v) ? ( (!d2xy) ? ( (!d2xy2yz) ? ( (!d3) ? 10 : 11) : (12) ) : (13) ) : (14);
 			} else { /*if (hc >= 2)*/
@@ -848,7 +848,7 @@ static int t1_3d_init_ctxno_zc(unsigned int f, int orient) {
 					n = 5;
 				} else if ( hc>=1 ) {
 					n = (d2xz==1) ? 6 : 7;
-				} 
+				}
 			} else if (v == 1) {
 				if (!d2xz) {
 					n = (!hc) ? 8 : 9;
@@ -861,10 +861,10 @@ static int t1_3d_init_ctxno_zc(unsigned int f, int orient) {
 				}
 			} else if (v == 2) {
 				n = 15;
-			} 
+			}
 			break;
 	}
-	
+
 	return (T1_3D_CTXNO_ZC + n);
 }
 
@@ -872,19 +872,19 @@ static int t1_3d_init_ctxno_sc(unsigned int f) {
 	int hc, vc, cc;
 	int n = 0;
 
-	hc = int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == T1_3D_SIG_E ) 
-					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W)) == T1_3D_SIG_W ) , 1) 
-		- int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == (T1_3D_SIG_E | T1_3D_SGN_E) ) 
+	hc = int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == T1_3D_SIG_E )
+					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W)) == T1_3D_SIG_W ) , 1)
+		- int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == (T1_3D_SIG_E | T1_3D_SGN_E) )
 					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W) ) == (T1_3D_SIG_W | T1_3D_SGN_W)), 1);
-	
-	vc = int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == T1_3D_SIG_N) 
-					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == T1_3D_SIG_S), 1) 
-		- int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == (T1_3D_SIG_N | T1_3D_SGN_N)) 
+
+	vc = int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == T1_3D_SIG_N)
+					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == T1_3D_SIG_S), 1)
+		- int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == (T1_3D_SIG_N | T1_3D_SGN_N))
 					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == (T1_3D_SIG_S | T1_3D_SGN_S)), 1);
-	
-	cc = int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == T1_3D_SIG_FC) 
-					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == T1_3D_SIG_BC), 1) 
-		- int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == (T1_3D_SIG_FC | T1_3D_SGN_F)) 
+
+	cc = int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == T1_3D_SIG_FC)
+					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == T1_3D_SIG_BC), 1)
+		- int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == (T1_3D_SIG_FC | T1_3D_SGN_F))
 					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == (T1_3D_SIG_BC | T1_3D_SGN_B)), 1);
 	if (hc < 0) {
 		hc = -hc;
@@ -893,7 +893,7 @@ static int t1_3d_init_ctxno_sc(unsigned int f) {
 	}
 
 	if (!hc) {
-		if (!vc) 
+		if (!vc)
 			n = (!cc) ? 0 : 1;
 		else if (vc == -1)
 			n = (!cc) ? 1 : ( (cc>0) ? 2 : 4);
@@ -914,7 +914,7 @@ static int t1_3d_init_ctxno_sc(unsigned int f) {
 		else if (vc == -1)
 			n = (!cc) ? 4 : ( (cc<0) ? 5 : 3);
 	}
-	
+
 	return (T1_3D_CTXNO_SC + n);
 }
 
@@ -924,31 +924,31 @@ static int t1_3d_init_ctxno_mag(unsigned int f, int f2) {
 		n = (f & (T1_3D_SIG_PRIM)) ? 1 : 0;
 	else
 		n = 2;
-	
+
 	return (T1_3D_CTXNO_MAG + n);
 }
 
 static int t1_3d_init_spb(unsigned int f) {
 	int hc, vc, cc;
 	int n = 0;
-	
-	hc = int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == T1_3D_SIG_E ) 
-					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W)) == T1_3D_SIG_W ) , 1) 
-		- int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == (T1_3D_SIG_E | T1_3D_SGN_E) ) 
+
+	hc = int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == T1_3D_SIG_E )
+					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W)) == T1_3D_SIG_W ) , 1)
+		- int_min( ( (f & (T1_3D_SIG_E | T1_3D_SGN_E)) == (T1_3D_SIG_E | T1_3D_SGN_E) )
 					+ ( (f & (T1_3D_SIG_W | T1_3D_SGN_W) ) == (T1_3D_SIG_W | T1_3D_SGN_W)), 1);
-	
-	vc = int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == T1_3D_SIG_N) 
-					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == T1_3D_SIG_S), 1) 
-		- int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == (T1_3D_SIG_N | T1_3D_SGN_N)) 
+
+	vc = int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == T1_3D_SIG_N)
+					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == T1_3D_SIG_S), 1)
+		- int_min(((f & (T1_3D_SIG_N | T1_3D_SGN_N)) == (T1_3D_SIG_N | T1_3D_SGN_N))
 					+ ((f & (T1_3D_SIG_S | T1_3D_SGN_S)) == (T1_3D_SIG_S | T1_3D_SGN_S)), 1);
-	
-	cc = int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == T1_3D_SIG_FC) 
-					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == T1_3D_SIG_BC), 1) 
-		- int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == (T1_3D_SIG_FC | T1_3D_SGN_F)) 
+
+	cc = int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == T1_3D_SIG_FC)
+					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == T1_3D_SIG_BC), 1)
+		- int_min(((f & (T1_3D_SIG_FC | T1_3D_SGN_F)) == (T1_3D_SIG_FC | T1_3D_SGN_F))
 					+ ((f & (T1_3D_SIG_BC | T1_3D_SGN_B)) == (T1_3D_SIG_BC | T1_3D_SGN_B)), 1);
-	
-	n = ((hc + vc + cc) < 0); 
-	
+
+	n = ((hc + vc + cc) < 0);
+
 	return n;
 }
 
@@ -976,8 +976,8 @@ static void t1_3d_init_luts(opj_t1_3d_t *t1) {
 		t = i / pow(2, T1_NMSEDEC_FRACBITS);
 		u = t;
 		v = t - 1.5;
-		t1->lut_nmsedec_sig[i] = 
-			int_max(0, 
+		t1->lut_nmsedec_sig[i] =
+			int_max(0,
 			(int) (floor((u * u - v * v) * pow(2, T1_NMSEDEC_FRACBITS) + 0.5) / pow(2, T1_NMSEDEC_FRACBITS) * 8192.0));
 		t1->lut_nmsedec_sig0[i] =
 			int_max(0,
@@ -1056,7 +1056,7 @@ void t1_3d_encode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							x = cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
 							z = cblk->z0 - band->z0;
-						} else if (band->bandno == 3) {		
+						} else if (band->bandno == 3) {
 							opj_tcd_resolution_t *pres = &tilec->resolutions[resno - 1];
 							x = pres->x1 - pres->x0 + cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
@@ -1076,7 +1076,7 @@ void t1_3d_encode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							x = cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
 							z = pres->z1 - pres->z0 + cblk->z0 - band->z0;
-						} else if (band->bandno == 7) {		
+						} else if (band->bandno == 7) {
 							opj_tcd_resolution_t *pres = &tilec->resolutions[resno - 1];
 							x = pres->x1 - pres->x0 + cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
@@ -1087,7 +1087,7 @@ void t1_3d_encode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							for (k = 0; k < cblk->z1 - cblk->z0; k++) {
 								for (j = 0; j < cblk->y1 - cblk->y0; j++) {
                                     for (i = 0; i < cblk->x1 - cblk->x0; i++) {
-                                        t1->data[k][j][i] = 
+                                        t1->data[k][j][i] =
 										tilec->data[(x + i) + (y + j) * (tilec->x1 - tilec->x0) + (z + k) * (tilec->x1 - tilec->x0) * (tilec->y1 - tilec->y0)] << T1_NMSEDEC_FRACBITS;
 									}
 								}
@@ -1104,11 +1104,11 @@ void t1_3d_encode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							}
 						}
 						orient = band->bandno;	/* FIXME */
-						for (i = 0; i < 3; i++) 
+						for (i = 0; i < 3; i++)
 							level[i] = tilec->numresolution[i] - 1 - resno;
 
 						t1_3d_encode_cblk(t1, cblk, orient, compno, level, tcp->tccps[compno].dwtid, band->stepsize, tcp->tccps[compno].cblksty, tile->numcomps, tile);
-							
+
 					} /* cblkno */
 				} /* precno */
 			} /* bandno */
@@ -1118,7 +1118,7 @@ void t1_3d_encode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 
 void t1_3d_decode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 	int compno, resno, bandno, precno, cblkno;
-	
+
 	for (compno = 0; compno < tile->numcomps; compno++) {
 		opj_tcd_tilecomp_t *tilec = &tile->comps[compno];
 
@@ -1154,7 +1154,7 @@ void t1_3d_decode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							x = cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
 							z = cblk->z0 - band->z0;
-						} else if (band->bandno == 3) {		
+						} else if (band->bandno == 3) {
 							opj_tcd_resolution_t *pres = &tilec->resolutions[resno - 1];
 							x = pres->x1 - pres->x0 + cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
@@ -1174,13 +1174,13 @@ void t1_3d_decode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 							x = cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
 							z = pres->z1 - pres->z0 + cblk->z0 - band->z0;
-						} else if (band->bandno == 7) {		
+						} else if (band->bandno == 7) {
 							opj_tcd_resolution_t *pres = &tilec->resolutions[resno - 1];
 							x = pres->x1 - pres->x0 + cblk->x0 - band->x0;
 							y = pres->y1 - pres->y0 + cblk->y0 - band->y0;
 							z = pres->z1 - pres->z0 + cblk->z0 - band->z0;
 						}
-					
+
 						if (tcp->tccps[compno].roishift) {
 							int thresh, val, mag;
 							thresh = 1 << tcp->tccps[compno].roishift;
@@ -1197,7 +1197,7 @@ void t1_3d_decode_cblks(opj_t1_3d_t *t1, opj_tcd_tile_t *tile, opj_tcp_t *tcp) {
 								}
 							}
 						}
-						
+
 						if (tcp->tccps[compno].reversible == 1) {
 							for (k = 0; k < cblk->z1 - cblk->z0; k++) {
 								for (j = 0; j < cblk->y1 - cblk->y0; j++) {

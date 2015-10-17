@@ -44,10 +44,10 @@ msgtype_t identify_clientmsg( SOCKET connected_socket)
     "TID request", "CID request", "CID destroy", "SIZ request", "JP2 save",
     "QUIT"};
   int i;
-  
+
   receive_size = receive_line( connected_socket, buf);
 
-  if( receive_size == 0){ 
+  if( receive_size == 0){
     fprintf( stderr, "Error to receive the header of client message\n");
     return MSGERROR;
   }
@@ -58,7 +58,7 @@ msgtype_t identify_clientmsg( SOCKET connected_socket)
       return i;
     }
   }
-  
+
   fprintf( stderr, "Cannot identify client message type %s\n", buf);
   return MSGERROR;
 }
@@ -70,23 +70,23 @@ Byte_t * receive_JPIPstream( SOCKET connected_socket, char **target, char **tid,
   int idatalen;
   OPJ_SIZE_T linelen, datalen;
   Byte_t *jpipstream;
-  
+
   *target = *cid = *tid = NULL;
-  
+
   if((linelen = receive_line( connected_socket, buf)) == 0)
     return NULL;
   if( strncmp( versionstring, buf, strlen(versionstring))!=0){
     fprintf( stderr, "Wrong format\n");
     return NULL;
   }
-  
+
   if((linelen = receive_line( connected_socket, buf)) == 0)
     return NULL;
 
-  if( strstr( buf, "jp2")){ 
+  if( strstr( buf, "jp2")){
     /* register cid option*/
     *target = strdup( buf);
-    
+
     if((linelen = receive_line( connected_socket, buf)) == 0)
       return NULL;
     if( strcmp( buf, "0") != 0)
@@ -96,7 +96,7 @@ Byte_t * receive_JPIPstream( SOCKET connected_socket, char **target, char **tid,
       return NULL;
     if( strcmp( buf, "0") != 0)
       *cid = strdup( buf);
-    
+
     if((linelen = receive_line( connected_socket, buf)) == 0)
       return NULL;
   }
@@ -117,14 +117,14 @@ Byte_t * receive_JPIPstream( SOCKET connected_socket, char **target, char **tid,
     *streamlen = datalen -3;
   else
     *streamlen = datalen;
-  
+
   return jpipstream;
 }
 
 void send_XMLstream( SOCKET connected_socket, Byte_t *xmlstream, OPJ_SIZE_T length)
 {
   Byte_t header[5];
-  
+
   header[0] = 'X';
   header[1] = 'M';
   header[2] = 'L';
@@ -161,12 +161,12 @@ void send_IDstream(  SOCKET connected_socket, const char *id, OPJ_SIZE_T idlen, 
 }
 
 void send_PNMstream( SOCKET connected_socket, Byte_t *pnmstream, unsigned int width, unsigned int height, unsigned int numofcomp, Byte_t maxval)
-{ 
+{
   OPJ_SIZE_T pnmlen = 0;
   Byte_t header[7];
 
   pnmlen = width*height*numofcomp;
-  
+
   header[0] = 'P';
   header[1] = numofcomp==3 ? 6:5;
   header[2] = (width >> 8) & 0xff;
@@ -182,7 +182,7 @@ void send_PNMstream( SOCKET connected_socket, Byte_t *pnmstream, unsigned int wi
 void send_SIZstream( SOCKET connected_socket, unsigned int width, unsigned int height)
 {
   Byte_t response[9];
-  
+
   response[0] = 'S';
   response[1] = 'I';
   response[2] = 'Z';

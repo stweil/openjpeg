@@ -50,7 +50,7 @@ placeholderlist_param_t * gene_placeholderlist(void)
   placeholderlist_param_t *list;
 
   list = (placeholderlist_param_t *)malloc( sizeof(placeholderlist_param_t));
-  
+
   list->first = NULL;
   list->last  = NULL;
 
@@ -65,7 +65,7 @@ void delete_placeholderlist( placeholderlist_param_t **list)
     return;
 
   ptr = (*list)->first;
-  
+
   while( ptr){
     next=ptr->next;
     delete_placeholder( &ptr);
@@ -79,7 +79,7 @@ placeholder_param_t * gene_placeholder( box_param_t *box, Byte8_t origID)
   placeholder_param_t *placeholder;
 
   placeholder = (placeholder_param_t *)malloc( sizeof(placeholder_param_t));
-  
+
   strncpy( placeholder->TBox, "phld", 4);
   placeholder->Flags = 1; /* only the access to the original contents of this box, for now */
   placeholder->OrigID = origID;
@@ -117,7 +117,7 @@ void print_placeholder( placeholder_param_t *phld)
   fprintf( logstream, "\t Flags: %#x %#x\n", phld->Flags, phld->Flags);
   fprintf( logstream, "\t OrigID: %" PRId64 "\n", phld->OrigID);
   fprintf( logstream, "\t OrigBH: ");
-  
+
   for( i=0; i< phld->OrigBHlen; i++)
     fprintf( logstream, "%02x ", phld->OrigBH[i]);
   fprintf( logstream, "\t");
@@ -133,7 +133,7 @@ void print_allplaceholder( placeholderlist_param_t *list)
 
   if( !list)
     return;
-  
+
   fprintf( logstream, "all placeholder info: \n");
   ptr = list->first;
   while( ptr != NULL){

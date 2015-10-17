@@ -55,7 +55,7 @@ MACOSX
 The same building procedures as above work for MACOSX.
 The xcode project file can also be used.
 
-If it does not work, try adding the following flag to the cmake command : 
+If it does not work, try adding the following flag to the cmake command :
   '-DCMAKE_OSX_ARCHITECTURES:STRING=i386'
 
 WINDOWS

@@ -60,12 +60,12 @@ int opj_write_thix( int coff, opj_codestream_info_t cstr_info, opj_stream_privat
     opj_stream_write_data(cio,l_data_header,4,p_manager);
 
     opj_write_manf( i, cstr_info.tw*cstr_info.th, box, cio, p_manager);
-    
+
     for (tileno = 0; tileno < cstr_info.tw*cstr_info.th; tileno++){
       box[tileno].length = (OPJ_UINT32)opj_write_tilemhix( coff, cstr_info, tileno, cio,p_manager);
       box[tileno].type = JPIP_MHIX;
     }
- 
+
     len = (OPJ_UINT32)(opj_stream_tell(cio)-lenp);
     opj_stream_seek(cio, lenp, p_manager);
     opj_write_bytes(l_data_header,len,4); /* L              */
@@ -79,7 +79,7 @@ int opj_write_thix( int coff, opj_codestream_info_t cstr_info, opj_stream_privat
   return (int)len;
 }
 
-/* 
+/*
  * Write tile-part headers mhix box
  *
  * @param[in] coff      offset of j2k codestream
@@ -121,7 +121,7 @@ int opj_write_tilemhix( int coff, opj_codestream_info_t cstr_info, int tileno, o
     opj_write_bytes( l_data_header, (OPJ_UINT32)marker[i].len, 2);
     opj_stream_write_data(cio,l_data_header,2,p_manager);
   }
-     
+
   /*  free( marker);*/
 
   len = (OPJ_UINT32)(opj_stream_tell(cio)-lenp);

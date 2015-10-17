@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -87,10 +87,10 @@ static void opj_applyLUT8u_8u32s_C1R(
 	OPJ_UINT32 width, OPJ_UINT32 height)
 {
 	OPJ_UINT32 y;
-	
+
 	for (y = height; y != 0U; --y) {
 		OPJ_UINT32 x;
-		
+
 		for(x = 0; x < width; x++)
 		{
 			pDst[x] = (OPJ_INT32)pLUT[pSrc[x]];
@@ -113,10 +113,10 @@ static void opj_applyLUT8u_8u32s_C1P3R(
 	OPJ_UINT8 const* pLUT_R = pLUT[0];
 	OPJ_UINT8 const* pLUT_G = pLUT[1];
 	OPJ_UINT8 const* pLUT_B = pLUT[2];
-	
+
 	for (y = height; y != 0U; --y) {
 		OPJ_UINT32 x;
-		
+
 		for(x = 0; x < width; x++)
 		{
 			OPJ_UINT8 idx = pSrc[x];
@@ -140,7 +140,7 @@ static void bmp24toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_image_t*
 
 	width  = image->comps[0].w;
 	height = image->comps[0].h;
-	
+
 	index = 0;
 	pSrc = pData + (height - 1U) * stride;
 	for(y = 0; y < height; y++)
@@ -159,9 +159,9 @@ static void bmp24toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_image_t*
 static void bmp_mask_get_shift_and_prec(OPJ_UINT32 mask, OPJ_UINT32* shift, OPJ_UINT32* prec)
 {
 	OPJ_UINT32 l_shift, l_prec;
-	
+
 	l_shift = l_prec = 0U;
-	
+
 	if (mask != 0U) {
 		while ((mask & 1U) == 0U) {
 			mask >>= 1;
@@ -186,17 +186,17 @@ static void bmpmask32toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 	OPJ_UINT32 greenShift, greenPrec;
 	OPJ_UINT32 blueShift,  bluePrec;
 	OPJ_UINT32 alphaShift, alphaPrec;
-	
+
 	width  = image->comps[0].w;
 	height = image->comps[0].h;
-	
+
 	hasAlpha = image->numcomps > 3U;
-	
+
 	bmp_mask_get_shift_and_prec(redMask,   &redShift,   &redPrec);
 	bmp_mask_get_shift_and_prec(greenMask, &greenShift, &greenPrec);
 	bmp_mask_get_shift_and_prec(blueMask,  &blueShift,  &bluePrec);
 	bmp_mask_get_shift_and_prec(alphaMask, &alphaShift, &alphaPrec);
-	
+
 	image->comps[0].bpp = redPrec;
 	image->comps[0].prec = redPrec;
 	image->comps[1].bpp = greenPrec;
@@ -207,7 +207,7 @@ static void bmpmask32toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 		image->comps[3].bpp = alphaPrec;
 		image->comps[3].prec = alphaPrec;
 	}
-	
+
 	index = 0;
 	pSrc = pData + (height - 1U) * stride;
 	for(y = 0; y < height; y++)
@@ -215,12 +215,12 @@ static void bmpmask32toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 		for(x = 0; x < width; x++)
 		{
 			OPJ_UINT32 value = 0U;
-			
+
 			value |= ((OPJ_UINT32)pSrc[4*x+0]) <<  0;
 			value |= ((OPJ_UINT32)pSrc[4*x+1]) <<  8;
 			value |= ((OPJ_UINT32)pSrc[4*x+2]) << 16;
 			value |= ((OPJ_UINT32)pSrc[4*x+3]) << 24;
-			
+
 			image->comps[0].data[index] = (OPJ_INT32)((value & redMask)   >> redShift);   /* R */
 			image->comps[1].data[index] = (OPJ_INT32)((value & greenMask) >> greenShift); /* G */
 			image->comps[2].data[index] = (OPJ_INT32)((value & blueMask)  >> blueShift);  /* B */
@@ -244,17 +244,17 @@ static void bmpmask16toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 	OPJ_UINT32 greenShift, greenPrec;
 	OPJ_UINT32 blueShift,  bluePrec;
 	OPJ_UINT32 alphaShift, alphaPrec;
-	
+
 	width  = image->comps[0].w;
 	height = image->comps[0].h;
-	
+
 	hasAlpha = image->numcomps > 3U;
-	
+
 	bmp_mask_get_shift_and_prec(redMask,   &redShift,   &redPrec);
 	bmp_mask_get_shift_and_prec(greenMask, &greenShift, &greenPrec);
 	bmp_mask_get_shift_and_prec(blueMask,  &blueShift,  &bluePrec);
 	bmp_mask_get_shift_and_prec(alphaMask, &alphaShift, &alphaPrec);
-	
+
 	image->comps[0].bpp = redPrec;
 	image->comps[0].prec = redPrec;
 	image->comps[1].bpp = greenPrec;
@@ -265,7 +265,7 @@ static void bmpmask16toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 		image->comps[3].bpp = alphaPrec;
 		image->comps[3].prec = alphaPrec;
 	}
-	
+
 	index = 0;
 	pSrc = pData + (height - 1U) * stride;
 	for(y = 0; y < height; y++)
@@ -273,10 +273,10 @@ static void bmpmask16toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_imag
 		for(x = 0; x < width; x++)
 		{
 			OPJ_UINT32 value = 0U;
-			
+
 			value |= ((OPJ_UINT32)pSrc[2*x+0]) <<  0;
 			value |= ((OPJ_UINT32)pSrc[2*x+1]) <<  8;
-			
+
 			image->comps[0].data[index] = (OPJ_INT32)((value & redMask)   >> redShift);   /* R */
 			image->comps[1].data[index] = (OPJ_INT32)((value & greenMask) >> greenShift); /* G */
 			image->comps[2].data[index] = (OPJ_INT32)((value & blueMask)  >> blueShift);  /* B */
@@ -293,10 +293,10 @@ static opj_image_t* bmp8toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_i
 {
 	OPJ_UINT32 width, height;
 	const OPJ_UINT8 *pSrc = NULL;
-	
+
 	width  = image->comps[0].w;
 	height = image->comps[0].h;
-	
+
 	pSrc = pData + (height - 1U) * stride;
 	if (image->numcomps == 1U) {
 		opj_applyLUT8u_8u32s_C1R(pSrc, -(OPJ_INT32)stride, image->comps[0].data, (OPJ_INT32)width, pLUT[0], width, height);
@@ -304,7 +304,7 @@ static opj_image_t* bmp8toimage(const OPJ_UINT8* pData, OPJ_UINT32 stride, opj_i
 	else {
 		OPJ_INT32* pDst[3];
 		OPJ_INT32  pDstStride[3];
-		
+
 		pDst[0] = image->comps[0].data; pDst[1] = image->comps[1].data; pDst[2] = image->comps[2].data;
 		pDstStride[0] = (OPJ_INT32)width; pDstStride[1] = (OPJ_INT32)width; pDstStride[2] = (OPJ_INT32)width;
 		opj_applyLUT8u_8u32s_C1P3R(pSrc, -(OPJ_INT32)stride, pDst, pDstStride, pLUT, width, height);
@@ -316,25 +316,25 @@ static OPJ_BOOL bmp_read_file_header(FILE* IN, OPJ_BITMAPFILEHEADER* header)
 {
 	header->bfType  = (OPJ_UINT16)getc(IN);
 	header->bfType |= (OPJ_UINT16)((OPJ_UINT32)getc(IN) << 8);
-	
+
 	if (header->bfType != 19778) {
 		fprintf(stderr,"Error, not a BMP file!\n");
 		return OPJ_FALSE;
 	}
-	
+
 	/* FILE HEADER */
 	/* ------------- */
 	header->bfSize  = (OPJ_UINT32)getc(IN);
 	header->bfSize |= (OPJ_UINT32)getc(IN) << 8;
 	header->bfSize |= (OPJ_UINT32)getc(IN) << 16;
 	header->bfSize |= (OPJ_UINT32)getc(IN) << 24;
-	
+
 	header->bfReserved1  = (OPJ_UINT16)getc(IN);
 	header->bfReserved1 |= (OPJ_UINT16)((OPJ_UINT32)getc(IN) << 8);
-	
+
 	header->bfReserved2  = (OPJ_UINT16)getc(IN);
 	header->bfReserved2 |= (OPJ_UINT16)((OPJ_UINT32)getc(IN) << 8);
-	
+
 	header->bfOffBits  = (OPJ_UINT32)getc(IN);
 	header->bfOffBits |= (OPJ_UINT32)getc(IN) << 8;
 	header->bfOffBits |= (OPJ_UINT32)getc(IN) << 16;
@@ -350,7 +350,7 @@ static OPJ_BOOL bmp_read_info_header(FILE* IN, OPJ_BITMAPINFOHEADER* header)
 	header->biSize |= (OPJ_UINT32)getc(IN) << 8;
 	header->biSize |= (OPJ_UINT32)getc(IN) << 16;
 	header->biSize |= (OPJ_UINT32)getc(IN) << 24;
-	
+
 	switch (header->biSize) {
 		case 12U:  /* BITMAPCOREHEADER */
 		case 40U:  /* BITMAPINFOHEADER */
@@ -363,120 +363,120 @@ static OPJ_BOOL bmp_read_info_header(FILE* IN, OPJ_BITMAPINFOHEADER* header)
 			fprintf(stderr,"Error, unknown BMP header size %d\n", header->biSize);
 			return OPJ_FALSE;
 	}
-	
+
 	header->biWidth  = (OPJ_UINT32)getc(IN);
 	header->biWidth |= (OPJ_UINT32)getc(IN) << 8;
 	header->biWidth |= (OPJ_UINT32)getc(IN) << 16;
 	header->biWidth |= (OPJ_UINT32)getc(IN) << 24;
-	
+
 	header->biHeight  = (OPJ_UINT32)getc(IN);
 	header->biHeight |= (OPJ_UINT32)getc(IN) << 8;
 	header->biHeight |= (OPJ_UINT32)getc(IN) << 16;
 	header->biHeight |= (OPJ_UINT32)getc(IN) << 24;
-	
+
 	header->biPlanes  = (OPJ_UINT16)getc(IN);
 	header->biPlanes |= (OPJ_UINT16)((OPJ_UINT32)getc(IN) << 8);
-	
+
 	header->biBitCount  = (OPJ_UINT16)getc(IN);
 	header->biBitCount |= (OPJ_UINT16)((OPJ_UINT32)getc(IN) << 8);
-	
+
 	if(header->biSize >= 40U) {
 		header->biCompression  = (OPJ_UINT32)getc(IN);
 		header->biCompression |= (OPJ_UINT32)getc(IN) << 8;
 		header->biCompression |= (OPJ_UINT32)getc(IN) << 16;
 		header->biCompression |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biSizeImage  = (OPJ_UINT32)getc(IN);
 		header->biSizeImage |= (OPJ_UINT32)getc(IN) << 8;
 		header->biSizeImage |= (OPJ_UINT32)getc(IN) << 16;
 		header->biSizeImage |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biXpelsPerMeter  = (OPJ_UINT32)getc(IN);
 		header->biXpelsPerMeter |= (OPJ_UINT32)getc(IN) << 8;
 		header->biXpelsPerMeter |= (OPJ_UINT32)getc(IN) << 16;
 		header->biXpelsPerMeter |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biYpelsPerMeter  = (OPJ_UINT32)getc(IN);
 		header->biYpelsPerMeter |= (OPJ_UINT32)getc(IN) << 8;
 		header->biYpelsPerMeter |= (OPJ_UINT32)getc(IN) << 16;
 		header->biYpelsPerMeter |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biClrUsed  = (OPJ_UINT32)getc(IN);
 		header->biClrUsed |= (OPJ_UINT32)getc(IN) << 8;
 		header->biClrUsed |= (OPJ_UINT32)getc(IN) << 16;
 		header->biClrUsed |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biClrImportant  = (OPJ_UINT32)getc(IN);
 		header->biClrImportant |= (OPJ_UINT32)getc(IN) << 8;
 		header->biClrImportant |= (OPJ_UINT32)getc(IN) << 16;
 		header->biClrImportant |= (OPJ_UINT32)getc(IN) << 24;
 	}
-	
+
 	if(header->biSize >= 56U) {
 		header->biRedMask  = (OPJ_UINT32)getc(IN);
 		header->biRedMask |= (OPJ_UINT32)getc(IN) << 8;
 		header->biRedMask |= (OPJ_UINT32)getc(IN) << 16;
 		header->biRedMask |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biGreenMask  = (OPJ_UINT32)getc(IN);
 		header->biGreenMask |= (OPJ_UINT32)getc(IN) << 8;
 		header->biGreenMask |= (OPJ_UINT32)getc(IN) << 16;
 		header->biGreenMask |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biBlueMask  = (OPJ_UINT32)getc(IN);
 		header->biBlueMask |= (OPJ_UINT32)getc(IN) << 8;
 		header->biBlueMask |= (OPJ_UINT32)getc(IN) << 16;
 		header->biBlueMask |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biAlphaMask  = (OPJ_UINT32)getc(IN);
 		header->biAlphaMask |= (OPJ_UINT32)getc(IN) << 8;
 		header->biAlphaMask |= (OPJ_UINT32)getc(IN) << 16;
 		header->biAlphaMask |= (OPJ_UINT32)getc(IN) << 24;
 	}
-	
+
 	if(header->biSize >= 108U) {
 		header->biColorSpaceType  = (OPJ_UINT32)getc(IN);
 		header->biColorSpaceType |= (OPJ_UINT32)getc(IN) << 8;
 		header->biColorSpaceType |= (OPJ_UINT32)getc(IN) << 16;
 		header->biColorSpaceType |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		if (fread(&(header->biColorSpaceEP), 1U, sizeof(header->biColorSpaceEP), IN) != sizeof(header->biColorSpaceEP)) {
 			fprintf(stderr,"Error, can't  read BMP header\n");
 			return OPJ_FALSE;
 		}
-		
+
 		header->biRedGamma  = (OPJ_UINT32)getc(IN);
 		header->biRedGamma |= (OPJ_UINT32)getc(IN) << 8;
 		header->biRedGamma |= (OPJ_UINT32)getc(IN) << 16;
 		header->biRedGamma |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biGreenGamma  = (OPJ_UINT32)getc(IN);
 		header->biGreenGamma |= (OPJ_UINT32)getc(IN) << 8;
 		header->biGreenGamma |= (OPJ_UINT32)getc(IN) << 16;
 		header->biGreenGamma |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biBlueGamma  = (OPJ_UINT32)getc(IN);
 		header->biBlueGamma |= (OPJ_UINT32)getc(IN) << 8;
 		header->biBlueGamma |= (OPJ_UINT32)getc(IN) << 16;
 		header->biBlueGamma |= (OPJ_UINT32)getc(IN) << 24;
 	}
-	
+
 	if(header->biSize >= 124U) {
 		header->biIntent  = (OPJ_UINT32)getc(IN);
 		header->biIntent |= (OPJ_UINT32)getc(IN) << 8;
 		header->biIntent |= (OPJ_UINT32)getc(IN) << 16;
 		header->biIntent |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biIccProfileData  = (OPJ_UINT32)getc(IN);
 		header->biIccProfileData |= (OPJ_UINT32)getc(IN) << 8;
 		header->biIccProfileData |= (OPJ_UINT32)getc(IN) << 16;
 		header->biIccProfileData |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biIccProfileSize  = (OPJ_UINT32)getc(IN);
 		header->biIccProfileSize |= (OPJ_UINT32)getc(IN) << 8;
 		header->biIccProfileSize |= (OPJ_UINT32)getc(IN) << 16;
 		header->biIccProfileSize |= (OPJ_UINT32)getc(IN) << 24;
-		
+
 		header->biReserved  = (OPJ_UINT32)getc(IN);
 		header->biReserved |= (OPJ_UINT32)getc(IN) << 8;
 		header->biReserved |= (OPJ_UINT32)getc(IN) << 16;
@@ -488,7 +488,7 @@ static OPJ_BOOL bmp_read_info_header(FILE* IN, OPJ_BITMAPINFOHEADER* header)
 static OPJ_BOOL bmp_read_raw_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride, OPJ_UINT32 width, OPJ_UINT32 height)
 {
 	OPJ_ARG_NOT_USED(width);
-	
+
 	if ( fread(pData, sizeof(OPJ_UINT8), stride * height, IN) != (stride * height) )
 	{
 		fprintf(stderr, "\nError: fread return a number of element different from the expected.\n");
@@ -502,19 +502,19 @@ static OPJ_BOOL bmp_read_rle8_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride
 	OPJ_UINT32 x, y;
 	OPJ_UINT8 *pix;
 	const OPJ_UINT8 *beyond;
-	
+
 	beyond = pData + stride * height;
 	pix = pData;
-	
+
 	x = y = 0U;
 	while (y < height)
 	{
 		int c = getc(IN);
-		
+
 		if (c) {
 			int j;
 			OPJ_UINT8 c1 = (OPJ_UINT8)getc(IN);
-			
+
 			for (j = 0; (j < c) && (x < width) && ((OPJ_SIZE_T)pix < (OPJ_SIZE_T)beyond); j++, x++, pix++) {
 				*pix = c1;
 			}
@@ -558,7 +558,7 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride
 	OPJ_UINT32 x, y;
 	OPJ_UINT8 *pix;
 	const OPJ_UINT8 *beyond;
-	
+
 	beyond = pData + stride * height;
 	pix = pData;
 	x = y = 0U;
@@ -566,11 +566,11 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride
 	{
 		int c = getc(IN);
 		if(c == EOF) break;
-		
+
 		if(c) {/* encoded mode */
 			int j;
 			OPJ_UINT8 c1 = (OPJ_UINT8)getc(IN);
-		
+
 			for (j = 0; (j < c) && (x < width) && ((OPJ_SIZE_T)pix < (OPJ_SIZE_T)beyond); j++, x++, pix++) {
 				*pix = (OPJ_UINT8)((j&1) ? (c1 & 0x0fU) : ((c1>>4)&0x0fU));
 			}
@@ -578,7 +578,7 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride
 		else { /* absolute mode */
 			c = getc(IN);
 			if(c == EOF) break;
-		
+
 			if(c == 0x00) { /* EOL */
 				x = 0;  y++;  pix = pData + y * stride;
 			}
@@ -593,7 +593,7 @@ static OPJ_BOOL bmp_read_rle4_data(FILE* IN, OPJ_UINT8* pData, OPJ_UINT32 stride
 			else { /* 03 .. 255 : absolute mode */
 				int j;
 				OPJ_UINT8 c1 = 0U;
-				
+
 				for (j = 0; (j < c) && (x < width) && ((OPJ_SIZE_T)pix < (OPJ_SIZE_T)beyond); j++, x++, pix++) {
 					if((j&1) == 0) {
 							c1 = (OPJ_UINT8)getc(IN);
@@ -622,9 +622,9 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 	OPJ_BOOL l_result = OPJ_FALSE;
 	OPJ_UINT8* pData = NULL;
 	OPJ_UINT32 stride;
-	
+
 	pLUT[0] = lut_R; pLUT[1] = lut_G; pLUT[2] = lut_B;
-	
+
 	IN = fopen(filename, "rb");
 	if (!IN)
 	{
@@ -640,14 +640,14 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 		fclose(IN);
 		return NULL;
 	}
-	
+
 	/* Load palette */
 	if (Info_h.biBitCount <= 8U)
 	{
 		memset(&lut_R[0], 0, sizeof(lut_R));
 		memset(&lut_G[0], 0, sizeof(lut_G));
 		memset(&lut_B[0], 0, sizeof(lut_B));
-		
+
 		palette_len = Info_h.biClrUsed;
 		if((palette_len == 0U) && (Info_h.biBitCount <= 8U)) {
 			palette_len = (1U << Info_h.biBitCount);
@@ -674,7 +674,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 			numcmpts++;
 		}
 	}
-	
+
 	stride = ((Info_h.biWidth * Info_h.biBitCount + 31U) / 32U) * 4U; /* rows are aligned on 32bits */
 	if (Info_h.biBitCount == 4 && Info_h.biCompression == 2) { /* RLE 4 gets decoded as 8 bits data for now... */
 		stride = ((Info_h.biWidth * 8U + 31U) / 32U) * 4U;
@@ -687,7 +687,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 	/* Place the cursor at the beginning of the image information */
 	fseek(IN, 0, SEEK_SET);
 	fseek(IN, (long)File_h.bfOffBits, SEEK_SET);
-	
+
 	switch (Info_h.biCompression) {
 		case 0:
 		case 3:
@@ -712,7 +712,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 		fclose(IN);
 		return NULL;
 	}
-	
+
 	/* create the image */
 	memset(&cmptparm[0], 0, sizeof(cmptparm));
 	for(i = 0; i < 4U; i++)
@@ -735,13 +735,13 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 	if (numcmpts == 4U) {
 		image->comps[3].alpha = 1;
 	}
-	
+
 	/* set image offset and reference grid */
 	image->x0 = (OPJ_UINT32)parameters->image_offset_x0;
 	image->y0 = (OPJ_UINT32)parameters->image_offset_y0;
 	image->x1 =	image->x0 + (Info_h.biWidth  - 1U) * (OPJ_UINT32)parameters->subsampling_dx + 1U;
 	image->y1 = image->y0 + (Info_h.biHeight - 1U) * (OPJ_UINT32)parameters->subsampling_dy + 1U;
-	
+
 	/* Read the data */
 	if (Info_h.biBitCount == 24 && Info_h.biCompression == 0) { /*RGB */
 		bmp24toimage(pData, stride, image);

@@ -43,9 +43,9 @@ void _cmsAllocInterpPluginChunk(struct _cmsContext_struct* ctx, const struct _cm
     _cmsAssert(ctx != NULL);
 
     if (src != NULL) {
-        from = src ->chunks[InterpPlugin];       
+        from = src ->chunks[InterpPlugin];
     }
-    else { 
+    else {
         static _cmsInterpPluginChunkType InterpPluginChunk = { NULL };
 
         from = &InterpPluginChunk;
@@ -76,7 +76,7 @@ cmsBool  _cmsRegisterInterpPlugin(cmsContext ContextID, cmsPluginBase* Data)
 
 // Set the interpolation method
 cmsBool _cmsSetInterpolationRoutine(cmsContext ContextID, cmsInterpParams* p)
-{      
+{
     _cmsInterpPluginChunkType* ptr = (_cmsInterpPluginChunkType*) _cmsContextGetClientChunk(ContextID, InterpPlugin);
 
     p ->Interpolation.Lerp16 = NULL;
@@ -84,7 +84,7 @@ cmsBool _cmsSetInterpolationRoutine(cmsContext ContextID, cmsInterpParams* p)
    // Invoke factory, possibly in the Plug-in
     if (ptr ->Interpolators != NULL)
         p ->Interpolation = ptr->Interpolators(p -> nInputs, p ->nOutputs, p ->dwFlags);
-    
+
     // If unsupported by the plug-in, go for the LittleCMS default.
     // If happens only if an extern plug-in is being used
     if (p ->Interpolation.Lerp16 == NULL)
@@ -213,7 +213,7 @@ void LinLerp1D(register const cmsUInt16Number Value[],
 }
 
 // To prevent out of bounds indexing
-cmsINLINE cmsFloat32Number fclamp(cmsFloat32Number v) 
+cmsINLINE cmsFloat32Number fclamp(cmsFloat32Number v)
 {
     return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
 }

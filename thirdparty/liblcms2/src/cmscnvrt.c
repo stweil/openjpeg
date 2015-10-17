@@ -112,7 +112,7 @@ _cmsIntentsPluginChunkType _cmsIntentsPluginChunk = { NULL };
 
 // Duplicates the zone of memory used by the plug-in in the new context
 static
-void DupPluginIntentsList(struct _cmsContext_struct* ctx, 
+void DupPluginIntentsList(struct _cmsContext_struct* ctx,
                                                const struct _cmsContext_struct* src)
 {
    _cmsIntentsPluginChunkType newHead = { NULL };
@@ -126,15 +126,15 @@ void DupPluginIntentsList(struct _cmsContext_struct* ctx,
         entry = entry ->Next) {
 
             cmsIntentsList *newEntry = ( cmsIntentsList *) _cmsSubAllocDup(ctx ->MemPool, entry, sizeof(cmsIntentsList));
-   
-            if (newEntry == NULL) 
+
+            if (newEntry == NULL)
                 return;
 
             // We want to keep the linked list order, so this is a little bit tricky
             newEntry -> Next = NULL;
             if (Anterior)
                 Anterior -> Next = newEntry;
-     
+
             Anterior = newEntry;
 
             if (newHead.Intents == NULL)
@@ -144,7 +144,7 @@ void DupPluginIntentsList(struct _cmsContext_struct* ctx,
   ctx ->chunks[IntentPlugin] = _cmsSubAllocDup(ctx->MemPool, &newHead, sizeof(_cmsIntentsPluginChunkType));
 }
 
-void  _cmsAllocIntentsPluginChunk(struct _cmsContext_struct* ctx, 
+void  _cmsAllocIntentsPluginChunk(struct _cmsContext_struct* ctx,
                                          const struct _cmsContext_struct* src)
 {
     if (src != NULL) {

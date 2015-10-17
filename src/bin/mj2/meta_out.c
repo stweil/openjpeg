@@ -4,7 +4,7 @@
 /* Contributed to Open JPEG by Glenn Pearson, contract software developer, U.S. National Library of Medicine.
 
 The base code in this file was developed by the author as part of a video archiving
-project for the U.S. National Library of Medicine, Bethesda, MD. 
+project for the U.S. National Library of Medicine, Bethesda, MD.
 It is the policy of NLM (and U.S. government) to not assert copyright.
 
 A non-exclusive copy of this code has been contributed to the Open JPEG project.
@@ -97,10 +97,10 @@ int xml_write_struct(FILE* file, FILE *xmlout, opj_mj2_t * movie, unsigned int s
 	/* stringDTD is known to start with "SYSTEM " or "PUBLIC " */
 	/* typical: SYSTEM mj2_to_metadata.dtd */
 	stringDTD[6] = '\0'; /* Break into two strings at space, so quotes can be inserted. */
-    fprintf(xmlout,"<!DOCTYPE MJ2_File %s \"%s\">\n", stringDTD, stringDTD+7); 
+    fprintf(xmlout,"<!DOCTYPE MJ2_File %s \"%s\">\n", stringDTD, stringDTD+7);
 	stringDTD[6] = ' '; /* restore for sake of debugger or memory allocator */
   } else
-    fprintf(xmlout,"<?xml version=\"1.0\" standalone=\"yes\"?>\n");    
+    fprintf(xmlout,"<?xml version=\"1.0\" standalone=\"yes\"?>\n");
 
   fprintf(xmlout, "<MJ2_File>\n");
   xml_write_overall_header(file, xmlout, movie, sampleframe, event_mgr);
@@ -157,7 +157,7 @@ int xml_write_moov(FILE *file, FILE *xmlout, opj_mj2_t * movie, unsigned int sam
   /* There's still a time zone offset problem not solved... but spec is ambigous as to whether stored time
      should be local or UTC */
   if(derived) {
-    fprintf(xmlout, "        <AsLocalTime>"); 
+    fprintf(xmlout, "        <AsLocalTime>");
                              xml_time_out(xmlout, movie->creation_time - 2082844800);
                                                      fprintf(xmlout,"</AsLocalTime>\n");
   }
@@ -166,7 +166,7 @@ int xml_write_moov(FILE *file, FILE *xmlout, opj_mj2_t * movie, unsigned int sam
   if(raw)
     fprintf(xmlout, "        <InSeconds>%u</InSeconds>\n", movie->modification_time);
   if(derived) {
-    fprintf(xmlout, "        <AsLocalTime>"); 
+    fprintf(xmlout, "        <AsLocalTime>");
                              xml_time_out(xmlout, movie->modification_time - 2082844800);
                                                      fprintf(xmlout,"</AsLocalTime>\n");
   }
@@ -216,18 +216,18 @@ int xml_write_moov(FILE *file, FILE *xmlout, opj_mj2_t * movie, unsigned int sam
     fprintf(xmlout, "      <!-- Stored as Fixed Point Hex: all are binary 16.16, except u,v,w are 2.30 -->\n");
     fprintf(xmlout, "      <!-- Unity = 0x00010000,0,0,0,0x00010000,0,0,0,0x40000000 -->\n");
   }
-  fprintf(xmlout,   "        <TMa>0x%08x</TMa>\n", movie->trans_matrix[0]);    
-  fprintf(xmlout,   "        <TMb>0x%08x</TMb>\n", movie->trans_matrix[1]);    
-  fprintf(xmlout,   "        <TMu>0x%08x</TMu>\n", movie->trans_matrix[2]);    
-  fprintf(xmlout,   "        <TMc>0x%08x</TMc>\n", movie->trans_matrix[3]);    
-  fprintf(xmlout,   "        <TMd>0x%08x</TMd>\n", movie->trans_matrix[4]);    
-  fprintf(xmlout,   "        <TMv>0x%08x</TMv>\n", movie->trans_matrix[5]);    
-  fprintf(xmlout,   "        <TMx>0x%08x</TMx>\n", movie->trans_matrix[6]);    
-  fprintf(xmlout,   "        <TMy>0x%08x</TMy>\n", movie->trans_matrix[7]);    
+  fprintf(xmlout,   "        <TMa>0x%08x</TMa>\n", movie->trans_matrix[0]);
+  fprintf(xmlout,   "        <TMb>0x%08x</TMb>\n", movie->trans_matrix[1]);
+  fprintf(xmlout,   "        <TMu>0x%08x</TMu>\n", movie->trans_matrix[2]);
+  fprintf(xmlout,   "        <TMc>0x%08x</TMc>\n", movie->trans_matrix[3]);
+  fprintf(xmlout,   "        <TMd>0x%08x</TMd>\n", movie->trans_matrix[4]);
+  fprintf(xmlout,   "        <TMv>0x%08x</TMv>\n", movie->trans_matrix[5]);
+  fprintf(xmlout,   "        <TMx>0x%08x</TMx>\n", movie->trans_matrix[6]);
+  fprintf(xmlout,   "        <TMy>0x%08x</TMy>\n", movie->trans_matrix[7]);
   fprintf(xmlout,   "        <TMw>0x%08x</TMw>\n", movie->trans_matrix[8]);
   fprintf(xmlout,   "      </TransformationMatrix>\n");
   fprintf(xmlout,   "    </MovieHeader>\n");
-  
+
   fprintf(xmlout,   "    <Statistics>\n");
   fprintf(xmlout,   "      <TracksFound>\n");
   fprintf(xmlout,   "        <Video>%d</Video>\n", movie->num_vtk);
@@ -243,7 +243,7 @@ int xml_write_moov(FILE *file, FILE *xmlout, opj_mj2_t * movie, unsigned int sam
 	2) comply with particular JP2 and/or MJ2 profiles.
 	This could be reported here as additional XML elements */
 
-  // Find first video track 
+  // Find first video track
   tnum = 0;
   while (movie->tk[tnum].track_type != 0)
     tnum ++;
@@ -286,7 +286,7 @@ void UnixTimeToFileTime(time_t t, LPFILETIME pft)
   pft->dwLowDateTime = (DWORD)ll;
   /* pft->dwLowDateTime = (DWORD)(0x00000000ffffffff & ll); */
   pft->dwHighDateTime = (DWORD)(ll >> 32);
-} 
+}
 // Once the UNIX time is converted to a FILETIME structure,
 // other Win32 time formats can be easily obtained by using Win32 functions such
 // as FileTimeToSystemTime() and FileTimeToDosDateTime().
@@ -312,7 +312,7 @@ void xml_time_out(FILE* xmlout, time_t t)
   UnixTimeToSystemTime( t, &st );
   GetDateFormat( LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL, szLocalDate, 255 );
   GetTimeFormat( LOCALE_USER_DEFAULT, 0, &st, NULL, szLocalTime, 255 );
-  fprintf(xmlout, "%s %s", szLocalDate, szLocalTime ); 
+  fprintf(xmlout, "%s %s", szLocalDate, szLocalTime );
 }
 
 /* END WINDOWS SPECIFIC */
@@ -411,7 +411,7 @@ void xml_write_trak(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
 	/* sampleframe is from user option -f.  1 = first frame */
     /* sampleframe of 0 is a user requests: no jp2 header */
 	/* Treat out-of-bounds values in the same way */
-	if(sampleframe > 0 && sampleframe <= track->num_samples) 
+	if(sampleframe > 0 && sampleframe <= track->num_samples)
     {
       mj2_sample_t *sample;
       unsigned int snum;
@@ -474,14 +474,14 @@ void xml_write_tkhd(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
       fprintf(xmlout,"          <!-- Comments about matrix in MovieHeader apply here as well. -->\n");
       fprintf(xmlout,"          <!-- This matrix is applied before MovieHeader one. -->\n");
 	}
-    fprintf(xmlout,  "          <TMa>0x%08x</TMa>\n", track->trans_matrix[0]);    
-    fprintf(xmlout,  "          <TMb>0x%08x</TMb>\n", track->trans_matrix[1]);    
-    fprintf(xmlout,  "          <TMu>0x%08x</TMu>\n", track->trans_matrix[2]);    
-    fprintf(xmlout,  "          <TMc>0x%08x</TMc>\n", track->trans_matrix[3]);    
-    fprintf(xmlout,  "          <TMd>0x%08x</TMd>\n", track->trans_matrix[4]);    
-    fprintf(xmlout,  "          <TMv>0x%08x</TMv>\n", track->trans_matrix[5]);    
-    fprintf(xmlout,  "          <TMx>0x%08x</TMx>\n", track->trans_matrix[6]);    
-    fprintf(xmlout,  "          <TMy>0x%08x</TMy>\n", track->trans_matrix[7]);    
+    fprintf(xmlout,  "          <TMa>0x%08x</TMa>\n", track->trans_matrix[0]);
+    fprintf(xmlout,  "          <TMb>0x%08x</TMb>\n", track->trans_matrix[1]);
+    fprintf(xmlout,  "          <TMu>0x%08x</TMu>\n", track->trans_matrix[2]);
+    fprintf(xmlout,  "          <TMc>0x%08x</TMc>\n", track->trans_matrix[3]);
+    fprintf(xmlout,  "          <TMd>0x%08x</TMd>\n", track->trans_matrix[4]);
+    fprintf(xmlout,  "          <TMv>0x%08x</TMv>\n", track->trans_matrix[5]);
+    fprintf(xmlout,  "          <TMx>0x%08x</TMx>\n", track->trans_matrix[6]);
+    fprintf(xmlout,  "          <TMy>0x%08x</TMy>\n", track->trans_matrix[7]);
     fprintf(xmlout,  "          <TMw>0x%08x</TMw>\n", track->trans_matrix[8]);
     fprintf(xmlout,  "        </TransformationMatrix>\n");
   }
@@ -563,7 +563,7 @@ void xml_write_mdia(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
   /* There's still a time zone offset problem not solved... but spec is ambigous as to whether stored time
      should be local or UTC */
   if(derived) {
-    fprintf(xmlout,  "            <AsLocalTime>"); 
+    fprintf(xmlout,  "            <AsLocalTime>");
                                 xml_time_out(xmlout, track->creation_time - 2082844800);
                                                      fprintf(xmlout,"</AsLocalTime>\n");
   }
@@ -572,7 +572,7 @@ void xml_write_mdia(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
   if(raw)
     fprintf(xmlout,  "            <InSeconds>%u</InSeconds>\n", track->modification_time);
   if(derived) {
-    fprintf(xmlout,  "            <AsLocalTime>"); 
+    fprintf(xmlout,  "            <AsLocalTime>");
                                 xml_time_out(xmlout, track->modification_time - 2082844800);
                                                      fprintf(xmlout,"</AsLocalTime>\n");
   }
@@ -709,7 +709,7 @@ void xml_write_mdia(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
 
   xml_write_stbl(file, xmlout, track, tnum); /* SampleTable */
 
-  fprintf(xmlout,    "        </MediaInfoContainer>\n");  
+  fprintf(xmlout,    "        </MediaInfoContainer>\n");
   fprintf(xmlout,    "      </Media>\n");
 }
 
@@ -779,7 +779,7 @@ void xml_write_stbl(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
 	}
 
     xml_out_frame_jp2h(xmlout, &(track->jp2_struct));  /* JP2 Header */
-    
+
   /* Following subboxes are optional */
     fprintf(xmlout,    "              <FieldCoding BoxType=\"fiel\">\n");
     fprintf(xmlout,    "                <FieldCount>%d</FieldCount>\n", (unsigned int)track->fieldcount); /* uchar as 1 byte uint */
@@ -847,12 +847,12 @@ void xml_write_stbl(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
     if(notes)
       fprintf(xmlout,  "            <!-- mj2_to_metadata's data structure doesn't record this currently. -->\n"); break;
   }
-  fprintf(xmlout,      "            <TimeToSample BoxType=\"stts\">\n");  
-  fprintf(xmlout,      "              <SampleStatistics>\n");  
+  fprintf(xmlout,      "            <TimeToSample BoxType=\"stts\">\n");
+  fprintf(xmlout,      "              <SampleStatistics>\n");
   fprintf(xmlout,      "                <TotalSamples>%d</TotalSamples>\n", track->num_samples);
   if(notes)
     fprintf(xmlout,    "                <!-- For video, gives the total frames in the track, by summing all entries in the Sample Table -->\n");
-  fprintf(xmlout,      "              </SampleStatistics>\n"); 
+  fprintf(xmlout,      "              </SampleStatistics>\n");
   fprintf(xmlout,      "              <SampleEntries EntryCount=\"%d\">\n", track->num_tts);
   for (i = 0; i < track->num_tts; i++) {
     fprintf(xmlout,    "                <Table Entry=\"%u\" SampleCount=\"%d\" SampleDelta=\"%u\" />\n",
@@ -890,7 +890,7 @@ void xml_write_stbl(FILE* file, FILE* xmlout, mj2_tk_t *track, unsigned int tnum
      for (i = 0; i < (int)track->num_samples; i++) {
       fprintf(xmlout,  "              <EntrySize Num=\"%u\">%u</EntrySize>\n", i+1, track->sample[i].sample_size);
      }
-  }  
+  }
   fprintf(xmlout,      "            </SampleSize>\n");
 
   fprintf(xmlout,      "            <ChunkOffset BoxType=\"stco\">\n");
@@ -919,7 +919,7 @@ int xml_out_frame(FILE* file, FILE* xmlout, mj2_sample_t *sample, unsigned int s
   int numcomps;
   unsigned char* frame_codestream;
 	opj_dinfo_t* dinfo = NULL;	/* handle to a decompressor */
-	opj_cio_t *cio = NULL;	
+	opj_cio_t *cio = NULL;
 	opj_j2k_t *j2k;
 
 	/* JPEG 2000 compressed image data */
@@ -932,7 +932,7 @@ int xml_out_frame(FILE* file, FILE* xmlout, mj2_sample_t *sample, unsigned int s
 
 	/* setup the decoder decoding parameters using the current image and user parameters */
 	parameters.cp_limit_decoding = DECODE_ALL_BUT_PACKETS;
-	opj_setup_decoder(dinfo, &parameters);	
+	opj_setup_decoder(dinfo, &parameters);
 
   frame_codestream = (unsigned char*) malloc (sample->sample_size-8); /* Skipping JP2C marker */
   if(frame_codestream == NULL)
@@ -958,7 +958,7 @@ int xml_out_frame(FILE* file, FILE* xmlout, mj2_sample_t *sample, unsigned int s
 	cp = j2k->cp;
 
   numcomps = img->numcomps;
-  /*  Alignments:        "      <       To help maintain xml pretty-printing */  
+  /*  Alignments:        "      <       To help maintain xml pretty-printing */
   fprintf(xmlout,      "      <JP2_Frame Num=\"%d\">\n", snum+1);
   fprintf(xmlout,      "        <MainHeader>\n");
   /* There can be multiple codestreams; a particular image is entirely within a single codestream */
@@ -1027,12 +1027,12 @@ int xml_out_frame(FILE* file, FILE* xmlout, mj2_sample_t *sample, unsigned int s
   /* Extra commentary: */
   if(notes) {
     fprintf(xmlout,    "      <!-- Given the number and size of components, mj2_to_frame would try to convert this -->\n");
-    if (((img->numcomps == 3) && (img->comps[0].dx == img->comps[1].dx / 2) 
-      && (img->comps[0].dx == img->comps[2].dx / 2 ) && (img->comps[0].dx == 1)) 
+    if (((img->numcomps == 3) && (img->comps[0].dx == img->comps[1].dx / 2)
+      && (img->comps[0].dx == img->comps[2].dx / 2 ) && (img->comps[0].dx == 1))
       || (img->numcomps == 1)) {
       fprintf(xmlout,  "      <!-- file to a YUV movie in the normal manner. -->\n");
     }
-    else if ((img->numcomps == 3) && 
+    else if ((img->numcomps == 3) &&
       (img->comps[0].dx == 1) && (img->comps[1].dx == 1)&&
 	  (img->comps[2].dx == 1))  {// If YUV 4:4:4 input --> to bmp
 	  fprintf(xmlout,  "      <!-- YUV 4:4:4 file to a series of .bmp files. -->\n");
@@ -1137,8 +1137,8 @@ void xml_out_frame_cod(FILE* xmlout, opj_tcp_t *tcp)
 {
 /* Could be called with tcp = &j2k_default_tcp;
 /* Or, for tile-part header, with &j2k_cp->tcps[j2k_curtileno]
-/*  Alignment for main:"          < < < <   To help maintain xml pretty-printing */  
-/*  Alignment for tile:"            < < <   To help maintain xml pretty-printing */  
+/*  Alignment for main:"          < < < <   To help maintain xml pretty-printing */
+/*  Alignment for tile:"            < < <   To help maintain xml pretty-printing */
   opj_tccp_t *tccp;
   int i;
   char spaces[13] = "            "; /* 12 spaces if tilepart*/
@@ -1199,7 +1199,7 @@ void xml_out_frame_cod(FILE* xmlout, opj_tcp_t *tcp)
     fprintf(xmlout,    "%s    <PrecinctSize>\n",s); /* 1 byte, SPcox (I_i) */
     if(notes)
       fprintf(xmlout,  "%s    <!-- These are size exponents PPx and PPy. May be zero only for first level (aka N(L)LL subband)-->\n",s);
-    for (i = 0; i < tccp->numresolutions; i++) {	
+    for (i = 0; i < tccp->numresolutions; i++) {
       fprintf(xmlout,  "%s      <PrecinctHeightAndWidth  ResolutionLevel=\"%d\">\n", s, i);
 	  if(raw)
         fprintf(xmlout,"%s        <AsHex>0x%02x</AsHex>\n", s, (tccp->prch[i] << 4) | tccp->prcw[i]);	/* packed into 1 byte, SPcox (G) */
@@ -1247,7 +1247,7 @@ void xml_out_frame_coc(FILE* xmlout, opj_tcp_t *tcp, int numcomps) /* Optional i
     if(same_component_style(firstcomp_tccp, tccp))
 		continue;
 
-/*  Alignments:          "      < < < < <   To help maintain xml pretty-printing */  
+/*  Alignments:          "      < < < < <   To help maintain xml pretty-printing */
     fprintf(xmlout,      "%s<CodingStyleComponent Marker=\"COC\">\n", s); /* Optional in main header, at most 1 per component */
     if(notes)
       fprintf(xmlout,    "%s  <!-- See Ccoc below for zero-based component number. -->\n", s);
@@ -1291,7 +1291,7 @@ void xml_out_frame_coc(FILE* xmlout, opj_tcp_t *tcp, int numcomps) /* Optional i
       fprintf(xmlout,    "%s    <PrecinctSize>\n", s); /* 1 byte, SPcox (I_i) */
       if(notes)
         fprintf(xmlout,  "%s      <!-- These are size exponents PPx and PPy. May be zero only for first level (aka N(L)LL subband)-->\n", s);
-      for (i = 0; i < tccp->numresolutions-1; i++) { /* subtract 1 to get # of decomposition levels */	
+      for (i = 0; i < tccp->numresolutions-1; i++) { /* subtract 1 to get # of decomposition levels */
         fprintf(xmlout,  "%s      <PrecinctHeightAndWidth  ResolutionLevel=\"%d\">\n", s, i);
 		if(raw)
           fprintf(xmlout,"%s        <AsHex>0x%02x</AsHex>\n", s, (tccp->prch[i] << 4) | tccp->prcw[i]);	/* packed into 1 byte, SPcox (G) */
@@ -1324,9 +1324,9 @@ BOOL same_component_style(opj_tccp_t *tccp1, opj_tccp_t *tccp2)
 	  return FALSE;
   if(tccp1->csty != tccp2->csty)
 	  return FALSE;
-  
+
   if (tccp1->csty & J2K_CP_CSTY_PRT) {
-      for (i = 0; i < tccp1->numresolutions; i++) {	
+      for (i = 0; i < tccp1->numresolutions; i++) {
          if(tccp1->prcw[i] != tccp2->prcw[i] || tccp1->prch[i] != tccp2->prch[i])
 			 return FALSE;
       }
@@ -1369,11 +1369,11 @@ void xml_out_frame_qcd(FILE* xmlout, opj_tcp_t *tcp)
   if(notes)
     fprintf(xmlout,    "%s    <!-- 0-7 guard bits allowed (stored in Sqcd's high 3 bits) -->\n", s);
   fprintf(xmlout,      "%s  </Sqcd>\n", s);
-	  
+
   /* Problem: numbands in some cases is calculated from len, which is not retained or available here at this time */
   /* So we'll just dump all internal values */
   /* We could calculate it, but I'm having trouble believing the length equations in the standard */
-  
+
   fprintf(xmlout,      "%s  <SPqcd>\n", s);
   switch(tccp->qntsty) {
   case J2K_CCP_QNTSTY_NOQNT: /* no quantization */
@@ -1462,7 +1462,7 @@ void xml_out_frame_qcd(FILE* xmlout, opj_tcp_t *tcp)
   fprintf(xmlout,      "%s  </SPqcd>\n", s);
   fprintf(xmlout,      "%s</QuantizationDefault>\n", s);
 
-/*  Alignments:        "    < < < < <   To help maintain xml pretty-printing */  
+/*  Alignments:        "    < < < < <   To help maintain xml pretty-printing */
 }
 
 /* ------------- */
@@ -1521,7 +1521,7 @@ void xml_out_frame_qcc(FILE* xmlout, opj_tcp_t *tcp, int numcomps)
     if(notes)
       fprintf(xmlout,    "%s    <!-- 0-7 guard bits allowed (stored in Sqcc's high 3 bits) -->\n", s);
     fprintf(xmlout,      "%s  </Sqcc>\n", s);
-	  
+
     /* Problem: numbands in some cases is calculated from len, which is not retained or available here at this time */
     /* So we'll just dump all internal values */
     fprintf(xmlout,      "%s  <SPqcc>\n", s);
@@ -1608,7 +1608,7 @@ void xml_out_frame_qcc(FILE* xmlout, opj_tcp_t *tcp, int numcomps)
     fprintf(xmlout,      "%s  </SPqcc>\n", s);
     fprintf(xmlout,      "%s</QuantizationComponent>\n", s);
   }
-/*  Alignments:          "    < < < < <   To help maintain xml pretty-printing */  
+/*  Alignments:          "    < < < < <   To help maintain xml pretty-printing */
 }
 
 /* ------------- */
@@ -1695,7 +1695,7 @@ void xml_out_frame_poc(FILE* xmlout, opj_tcp_t *tcp) { /* Progression Order Chan
   if(tcp == j2k_default_tcp) {
     s++;s++; /* shorten s to 10 spaces if main */
   }
-  
+
   if(tcp->POC != 1)
 	  return; /* Not present */
 
@@ -1744,7 +1744,7 @@ void xml_out_frame_ppm(FILE *xmlout, opj_cp_t *cp) { /* For main header, not til
 /* Use of PPM and PPT are mutually exclusive. */
 /* Compare j2k_read_ppm() */
   int j;
-  
+
   if(cp->ppm != 1)
 	  return; /* Not present */
 /* Main header uses indent of 10 spaces */
@@ -1756,7 +1756,7 @@ void xml_out_frame_ppm(FILE *xmlout, opj_cp_t *cp) { /* For main header, not til
     fprintf(xmlout,  "          <!-- The implementation can't currently segregate by tile-part. -->\n");
     fprintf(xmlout,  "          <!-- TO DO? further map the packet headers to xml. -->\n");
   }
- 
+
   /* 1 byte, not retained ; Zppm is sequence # of this PPM header */
   /* 4 bytes, possibly overwritten multiple times in j2k_cp->ppm_previous: Nppm */
   /* Use j symbol for index instead of i, to make comparable with j2k_read_ppm */
@@ -1775,7 +1775,7 @@ void xml_out_frame_ppt(FILE *xmlout, opj_tcp_t *tcp) { /* For tile-part header, 
 /* Use of PPM and PPT are mutually exclusive. */
 /* Compare j2k_read_ppt() */
   int j;
-  
+
   if(tcp->ppt != 1)
 	  return; /* Not present */
 
@@ -1788,7 +1788,7 @@ void xml_out_frame_ppt(FILE *xmlout, opj_tcp_t *tcp) { /* For tile-part header, 
     fprintf(xmlout,  "            <!-- The implementation can't currently segregate by tile-part. -->\n");
     fprintf(xmlout,  "            <!-- TO DO? further map the packet headers to xml. -->\n");
   }
- 
+
   /* 1 byte, not retained ; Zppt is sequence # of this PPT header */
   /* 4 bytes, possibly overwritten multiple times in j2k_cp->ppt_previous: Nppt */
   /* Use j symbol for index instead of i, to make comparable with j2k_read_ppt */
@@ -1832,7 +1832,7 @@ void xml_out_frame_crg(FILE* xmlout) { /* NO-OP.  CRG NOT SAVED IN DATA STRUCTUR
 /* Compare j2k_read_crg()... which doesn't retain anything! */
 /* Plan:  Since this is only called from main header, not tilepart, use global j2k_default_tcp rather than parameter */
 #ifdef NOTYET
-  THIS PSEUDOCODE IMAGINES THESE EXIST: j2k_default_tcp->crg, j2k_default_tcp->crg_i, j2k_default_tcp->crg_xcrg*, j2k_default_tcp->crg_ycrg* 
+  THIS PSEUDOCODE IMAGINES THESE EXIST: j2k_default_tcp->crg, j2k_default_tcp->crg_i, j2k_default_tcp->crg_xcrg*, j2k_default_tcp->crg_ycrg*
   (POSSIBLY DON'T NEED crg_i, CAN GET NUMBER OR COMPONENTS FROM ELSEWHERE)
   if(j2k_default_tcp->crg != 1 || j2k_default_tcp->crg_i == 0)
 	  return; /* Not present */
@@ -1883,7 +1883,7 @@ void xml_out_frame_com(FILE* xmlout, opj_tcp_t *tcp) { /* NO-OP.  COM NOT SAVED 
   if(tcp == &j2k_default_tcp) {
     s++;s++; /* shorten s to 10 spaces if main */
   }
-  THIS PSEUDOCODE IMAGINES THESE EXIST: tcp->com, tcp->com_len, tcp->com_data array 
+  THIS PSEUDOCODE IMAGINES THESE EXIST: tcp->com, tcp->com_len, tcp->com_data array
   if(tcp->com != 1)
 	  return; /* Not present */
 
@@ -1896,7 +1896,7 @@ void xml_out_frame_com(FILE* xmlout, opj_tcp_t *tcp) { /* NO-OP.  COM NOT SAVED 
 void xml_out_dump_hex(FILE* xmlout, char *data, int data_len, char* s) {
   /* s is a string of spaces for indent */
   int i;
-  
+
   /* This is called when raw is true, or there is no appropriate derived form */
   fprintf(xmlout,    "%s<AsHex>\n", s);
   fprintf(xmlout,    "%s  ", s); /* Inadequate for pretty printing */
@@ -1912,7 +1912,7 @@ void xml_out_dump_hex(FILE* xmlout, char *data, int data_len, char* s) {
 void xml_out_dump_hex_and_ascii(FILE* xmlout, char *data, int data_len, char* s) {
   /* s is a string of spaces for indent */
   int i,j;
-  
+
   if(raw)
     xml_out_dump_hex(xmlout, data, data_len, s);
 

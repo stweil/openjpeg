@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -427,7 +427,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 			fileid->Read(BR, sizeof(char) * 4);
 			fileid->Read(&MinV, sizeof(unsigned long int));
 			MinV = BYTE_SWAP4(MinV);
-			numCL = (filelimit - fileid->Tell()) / 4;				
+			numCL = (filelimit - fileid->Tell()) / 4;
 
 			// add info
 			wxTreeItemId currid = m_tree->AppendItem(parentid,
@@ -452,7 +452,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 					new OPJMarkerData(wxT("INFO"))
 					);
 			};
-			
+
 		};
 		break;
 
@@ -474,7 +474,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 			fileid->Read(&C, sizeof(unsigned char));
 			fileid->Read(&UnkC, sizeof(unsigned char));
 			fileid->Read(&IPR, sizeof(unsigned char));
-			
+
 			// add info
 			wxTreeItemId currid = m_tree->AppendItem(parentid,
 				wxString::Format(wxT("Dimensions: %d x %d x %d @ %d bpc"), width, height, nc, bpc + 1),
@@ -499,7 +499,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 				m_tree->TreeCtrlIcon_File, m_tree->TreeCtrlIcon_File + 1,
 				new OPJMarkerData(wxT("INFO"))
 				);
-			
+
 		};
 		break;
 
@@ -588,7 +588,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 
 
 
-		
+
 
 	/* Movie Header Box */
 	case (MVHD_BOX): {
@@ -711,10 +711,10 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 	case (STSZ_BOX): {
 
 			unsigned long int version, sample_size, sample_count, entry_size;
-			
+
 			fileid->Read(&version, sizeof(unsigned long int));
 			version = BYTE_SWAP4(version);
-			
+
 			fileid->Read(&sample_size, sizeof(unsigned long int));
 			sample_size = BYTE_SWAP4(sample_size);
 
@@ -738,7 +738,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 				for (unsigned int s = 0; s < sample_count; s++) {
 					fileid->Read(&entry_size, sizeof(unsigned long int));
 					entry_size = BYTE_SWAP4(entry_size);
-					
+
 					text << wxString::Format(wxT("%d, "), entry_size);
 
 					if (((s % 10) == (ITEM_PER_ROW - 1)) || (s == (sample_count - 1))) {
@@ -751,7 +751,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 					}
 
 				}
-				
+
 			}
 
 		};
@@ -797,7 +797,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 			opcolor[2] = BYTE_SWAP2(opcolor[2]);
 
 			wxTreeItemId currid = m_tree->AppendItem(parentid,
-				wxString::Format(wxT("Composition mode: %d (")) + 
+				wxString::Format(wxT("Composition mode: %d (")) +
 				wxString::FromAscii(graphicsdescr) +
 				wxT(")"),
 				m_tree->TreeCtrlIcon_File, m_tree->TreeCtrlIcon_File + 1,
@@ -934,7 +934,7 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 				);
 		};
 		break;
-		
+
 		/* Media Handler box */
 	case (HDLR_BOX): {
 			unsigned long int version, predefined, temp[3];
@@ -952,13 +952,13 @@ int OPJParseThread::box_handler_function(int boxtype, wxFile *fileid, wxFileOffs
 				m_tree->TreeCtrlIcon_File, m_tree->TreeCtrlIcon_File + 1,
 				new OPJMarkerData(wxT("INFO"))
 				);
-					 
+
 			currid = m_tree->AppendItem(parentid,
 				wxString::Format(wxT("Name: %.255s"), name),
 				m_tree->TreeCtrlIcon_File, m_tree->TreeCtrlIcon_File + 1,
 				new OPJMarkerData(wxT("INFO"))
 				);
-					 				 
+
 		}
 		break;
 
@@ -1042,7 +1042,7 @@ int OPJParseThread::jpeg2000parse(wxFile *fileid, wxFileOffset filepoint, wxFile
 		/* determine the box type */
 		for (box_type = JP_BOX; box_type < UNK_BOX; box_type++)
 			if (memcmp(TBox, j22box[box_type].value, 4) == 0)
-				break;	
+				break;
 
 		/* read the optional XLBox, 8 bytes */
 		if (LBox == 1) {
@@ -1056,7 +1056,7 @@ int OPJParseThread::jpeg2000parse(wxFile *fileid, wxFileOffset filepoint, wxFile
 		} else if (LBox == 0x00000000) {
 
 			/* last box in file */
-			last_box = 1; 
+			last_box = 1;
 			box_length = filelimit - filepoint;
 
 		} else
@@ -1094,7 +1094,7 @@ int OPJParseThread::jpeg2000parse(wxFile *fileid, wxFileOffset filepoint, wxFile
 
 		// position and length
 		wxTreeItemId subcurrid2 = m_tree->AppendItem(currid,
-			wxLongLong(filepoint).ToString() + wxT(" > ") + wxLongLong(filepoint + box_length - 1).ToString() + 
+			wxLongLong(filepoint).ToString() + wxT(" > ") + wxLongLong(filepoint + box_length - 1).ToString() +
 			wxT(", ") + wxString::Format(wxT("%d + 8 (%d)"), box_length, box_length + 8),
 			image, imageSel,
 			new OPJMarkerData(wxT("INFO"))

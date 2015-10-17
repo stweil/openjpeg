@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -151,12 +151,12 @@ static unsigned int LongSwap (unsigned int i)
 /*****************************************/
 
 opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
-	
+
 	FILE *f = NULL;
 	int w, h, prec;
 	unsigned long offset;
 	int i, s, numcomps, maxvalue, sliceno, slicepos, maxslice = 0;
-	
+
 	OPJ_COLOR_SPACE color_space;
 	opj_volume_cmptparm_t cmptparm;	/* maximum of 1 component */
 	opj_volume_t * volume = NULL;
@@ -168,7 +168,7 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 
 		DIR *dirp;
     struct dirent *direntp;
-	
+
 	char *tmp = NULL, *tmp2 = NULL,
 		*point = NULL, *pgx = NULL;
 	char tmpdirpath[MAX_PATH];
@@ -177,21 +177,21 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 	char pgxfiles[MAX_SLICES][MAX_PATH];
 	int pgxslicepos[MAX_SLICES];
 	char tmpno[3];
-	
+
 	numcomps = 1;
 	color_space = CLRSPC_GRAY;
 	sliceno = 0;
 	maxvalue = 0;
 	memset(pgxfiles, 0, MAX_SLICES * MAX_PATH * sizeof(char));
 	memset(&cmptparm, 0, sizeof(opj_volume_cmptparm_t));
-	
+
 	/* Separación del caso de un único slice frente al de muchos */
-	if ((tmp = strrchr(relpath,'-')) == NULL){ 
+	if ((tmp = strrchr(relpath,'-')) == NULL){
 		/*fprintf(stdout,"[INFO] A volume of only one slice....\n");*/
 		sliceno = 1;
 		maxslice = 1;
 		strcpy(pgxfiles[0],relpath);
-	
+
 	} else {
 		/*Fetch only the path */
 		strcpy(tmpdirpath,relpath);
@@ -203,13 +203,13 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 		}
 
 		/*Fetch the pattern of the volume slices*/
-		if ((tmp = strrchr (relpath,'/')) != NULL) 
-			tmp++;	
-		else 
+		if ((tmp = strrchr (relpath,'/')) != NULL)
+			tmp++;
+		else
 			tmp = relpath;
         if ((tmp2 = strrchr(tmp,'-')) != NULL)
             *tmp2='\0';
-		else{ 
+		else{
 			fprintf(stdout, "[ERROR] tmp2 ha dado null. no ha encontrado el * %s %s",tmp,relpath);
 			return NULL;
 		}
@@ -227,17 +227,17 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 			/* Found a directory, but ignore . and .. */
 			if(strcmp(".",direntp->d_name) == 0 || strcmp("..",direntp->d_name) == 0)
 					continue;
-			
+
 			if( ((pgx = strstr(direntp->d_name,pattern)) != NULL) && ((tmp2 = strstr(direntp->d_name,".pgx")) != NULL) ){
-			
+
 				strcpy(tmp,dirpath);
 				tmp = strcat(tmp,direntp->d_name);
-						
+
 				/*Obtenemos el index de la secuencia de slices*/
-				if ((tmp2 = strpbrk (direntp->d_name, "0123456789")) == NULL) 
+				if ((tmp2 = strpbrk (direntp->d_name, "0123456789")) == NULL)
 					continue;
 				i = 0;
-				while (tmp2 != NULL) {					
+				while (tmp2 != NULL) {
 					tmpno[i++] = *tmp2;
 					point = tmp2;
 					tmp2 = strpbrk (tmp2+1,"0123456789");
@@ -253,12 +253,12 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 				sliceno++;
 				if (slicepos>maxslice)
 					maxslice = slicepos;
-				
+
 				/*Colocamos el slices en su posicion correspondiente*/
 				strcpy(pgxfiles[slicepos-1],tmp);
 			}
 		}
-	
+
 	}/* else if pattern*.pgx */
 
 	if (!sliceno) {
@@ -269,7 +269,7 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 		fprintf(stdout,"[ERROR] Slices are not sequentially numbered !! Please rename them accordingly\n");
 		return NULL;
 	}*/
-	
+
 	for (s=0;s<sliceno;s++)
 	{
 			int pos = maxslice == sliceno ? s: pgxslicepos[s];
@@ -284,12 +284,12 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 			fscanf(f, "PG%[ \t]%c%c%[ \t+-]%d%[ \t]%d%[ \t]%d",temp,&endian1,&endian2,signtmp,&prec,temp,&w,temp,&h);
 
 			i=0;
-			sign='+';		
+			sign='+';
 			while (signtmp[i]!='\0') {
 				if (signtmp[i]=='-') sign='-';
 				i++;
 			}
-		
+
 			fgetc(f);
 			if (endian1=='M' && endian2=='L') {
 				cmptparm.bigendian = 1;
@@ -309,7 +309,7 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 				cmptparm.w = !cmptparm.x0 ? (w - 1) * parameters->subsampling_dx + 1 : cmptparm.x0 + (w - 1) * parameters->subsampling_dx + 1;
 				cmptparm.h = !cmptparm.y0 ? (h - 1) * parameters->subsampling_dy + 1 : cmptparm.y0 + (h - 1) * parameters->subsampling_dy + 1;
 				cmptparm.l = !cmptparm.z0 ? (sliceno - 1) * parameters->subsampling_dz + 1 : cmptparm.z0 + (sliceno - 1) * parameters->subsampling_dz + 1;
-				
+
 				if (sign == '-') {
 					cmptparm.sgnd = 1;
 				} else {
@@ -321,7 +321,7 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 				cmptparm.dx = parameters->subsampling_dx;
 				cmptparm.dy = parameters->subsampling_dy;
 				cmptparm.dz = parameters->subsampling_dz;
-				
+
 				/* create the volume */
 				volume = opj_volume_create(numcomps, &cmptparm, color_space);
 				if(!volume) {
@@ -335,14 +335,14 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 				volume->x1 = cmptparm.w;
 				volume->y1 = cmptparm.h;
 				volume->z1 = cmptparm.l;
-				
+
 				/* set volume data :only one component, that is a volume*/
 				comp = &volume->comps[0];
-			
+
 			}/*if sliceno==1*/
-			
+
 			offset = w * h * s;
-			
+
 			for (i = 0; i < w * h; i++) {
 				int v;
 				if (comp->prec <= 8) {
@@ -363,11 +363,11 @@ opj_volume_t* pgxtovolume(char *relpath, opj_cparameters_t *parameters) {
 					} else {
 						v = (int) readuint(f, cmptparm.bigendian);
 					}
-				}				
+				}
 				if (v > maxvalue)
 					maxvalue = v;
 				comp->data[i + offset] = v;
-				
+
 			}
 			fclose(f);
 	} /* for s --> sliceno*/
@@ -417,11 +417,11 @@ int volumetopgx(opj_volume_t * volume, char *outfile) {
 			w = int_ceildiv(volume->x1 - volume->x0, volume->comps[compno].dx);
 			wr = volume->comps[compno].w;
 			wrr = int_ceildivpow2(volume->comps[compno].w, volume->comps[compno].factor[0]);
-			
+
 			h = int_ceildiv(volume->y1 - volume->y0, volume->comps[compno].dy);
 			hr = volume->comps[compno].h;
 			hrr = int_ceildivpow2(volume->comps[compno].h, volume->comps[compno].factor[1]);
-			
+
 			l = int_ceildiv(volume->z1 - volume->z0, volume->comps[compno].dz);
 			lr = volume->comps[compno].l;
 			lrr = int_ceildivpow2(volume->comps[compno].l, volume->comps[compno].factor[2]);
@@ -470,14 +470,14 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 	int subsampling_dx =  parameters->subsampling_dx;
 	int subsampling_dy =  parameters->subsampling_dy;
 	int subsampling_dz =  parameters->subsampling_dz;
-	
+
 	int i, compno, w, h, l, numcomps = 1;
 	int prec, max = 0;
 
 /*	char temp[32];*/
 	char line[100];
 	int bigendian;
-	
+
 	FILE *f = NULL;
 	FILE *fimg = NULL;
 	OPJ_COLOR_SPACE color_space;
@@ -489,7 +489,7 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 	color_space = CLRSPC_GRAY;
 
 	fimg = fopen(fileimg,"r");
-	if (!fimg) { 
+	if (!fimg) {
 		fprintf(stdout, "[ERROR] Failed to open %s for reading !!\n", fileimg);
 		return 0;
 	}
@@ -514,10 +514,10 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 		fprintf(stdout, "[INFO] %d \t %d %d %d \t %3.2f %2.2f %2.2f \t %d \n",color_space,w,h,l,subsampling_dx,subsampling_dy,subsampling_dz,prec);
 	#endif
 	fclose(fimg);
-	
+
 	/* initialize volume components */
 	memset(&cmptparm, 0, sizeof(opj_volume_cmptparm_t));
-	
+
 	cmptparm.prec = prec;
 	cmptparm.bpp = prec;
 	cmptparm.sgnd = 0;
@@ -529,15 +529,15 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 	cmptparm.w = w;
 	cmptparm.h = h;
 	cmptparm.l = l;
-	
+
 	/* create the volume */
 	volume = opj_volume_create(numcomps, &cmptparm, color_space);
 	if(!volume) {
-		fprintf(stdout,"[ERROR] Unable to create volume");	
+		fprintf(stdout,"[ERROR] Unable to create volume");
 		fclose(f);
 		return NULL;
 	}
-	
+
 	/* set volume offset and reference grid */
 	volume->x0 = parameters->volume_offset_x0;
 	volume->y0 = parameters->volume_offset_y0;
@@ -545,20 +545,20 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 	volume->x1 = parameters->volume_offset_x0 + (w - 1) *	subsampling_dx + 1;
 	volume->y1 = parameters->volume_offset_y0 + (h - 1) *	subsampling_dy + 1;
 	volume->z1 = parameters->volume_offset_z0 + (l - 1) *	subsampling_dz + 1;
-	
+
 	/* set volume data */
 	f = fopen(filename, "rb");
 	if (!f) {
 		fprintf(stdout, "[ERROR] Failed to open %s for reading !!\n", filename);
 		return 0;
 	}
-	
+
 	/* BINARY */
 	for (compno = 0; compno < volume->numcomps; compno++) {
 		int whl = w * h * l;
 		/* set volume data */
 		comp = &volume->comps[compno];
-		
+
 		/*if (comp->prec <= 8) {
 			if (!comp->sgnd) {
                 unsigned char *data = (unsigned char *) malloc(whl * sizeof(unsigned char));
@@ -587,7 +587,7 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 					free(data);	fclose(f);
 					return NULL;
 				}
-				
+
 				for (i = 0; i < whl; i++) {
 					if (bigendian)	//(c1 << 8) + c2;
 						comp->data[i] = data[i];
@@ -637,16 +637,16 @@ opj_volume_t* bintovolume(char *filename, char *fileimg, opj_cparameters_t *para
 				if (!leido)	{
 					fclose(f);
 					return NULL;
-				}				
+				}
 				for (i = 0; i < whl; i++) {
-					if (!bigendian) 
+					if (!bigendian)
 						comp->data[i] = (int) LongSwap((unsigned int) comp->data[i]);
 					if (comp->data[i] > max)
 						max = comp->data[i];
 				}
 			}
 		}*/
-		
+
 		for (i = 0; i < whl; i++) {
 			int v;
 			if (comp->prec <= 8) {
@@ -688,7 +688,7 @@ int volumetobin(opj_volume_t * volume, char *outfile) {
 	char name[256];
 
 	for (compno = 0; compno < 1; compno++) { /*Only one component*/
-		
+
 		fdest = fopen(outfile, "wb");
 		if (!fdest) {
 			fprintf(stdout, "[ERROR] Failed to open %s for writing\n", outfile);
@@ -699,21 +699,21 @@ int volumetobin(opj_volume_t * volume, char *outfile) {
 		w = int_ceildiv(volume->x1 - volume->x0, volume->comps[compno].dx);
 		wr = volume->comps[compno].w;
 		wrr = int_ceildivpow2(volume->comps[compno].w, volume->comps[compno].factor[0]);
-		
+
 		h = int_ceildiv(volume->y1 - volume->y0, volume->comps[compno].dy);
 		hr = volume->comps[compno].h;
 		hrr = int_ceildivpow2(volume->comps[compno].h, volume->comps[compno].factor[1]);
-		
+
 		l = int_ceildiv(volume->z1 - volume->z0, volume->comps[compno].dz);
 		lr = volume->comps[compno].l;
 		lrr = int_ceildivpow2(volume->comps[compno].l, volume->comps[compno].factor[2]);
 
 		max = (volume->comps[compno].prec <= 8) ? 255 : (1 << volume->comps[compno].prec) - 1;
-		
+
 		volume->comps[compno].x0 = int_ceildivpow2(volume->comps[compno].x0 - int_ceildiv(volume->x0, volume->comps[compno].dx), volume->comps[compno].factor[0]);
 		volume->comps[compno].y0 = int_ceildivpow2(volume->comps[compno].y0 - int_ceildiv(volume->y0, volume->comps[compno].dy), volume->comps[compno].factor[1]);
 		volume->comps[compno].z0 = int_ceildivpow2(volume->comps[compno].z0 - int_ceildiv(volume->z0, volume->comps[compno].dz), volume->comps[compno].factor[2]);
-		
+
 		if (volume->comps[0].prec <= 8) {
 			nbytes = 1;
 		} else if (volume->comps[0].prec <= 16) {
@@ -742,9 +742,9 @@ int volumetobin(opj_volume_t * volume, char *outfile) {
 				}
 			}
 		}
-	
+
 	}
-	
+
 	fclose(fdest);
 
 	sprintf(name,"%s.img",outfile);
@@ -768,14 +768,14 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 	int subsampling_dx =  parameters->subsampling_dx;
 	int subsampling_dy =  parameters->subsampling_dy;
 	int subsampling_dz =  parameters->subsampling_dz;
-	
+
 	int i, compno, w, h, l, numcomps = 1;
 	int prec, max = 0, min = 0;
 	float dx, dy, dz;
 	char filename[100], tmpdirpath[100], dirpath[100], *tmp;
 	char line[100], datatype[100];
 	int bigendian;
-	
+
 	FILE *f = NULL;
 	FILE *fimg = NULL;
 	OPJ_COLOR_SPACE color_space;
@@ -787,7 +787,7 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 	color_space = CLRSPC_GRAY;
 
 	fimg = fopen(fileimg,"r");
-	if (!fimg) { 
+	if (!fimg) {
 		fprintf(stderr, "[ERROR] Failed to open %s for reading !!\n", fileimg);
 		return 0;
 	}
@@ -832,13 +832,13 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 
 	/* error control */
 	if ( !prec || !w || !h || !l ){
-		fprintf(stderr,"[ERROR] Unable to read IMG file correctly. Found some null values.");	
+		fprintf(stderr,"[ERROR] Unable to read IMG file correctly. Found some null values.");
 		return NULL;
 	}
 
 	/* initialize volume components */
 	memset(&cmptparm, 0, sizeof(opj_volume_cmptparm_t));
-	
+
 	cmptparm.prec = prec;
 	cmptparm.bpp = prec;
 	cmptparm.sgnd = 0;
@@ -850,14 +850,14 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 	cmptparm.w = w;
 	cmptparm.h = h;
 	cmptparm.l = l;
-	
+
 	/* create the volume */
 	volume = opj_volume_create(numcomps, &cmptparm, color_space);
 	if(!volume) {
-		fprintf(stdout,"[ERROR] Unable to create volume");	
+		fprintf(stdout,"[ERROR] Unable to create volume");
 		return NULL;
 	}
-	
+
 	/* set volume offset and reference grid */
 	volume->x0 = parameters->volume_offset_x0;
 	volume->y0 = parameters->volume_offset_y0;
@@ -865,7 +865,7 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 	volume->x1 = parameters->volume_offset_x0 + (w - 1) *	subsampling_dx + 1;
 	volume->y1 = parameters->volume_offset_y0 + (h - 1) *	subsampling_dy + 1;
 	volume->z1 = parameters->volume_offset_z0 + (l - 1) *	subsampling_dz + 1;
-	
+
 	max = 0;
 	/* set volume data */
 	f = fopen(filename, "rb");
@@ -874,13 +874,13 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 		fclose(f);
 		return 0;
 	}
-	
+
 	/* BINARY */
 	for (compno = 0; compno < volume->numcomps; compno++) {
 		int whl = w * h * l;
 		/* set volume data */
 		comp = &volume->comps[compno];
-		
+
 		/*if (comp->prec <= 8) {
 			if (!comp->sgnd) {
                 unsigned char *data = (unsigned char *) malloc(whl * sizeof(unsigned char));
@@ -909,7 +909,7 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 					free(data);	fclose(f);
 					return NULL;
 				}
-				
+
 				for (i = 0; i < whl; i++) {
 					if (bigendian)	//(c1 << 8) + c2;
 						comp->data[i] = data[i];
@@ -959,16 +959,16 @@ opj_volume_t* imgtovolume(char *fileimg, opj_cparameters_t *parameters) {
 				if (!leido)	{
 					fclose(f);
 					return NULL;
-				}				
+				}
 				for (i = 0; i < whl; i++) {
-					if (!bigendian) 
+					if (!bigendian)
 						comp->data[i] = (int) LongSwap((unsigned int) comp->data[i]);
 					if (comp->data[i] > max)
 						max = comp->data[i];
 				}
 			}
 		}*/
-		
+
 		for (i = 0; i < whl; i++) {
 			int v;
 			if (comp->prec <= 8) {

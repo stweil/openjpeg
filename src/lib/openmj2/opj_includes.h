@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -65,8 +65,8 @@
 #endif
 
 /*
-The inline keyword is supported by C99 but not by C90. 
-Most compilers implement their own version of this keyword ... 
+The inline keyword is supported by C99 but not by C90.
+Most compilers implement their own version of this keyword ...
 */
 #ifndef INLINE
 	#if defined(_MSC_VER)
@@ -75,9 +75,9 @@ Most compilers implement their own version of this keyword ...
 		#define INLINE __inline__
 	#elif defined(__MWERKS__)
 		#define INLINE inline
-	#else 
+	#else
 		/* add other compilers here ... */
-		#define INLINE 
+		#define INLINE
 	#endif /* defined(<Compiler>) */
 #endif /* INLINE */
 
@@ -98,12 +98,12 @@ static INLINE long lrintf(float f){
     return (long)((f>0.0f) ? (f + 0.5f):(f -0.5f));
 #else
     int i;
- 
+
     _asm{
         fld f
         fistp i
     };
- 
+
     return i;
 #endif
 }

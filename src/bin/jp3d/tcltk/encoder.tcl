@@ -17,16 +17,16 @@ proc VMEncoder::create { nb } {
 
 	set frame1 [$srcf getframe]
 		VMEncoder::_sourceE  $frame1
-	
+
 	set frame2  [$dstf getframe]
 		VMEncoder::_destinationE  $frame2
-	
+
 	set frame3  [$Tparf getframe]
 		VMEncoder::_transformE $frame3
 
 	set frame4  [$Cparf getframe]
 		VMEncoder::_codingE $frame4
-	
+
 	set butE  [Button $bottomf.butE -text "Encode!" \
 		   -command  "VMEncoder::_encode $frame1 $frame2" \
 		   -helptext "Encoding trigger button"]
@@ -39,7 +39,7 @@ proc VMEncoder::create { nb } {
 
 	pack $Tparf $Cparf -side left -fill both -padx 4 -expand yes
 	pack $midf -pady 2 -fill x
-	
+
 	pack $butE $butR -side left -padx 40 -pady 5 -fill y -expand yes
 	pack $bottomf -pady 2 -fill x
 
@@ -54,13 +54,13 @@ proc VMEncoder::_sourceE { parent } {
 			-anchor w -relief flat -borderwidth 0]
 	set subsrc [$labsrc getframe]
 	set list [entry $subsrc.entrysrc -width 30 -textvariable VMDecoder::var(source)]
-	
+
 	set labbrw [LabelFrame $parent.labbrw -side top -anchor w -relief flat -borderwidth 0]
 	set subbrw [$labbrw getframe]
 	set butbrw [button $subbrw.butbrw -image [Bitmap::get open] \
 		-relief raised -borderwidth 1 -padx 1 -pady 1 \
 		-command "fileDialogE . $subsrc.entrysrc open"]
-	
+
 	pack $list -side top
 	pack $butbrw -side top
 	pack $labsrc $labbrw -side left -fill both -expand yes
@@ -74,13 +74,13 @@ proc VMEncoder::_destinationE { parent } {
 			-anchor w -relief flat -borderwidth 0]
 	set subdst [$labdst getframe]
 	set list [entry $subdst.entrydst -width 30 -textvariable VMDecoder::var(destination)]
-	
+
 	set labbrw [LabelFrame $parent.labbrw -side top -anchor w -relief flat -borderwidth 0]
 	set subbrw [$labbrw getframe]
 	set butbrw [button $subbrw.butbrw -image [Bitmap::get save] \
 		-relief raised -borderwidth 1 -padx 1 -pady 1 \
 		-command "fileDialogE . $subdst.entrydst save"]
-	
+
 	pack $list -side top
 	pack $butbrw -side top
 	pack $labdst $labbrw -side left -fill both -expand yes
@@ -88,7 +88,7 @@ proc VMEncoder::_destinationE { parent } {
 
 proc VMEncoder::_codingE { parent } {
 
-	
+
 	########### CODING  #############
 	set labcod [LabelFrame $parent.labcod -side top -anchor w -relief sunken -borderwidth 1]
 	set subcod  [$labcod getframe]
@@ -117,7 +117,7 @@ proc VMEncoder::_codingE { parent } {
 		set frameeph [frame $subcod.frameeph -borderwidth 1]
 		set chkeph [checkbutton $frameeph.chkeph -text "Write EPH marker" \
 			   -variable VMEncoder::var(eph) -onvalue 1 -offvalue 0 ]
-	
+
 		set framepoc [frame $subcod.framepoc -borderwidth 1]
 		set labpoc [label $framepoc.labpoc -text "Progression order: " ]
 		set progorder [ComboBox $framepoc.progorder \
@@ -145,7 +145,7 @@ proc VMEncoder::_codingE { parent } {
 				-value $entval ]
 			pack $rad -anchor w
 		}
-		$subent.2EB select 
+		$subent.2EB select
 
 	pack $subent -padx 2 -anchor n
 
@@ -166,7 +166,7 @@ proc VMEncoder::_transformE { parent } {
 	set subtrf  [$labtrf getframe]
 	set labres [LabelFrame $parent.labres -side top -anchor w -relief sunken -borderwidth 1]
 	set subres [$labres getframe]
-		
+
 		########### ATK #############
 		set frameatk [frame $subres.frameatk -borderwidth 1]
 		set labatk [label $frameatk.labatk -text "Wavelet kernel:  " -anchor w]
@@ -185,7 +185,7 @@ proc VMEncoder::_transformE { parent } {
 		set labresX [label $frameres2.labresX -text "  X" -anchor w ]
 		set labresY [label $frameres2.labresY -text "  Y" -anchor w ]
 		set labresZ [label $frameres2.labresZ -text "  Z" -anchor w ]
-		
+
 
 		set resX [SpinBox $frameres2.spinresX \
 				-range {1 6 1} -textvariable VMEncoder::var(resX) \
@@ -216,9 +216,9 @@ proc VMEncoder::_transformE { parent } {
 			pack $rad -anchor w
 		}
 		$subtrf.2DWT select
-		
+
 	pack $subtrf -side left -padx 2 -pady 4
-	
+
 		pack $labresolution -padx 2 -side left -anchor w
 		pack $labresX $resX -padx 2 -side left -anchor w
 		pack $labresY $resY -padx 2 -side left -anchor w
@@ -246,21 +246,21 @@ proc VMEncoder::_encode { framesrc framedst } {
 	set pattern [string range $source 0 [expr [string length $source]-5]]
 	set pattern $pattern$img
 	set exist [file exists $pattern]
-	
+
 	#comprobamos datos son correctos
 	if {($cond1 == 1) && ($cond2 == 0)} {
 	  MessageDlg .msgdlg -parent . -message "Info : Really want to encode an slice instead of a volume?.\n For a group of .pgx slices, name must contain a - denoting a sequential index!" -type ok -icon info
-	} 
-	
+	}
+
 	if {$source == ""} {
-	  MessageDlg .msgdlg -parent . -message "Error : Source file is not defined !" -type ok -icon error 
+	  MessageDlg .msgdlg -parent . -message "Error : Source file is not defined !" -type ok -icon error
 	} elseif {$destination == ""} {
-	  MessageDlg .msgdlg -parent . -message "Error : Destination file is not defined !" -type ok -icon error 
+	  MessageDlg .msgdlg -parent . -message "Error : Destination file is not defined !" -type ok -icon error
 	} elseif { ($VMEncoder::var(transform) != "3RLS") && ($VMEncoder::var(atk) == "Choose a wavelet transformation kernel") } {
 	  MessageDlg .msgdlg -parent . -title "Info" -message "Please choose a wavelet transformation kernel"\
 			-type ok -icon warning
 	} elseif {($exist == 0) && ($cond1 == 0) && ($cond3 == 1)} {
-		  MessageDlg .msgdlg -parent . -message "Error : IMG file associated to BIN volume file not found in same directory !" -type ok -icon info 
+		  MessageDlg .msgdlg -parent . -message "Error : IMG file associated to BIN volume file not found in same directory !" -type ok -icon info
 	} else {
 
 		#creamos datain a partir de los parametros de entrada
@@ -279,12 +279,12 @@ proc VMEncoder::_encode { framesrc framedst } {
 		} elseif {$VMEncoder::var(transform) == "3DWT"} {
 			set datain [concat " $datain -n $VMEncoder::var(resX),$VMEncoder::var(resY),$VMEncoder::var(resZ) "]
 		}
-		
+
 		set datain [concat " $datain -r $VMEncoder::var(rate) "]
-		
+
 		if {$VMEncoder::var(atk) == "I9.7"} {
 			set datain [concat " $datain -I "]
-		} 
+		}
 		if {$VMEncoder::var(sop) == 1} {
 			set datain [concat " $datain -SOP "]
 		}
@@ -298,8 +298,8 @@ proc VMEncoder::_encode { framesrc framedst } {
 			set datain [concat " $datain -b $VMEncoder::var(cblksize) "]
 		}
 
-		
-		#Making this work would be great !!! 
+
+		#Making this work would be great !!!
 		set VMEncoder::var(progval) 10
 		ProgressDlg .progress -parent . -title "Wait..." \
 			-type         infinite \
@@ -309,8 +309,8 @@ proc VMEncoder::_encode { framesrc framedst } {
 			-stop         "Stop" \
 			-command      {destroy .progress}
 		after 200 set VMEncoder::var(progval) 2
-		set fp [open "| $datain " r+] 
-		fconfigure $fp -buffering line 
+		set fp [open "| $datain " r+]
+		fconfigure $fp -buffering line
 		set jp3dVM::dataout [concat "EXECUTED PROGRAM:\n\t$datain"]
 		while {-1 != [gets $fp tmp]} {
 			set jp3dVM::dataout [concat "$jp3dVM::dataout\n$tmp"]
@@ -343,7 +343,7 @@ proc VMEncoder::_reset { framesrc framedst frametrf framecod} {
 	set resX $frametrf.labres.f.frameres2.spinresX
 	set resY $frametrf.labres.f.frameres2.spinresY
 	set resZ $frametrf.labres.f.frameres2.spinresZ
-	disable3RLS 2DWT $atk $resX $resY $resZ 
+	disable3RLS 2DWT $atk $resX $resY $resZ
 	set labcblk $framecod.labcod.f.framecblk.labcblk
 	set progorder $framecod.labcod.f.framepoc.progorder
 	set labrate $framecod.labcod.f.framerate.labrate
@@ -443,7 +443,7 @@ proc disable3RLS {flag atk resX resY resZ}  {
 }
 
 proc disableGR {flag labcblk progorder labrate chksop chkeph} {
-	
+
 	if {$flag == "2EB"} {
 		$labcblk configure -state normal
 		$progorder configure -state normal

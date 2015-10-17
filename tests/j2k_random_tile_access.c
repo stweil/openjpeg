@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+ * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
 			return EXIT_FAILURE;
 	}
 
-	/* catch events using our callbacks and give a local context */		
+	/* catch events using our callbacks and give a local context */
 	opj_set_info_handler(l_codec, info_callback,00);
 	opj_set_warning_handler(l_codec, warning_callback,00);
 	opj_set_error_handler(l_codec, error_callback,00);

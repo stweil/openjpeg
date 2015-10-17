@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -242,7 +242,7 @@ class OPJViewerApp: public wxApp
 		int m_browserwidth, m_peekerheight;
 
 		// application configuration
-		wxConfig *OPJconfig; 
+		wxConfig *OPJconfig;
 
 	// private methods and variables
 	private:
@@ -266,11 +266,11 @@ class OPJCanvas: public wxScrolledWindow
 		virtual void OnDraw(wxDC& dc);
 		void OnEvent(wxMouseEvent& event);
 		void WriteText(const wxString& text) {
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 			wxMutexGuiEnter();
 #endif //__WXGTK__
 			wxLogMessage(text);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 			wxMutexGuiLeave();
 #endif //__WXGTK__
 		}

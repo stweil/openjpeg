@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,11 +8,11 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
- * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR 
+ * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -113,7 +113,7 @@ typedef struct opj_decompress_params
 {
 	/** core library parameters */
 	opj_dparameters_t core;
-	
+
 	/** input file name */
 	char infile[OPJ_PATH_LEN];
 	/** output file name */
@@ -124,7 +124,7 @@ typedef struct opj_decompress_params
 	int cod_format;
 	/** index file name */
 	char indexfilename[OPJ_PATH_LEN];
-	
+
 	/** Decoding area left boundary */
 	OPJ_UINT32 DA_x0;
 	/** Decoding area right boundary */
@@ -135,15 +135,15 @@ typedef struct opj_decompress_params
 	OPJ_UINT32 DA_y1;
 	/** Verbose mode */
 	OPJ_BOOL m_verbose;
-	
+
 	/** tile number ot the decoded tile*/
 	OPJ_UINT32 tile_index;
 	/** Nb of tile to decode */
 	OPJ_UINT32 nb_tile_to_decode;
-	
+
 	opj_precision* precision;
 	OPJ_UINT32     nb_precision;
-	
+
 	/* force output colorspace to RGB */
 	int force_rgb;
 	/* upsample components according to their dx/dy values */
@@ -245,21 +245,21 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 {
 	const char* l_remaining = option;
 	OPJ_BOOL l_result = OPJ_TRUE;
-	
+
 	/* reset */
 	if (parameters->precision) {
 		free(parameters->precision);
 		parameters->precision = NULL;
 	}
 	parameters->nb_precision = 0U;
-	
+
 	for(;;)
 	{
 		int prec;
 		char mode;
 		char comma;
 		int count;
-		
+
 		count = sscanf(l_remaining, "%d%c%c", &prec, &mode, &comma);
 		if (count == 1) {
 			mode = 'C';
@@ -288,7 +288,7 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 				l_result = OPJ_FALSE;
 				break;
 			}
-			
+
 			if (parameters->precision == NULL) {
 				/* first one */
 				parameters->precision = (opj_precision *)malloc(sizeof(opj_precision));
@@ -300,13 +300,13 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 			} else {
 				OPJ_UINT32 l_new_size = parameters->nb_precision + 1U;
 				opj_precision* l_new;
-				
+
 				if (l_new_size == 0U) {
 					fprintf(stderr,"Could not allocate memory for precision option\n");
 					l_result = OPJ_FALSE;
 					break;
 				}
-				
+
 				l_new = (opj_precision *)realloc(parameters->precision, l_new_size * sizeof(opj_precision));
 				if (l_new == NULL) {
 					fprintf(stderr,"Could not allocate memory for precision option\n");
@@ -315,7 +315,7 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 				}
 				parameters->precision = l_new;
 			}
-			
+
 			parameters->precision[parameters->nb_precision].prec = (OPJ_UINT32)prec;
 			switch (mode) {
 				case 'C':
@@ -328,7 +328,7 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 					break;
 			}
 			parameters->nb_precision++;
-			
+
 			l_remaining = strchr(l_remaining, ',');
 			if (l_remaining == NULL) {
 				break;
@@ -340,7 +340,7 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 			break;
 		}
 	}
-	
+
 	return l_result;
 }
 
@@ -348,7 +348,7 @@ static OPJ_BOOL parse_precision(const char* option, opj_decompress_parameters* p
 
 int get_num_images(char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int num_images = 0;
 
 	/*Reading the input images from given input directory*/
@@ -358,7 +358,7 @@ int get_num_images(char *imgdirpath){
 		fprintf(stderr,"Could not open Folder %s\n",imgdirpath);
 		return 0;
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -371,7 +371,7 @@ int get_num_images(char *imgdirpath){
 /* -------------------------------------------------------------------------- */
 int load_images(dircnt_t *dirptr, char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int i = 0;
 
 	/*Reading the input images from given input directory*/
@@ -383,7 +383,7 @@ int load_images(dircnt_t *dirptr, char *imgdirpath){
 	}else	{
 		fprintf(stderr,"Folder opened successfully\n");
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -392,7 +392,7 @@ int load_images(dircnt_t *dirptr, char *imgdirpath){
 		i++;
 	}
 	closedir(dir);
-	return 0;	
+	return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -557,12 +557,12 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 					case JPT_CFMT:
 						break;
                                         case -2:
-						fprintf(stderr, 
-							"!! infile cannot be read: %s !!\n\n", 
+						fprintf(stderr,
+							"!! infile cannot be read: %s !!\n\n",
 							infile);
 						return 1;
 					default:
-						fprintf(stderr, 
+						fprintf(stderr,
                             "[ERROR] Unknown input file format: %s \n"
                             "        Known file formats are *.j2k, *.jp2, *.jpc or *.jpt\n",
 							infile);
@@ -574,7 +574,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 				}
 			}
 			break;
-				
+
 				/* ----------------------------------------------------- */
 
 			case 'o':			/* output file */
@@ -608,7 +608,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 				}
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
 
 			case 'O':			/* output format */
@@ -659,21 +659,21 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 				sscanf(opj_optarg, "%u", &(parameters->core.cp_reduce));
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
-      
+
 
 			case 'l':		/* layering option */
 			{
 				sscanf(opj_optarg, "%u", &(parameters->core.cp_layer));
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
 
 			case 'h': 			/* display an help description */
 				decode_help_display();
-				return 1;				
+				return 1;
 
             /* ----------------------------------------------------- */
 
@@ -713,7 +713,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 			}
 			break;
 
-				/* ----------------------------------------------------- */								
+				/* ----------------------------------------------------- */
 
 			case 'x':			/* Creation of index file */
 				{
@@ -723,7 +723,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 					}
 				}
 				break;
-				
+
 				/* ----------------------------------------------------- */
 			case 'p': /* Force precision */
 				{
@@ -734,10 +734,10 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 				}
 				break;
 				/* ----------------------------------------------------- */
-				
+
 				/* UniPG>> */
 #ifdef USE_JPWL
-			
+
 			case 'W': 			/* activate JPWL correction */
 			{
 				char *token = NULL;
@@ -802,12 +802,12 @@ int parse_cmdline_decoder(int argc, char **argv, opj_decompress_parameters *para
 				fprintf(stdout, "JPWL correction capability activated\n");
 				fprintf(stdout, "- expecting %d components\n", parameters->jpwl_exp_comps);
 			}
-			break;	
+			break;
 #endif /* USE_JPWL */
-/* <<UniPG */            
+/* <<UniPG */
 
 				/* ----------------------------------------------------- */
-			
+
         default:
             fprintf(stderr, "[WARNING] An invalid option has been ignored.\n");
             break;
@@ -924,11 +924,11 @@ static void set_default_parameters(opj_decompress_parameters* parameters)
 {
 	if (parameters) {
 		memset(parameters, 0, sizeof(opj_decompress_parameters));
-		
+
 		/* default decoding parameters (command line specific) */
 		parameters->decod_format = -1;
 		parameters->cod_format = -1;
-		
+
 		/* default decoding parameters (core) */
 		opj_set_default_decoder_parameters(&(parameters->core));
 	}
@@ -951,14 +951,14 @@ static opj_image_t* convert_gray_to_rgb(opj_image_t* original)
 	OPJ_UINT32 compno;
 	opj_image_t* l_new_image = NULL;
 	opj_image_cmptparm_t* l_new_components = NULL;
-	
+
 	l_new_components = (opj_image_cmptparm_t*)malloc((original->numcomps + 2U) * sizeof(opj_image_cmptparm_t));
 	if (l_new_components == NULL) {
 		fprintf(stderr, "ERROR -> opj_decompress: failed to allocate memory for RGB image!\n");
 		opj_image_destroy(original);
 		return NULL;
 	}
-	
+
 	l_new_components[0].bpp  = l_new_components[1].bpp  = l_new_components[2].bpp  = original->comps[0].bpp;
 	l_new_components[0].dx   = l_new_components[1].dx   = l_new_components[2].dx   = original->comps[0].dx;
 	l_new_components[0].dy   = l_new_components[1].dy   = l_new_components[2].dy   = original->comps[0].dy;
@@ -968,7 +968,7 @@ static opj_image_t* convert_gray_to_rgb(opj_image_t* original)
 	l_new_components[0].sgnd = l_new_components[1].sgnd = l_new_components[2].sgnd = original->comps[0].sgnd;
 	l_new_components[0].x0   = l_new_components[1].x0   = l_new_components[2].x0   = original->comps[0].x0;
 	l_new_components[0].y0   = l_new_components[1].y0   = l_new_components[2].y0   = original->comps[0].y0;
-	
+
 	for(compno = 1U; compno < original->numcomps; ++compno) {
 		l_new_components[compno+2U].bpp  = original->comps[compno].bpp;
 		l_new_components[compno+2U].dx   = original->comps[compno].dx;
@@ -980,7 +980,7 @@ static opj_image_t* convert_gray_to_rgb(opj_image_t* original)
 		l_new_components[compno+2U].x0   = original->comps[compno].x0;
 		l_new_components[compno+2U].y0   = original->comps[compno].y0;
 	}
-	
+
 	l_new_image = opj_image_create(original->numcomps + 2U, l_new_components, OPJ_CLRSPC_SRGB);
 	free(l_new_components);
 	if (l_new_image == NULL) {
@@ -988,20 +988,20 @@ static opj_image_t* convert_gray_to_rgb(opj_image_t* original)
 		opj_image_destroy(original);
 		return NULL;
 	}
-	
+
 	l_new_image->x0 = original->x0;
 	l_new_image->x1 = original->x1;
 	l_new_image->y0 = original->y0;
 	l_new_image->y1 = original->y1;
-	
+
 	l_new_image->comps[0].factor        = l_new_image->comps[1].factor        = l_new_image->comps[2].factor        = original->comps[0].factor;
 	l_new_image->comps[0].alpha         = l_new_image->comps[1].alpha         = l_new_image->comps[2].alpha         = original->comps[0].alpha;
 	l_new_image->comps[0].resno_decoded = l_new_image->comps[1].resno_decoded = l_new_image->comps[2].resno_decoded = original->comps[0].resno_decoded;
-	
+
 	memcpy(l_new_image->comps[0].data, original->comps[0].data, original->comps[0].w * original->comps[0].h * sizeof(OPJ_INT32));
 	memcpy(l_new_image->comps[1].data, original->comps[0].data, original->comps[0].w * original->comps[0].h * sizeof(OPJ_INT32));
 	memcpy(l_new_image->comps[2].data, original->comps[0].data, original->comps[0].w * original->comps[0].h * sizeof(OPJ_INT32));
-	
+
 	for(compno = 1U; compno < original->numcomps; ++compno) {
 		l_new_image->comps[compno+2U].factor        = original->comps[compno].factor;
 		l_new_image->comps[compno+2U].alpha         = original->comps[compno].alpha;
@@ -1042,11 +1042,11 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 		opj_image_destroy(original);
 		return NULL;
 	}
-	
+
 	for (compno = 0U; compno < original->numcomps; ++compno) {
 		opj_image_cmptparm_t* l_new_cmp = &(l_new_components[compno]);
 		opj_image_comp_t*     l_org_cmp = &(original->comps[compno]);
-		
+
 		l_new_cmp->bpp  = l_org_cmp->bpp;
 		l_new_cmp->prec = l_org_cmp->prec;
 		l_new_cmp->sgnd = l_org_cmp->sgnd;
@@ -1056,16 +1056,16 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 		l_new_cmp->dy   = 1;
 		l_new_cmp->w    = l_org_cmp->w; /* should be original->x1 - original->x0 for dx==1 */
 		l_new_cmp->h    = l_org_cmp->h; /* should be original->y1 - original->y0 for dy==0 */
-		
+
 		if (l_org_cmp->dx > 1U) {
 			l_new_cmp->w = original->x1 - original->x0;
 		}
-		
+
 		if (l_org_cmp->dy > 1U) {
 			l_new_cmp->h = original->y1 - original->y0;
 		}
 	}
-	
+
 	l_new_image = opj_image_create(original->numcomps, l_new_components, original->color_space);
 	free(l_new_components);
 	if (l_new_image == NULL) {
@@ -1073,26 +1073,26 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 		opj_image_destroy(original);
 		return NULL;
 	}
-	
+
 	l_new_image->x0 = original->x0;
 	l_new_image->x1 = original->x1;
 	l_new_image->y0 = original->y0;
 	l_new_image->y1 = original->y1;
-	
+
 	for (compno = 0U; compno < original->numcomps; ++compno) {
 		opj_image_comp_t* l_new_cmp = &(l_new_image->comps[compno]);
 		opj_image_comp_t* l_org_cmp = &(original->comps[compno]);
-		
+
 		l_new_cmp->factor        = l_org_cmp->factor;
 		l_new_cmp->alpha         = l_org_cmp->alpha;
 		l_new_cmp->resno_decoded = l_org_cmp->resno_decoded;
-		
+
 		if ((l_org_cmp->dx > 1U) || (l_org_cmp->dy > 1U)) {
 			const OPJ_INT32* l_src = l_org_cmp->data;
 			OPJ_INT32*       l_dst = l_new_cmp->data;
 			OPJ_UINT32 y;
 			OPJ_UINT32 xoff, yoff;
-			
+
 			/* need to take into account dx & dy */
 			xoff = l_org_cmp->dx * l_org_cmp->x0 -  original->x0;
 			yoff = l_org_cmp->dy * l_org_cmp->y0 -  original->y0;
@@ -1102,17 +1102,17 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 				opj_image_destroy(l_new_image);
 				return NULL;
 			}
-			
+
 			for (y = 0U; y < yoff; ++y) {
 				memset(l_dst, 0U, l_new_cmp->w * sizeof(OPJ_INT32));
 				l_dst += l_new_cmp->w;
 			}
-			
+
 			if(l_new_cmp->h > (l_org_cmp->dy - 1U)) { /* check subtraction overflow for really small images */
 				for (; y < l_new_cmp->h - (l_org_cmp->dy - 1U); y += l_org_cmp->dy) {
 					OPJ_UINT32 x, dy;
 					OPJ_UINT32 xorg;
-					
+
 					xorg = 0U;
 					for (x = 0U; x < xoff; ++x) {
 						l_dst[x] = 0;
@@ -1129,7 +1129,7 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 						l_dst[x] = l_src[xorg];
 					}
 					l_dst += l_new_cmp->w;
-						
+
 					for (dy = 1U; dy < l_org_cmp->dy; ++dy) {
 						memcpy(l_dst, l_dst - l_new_cmp->w, l_new_cmp->w * sizeof(OPJ_INT32));
 						l_dst += l_new_cmp->w;
@@ -1140,7 +1140,7 @@ static opj_image_t* upsample_image_components(opj_image_t* original)
 			if (y < l_new_cmp->h) {
 				OPJ_UINT32 x;
 				OPJ_UINT32 xorg;
-				
+
 				xorg = 0U;
 				for (x = 0U; x < xoff; ++x) {
 					l_dst[x] = 0;
@@ -1205,7 +1205,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Initialize reading of directory */
-	if(img_fol.set_imgdir==1){	
+	if(img_fol.set_imgdir==1){
 		int it_image;
 		num_images=get_num_images(img_fol.imgdirpath);
 
@@ -1287,7 +1287,7 @@ int main(int argc, char **argv)
 				continue;
 		}
 
-		/* catch events using our callbacks and give a local context */		
+		/* catch events using our callbacks and give a local context */
 		opj_set_info_handler(l_codec, info_callback,00);
 		opj_set_warning_handler(l_codec, warning_callback,00);
 		opj_set_error_handler(l_codec, error_callback,00);
@@ -1364,7 +1364,7 @@ int main(int argc, char **argv)
 		/* Close the byte stream */
 		opj_stream_destroy(l_stream);
 
-		if( image->color_space != OPJ_CLRSPC_SYCC 
+		if( image->color_space != OPJ_CLRSPC_SYCC
 			&& image->numcomps == 3 && image->comps[0].dx == image->comps[0].dy
 			&& image->comps[1].dx != 1 )
 			image->color_space = OPJ_CLRSPC_SYCC;
@@ -1380,7 +1380,7 @@ int main(int argc, char **argv)
 		else if(image->color_space == OPJ_CLRSPC_EYCC){
 			color_esycc_to_rgb(image);
 		}
-		
+
 		if(image->icc_profile_buf) {
 #if defined(OPJ_HAVE_LIBLCMS1) || defined(OPJ_HAVE_LIBLCMS2)
 			if(image->icc_profile_len)
@@ -1391,7 +1391,7 @@ int main(int argc, char **argv)
 			free(image->icc_profile_buf);
 			image->icc_profile_buf = NULL; image->icc_profile_len = 0;
 		}
-		
+
 		/* Force output precision */
 		/* ---------------------- */
 		if (parameters.precision != NULL)
@@ -1401,16 +1401,16 @@ int main(int argc, char **argv)
 			{
 				OPJ_UINT32 precno = compno;
 				OPJ_UINT32 prec;
-				
+
 				if (precno >= parameters.nb_precision) {
 					precno = parameters.nb_precision - 1U;
 				}
-				
+
 				prec = parameters.precision[precno].prec;
 				if (prec == 0) {
 					prec = image->comps[compno].prec;
 				}
-				
+
 				switch (parameters.precision[precno].mode) {
 					case OPJ_PREC_MODE_CLIP:
 						clip_component(&(image->comps[compno]), prec);
@@ -1421,10 +1421,10 @@ int main(int argc, char **argv)
 					default:
 						break;
 				}
-				
+
 			}
 		}
-		
+
 		/* Upsample components */
 		/* ------------------- */
 		if (parameters.upsample)
@@ -1437,7 +1437,7 @@ int main(int argc, char **argv)
 				return EXIT_FAILURE;
 			}
 		}
-		
+
 		/* Force RGB output */
 		/* ---------------- */
 		if (parameters.force_rgb)

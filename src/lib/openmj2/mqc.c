@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * All rights reserved.
@@ -72,13 +72,13 @@ static void mqc_setbits(opj_mqc_t *mqc);
 /**
 FIXME: documentation ???
 @param mqc MQC handle
-@return 
+@return
 */
 static INLINE int mqc_mpsexchange(opj_mqc_t *const mqc);
 /**
 FIXME: documentation ???
 @param mqc MQC handle
-@return 
+@return
 */
 static INLINE int mqc_lpsexchange(opj_mqc_t *const mqc);
 /**
@@ -195,7 +195,7 @@ static opj_mqc_state_t mqc_states[47 * 2] = {
 	{0x5601, 1, &mqc_states[93], &mqc_states[93]},
 };
 
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
@@ -285,7 +285,7 @@ static INLINE int mqc_mpsexchange(opj_mqc_t *const mqc) {
 		d = (*mqc->curctx)->mps;
 		*mqc->curctx = (*mqc->curctx)->nmps;
 	}
-	
+
 	return d;
 }
 
@@ -300,7 +300,7 @@ static INLINE int mqc_lpsexchange(opj_mqc_t *const mqc) {
 		d = 1 - (*mqc->curctx)->mps;
 		*mqc->curctx = (*mqc->curctx)->nlps;
 	}
-	
+
 	return d;
 }
 
@@ -352,7 +352,7 @@ static INLINE void mqc_renormd(opj_mqc_t *const mqc) {
 	} while (mqc->a < 0x8000);
 }
 
-/* 
+/*
 ==========================================================
    MQ-Coder interface
 ==========================================================
@@ -407,7 +407,7 @@ void mqc_flush(opj_mqc_t *mqc) {
 	mqc_byteout(mqc);
 	mqc->c <<= mqc->ct;
 	mqc_byteout(mqc);
-	
+
 	if (*mqc->bp != 0xff) {
 		mqc->bp++;
 	}
@@ -437,9 +437,9 @@ void mqc_bypass_enc(opj_mqc_t *mqc, int d) {
 
 int mqc_bypass_flush_enc(opj_mqc_t *mqc) {
 	unsigned char bit_padding;
-	
+
 	bit_padding = 0;
-	
+
 	if (mqc->ct != 0) {
 		while (mqc->ct > 0) {
 			mqc->ct--;
@@ -451,7 +451,7 @@ int mqc_bypass_flush_enc(opj_mqc_t *mqc) {
 		mqc->ct = 8;
 		mqc->c = 0;
 	}
-	
+
 	return 1;
 }
 
@@ -464,7 +464,7 @@ void mqc_reset_enc(opj_mqc_t *mqc) {
 
 int mqc_restart_enc(opj_mqc_t *mqc) {
 	int correction = 1;
-	
+
 	/* <flush part> */
 	int n = 27 - 15 - mqc->ct;
 	mqc->c <<= mqc->ct;
@@ -474,7 +474,7 @@ int mqc_restart_enc(opj_mqc_t *mqc) {
 		mqc->c <<= mqc->ct;
 	}
 	mqc_byteout(mqc);
-	
+
 	return correction;
 }
 
@@ -492,14 +492,14 @@ void mqc_restart_init_enc(opj_mqc_t *mqc) {
 
 void mqc_erterm_enc(opj_mqc_t *mqc) {
 	int k = 11 - mqc->ct + 1;
-	
+
 	while (k > 0) {
 		mqc->c <<= mqc->ct;
 		mqc->ct = 0;
 		mqc_byteout(mqc);
 		k -= mqc->ct;
 	}
-	
+
 	if (*mqc->bp != 0xff) {
 		mqc_byteout(mqc);
 	}
@@ -508,7 +508,7 @@ void mqc_erterm_enc(opj_mqc_t *mqc) {
 void mqc_segmark_enc(opj_mqc_t *mqc) {
 	int i;
 	mqc_setcurctx(mqc, 18);
-	
+
 	for (i = 1; i < 5; i++) {
 		mqc_encode(mqc, i % 2);
 	}

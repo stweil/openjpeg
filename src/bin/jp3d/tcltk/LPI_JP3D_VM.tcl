@@ -47,7 +47,7 @@ proc jp3dVM::create { } {
             }
         }
 	"&Help" {} {} 0 {
-            {command "&About authors..." {} "Show info about authors" {} 
+            {command "&About authors..." {} "Show info about authors" {}
 		-command {MessageDlg .msgdlg -parent . -title "About authors" -message " Copyright @ LPI-UVA 2006 " -type ok -icon info}}
         }
     }
@@ -67,7 +67,7 @@ proc jp3dVM::create { } {
     #creo imagen logo
     image create photo LPIimg -file logoLPI.gif
     set logoimg [Label $logo.logoimg -image LPIimg]
-    
+
     set f0  [VMEncoder::create $notebook]
     set f1  [VMDecoder::create $notebook]
 
@@ -79,15 +79,15 @@ proc jp3dVM::create { } {
 	set subf [$sf getframe]
 	set labinfo [label $subf.labinfo -textvariable jp3dVM::dataout -justify left]
 
-	pack $labinfo -side left 
-	pack $sw 
+	pack $labinfo -side left
+	pack $sw
 
     $notebook compute_size
     $notebook raise [$notebook page 0]
 
-    pack $logoimg -side left -fill x -expand yes 
-    pack $notebook -expand yes 
-    pack $logo $tfinfo -side left -expand yes 
+    pack $logoimg -side left -fill x -expand yes
+    pack $notebook -expand yes
+    pack $logo $tfinfo -side left -expand yes
     pack $mainframe -fill both -expand yes
     update idletasks
 }

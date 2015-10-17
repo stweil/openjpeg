@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -1002,7 +1002,7 @@ wxPanel* OPJEncoderDialog::CreatePart1_2SettingsPage(wxWindow* parent)
 
 		// sub top sizer
 		wxFlexGridSizer *subtopSizer = new wxFlexGridSizer(2, 3, 3);
-			
+
 			// resilience settings, column
 			wxStaticBox* resilBox = new wxStaticBox(panel, wxID_ANY, wxT("Error resilience"));
 			wxBoxSizer* resilSizer = new wxStaticBoxSizer(resilBox, wxVERTICAL);
@@ -1159,7 +1159,7 @@ wxPanel* OPJEncoderDialog::CreatePart1_2SettingsPage(wxWindow* parent)
 			pocSizer->Add(pocspecSizer, 0, wxGROW | wxALL, 3);
 
 		subtopSizer->Add(pocSizer, 0, wxGROW | wxALL, 3);
-			
+
 			// Comment settings, column
 			wxStaticBox* commentBox = new wxStaticBox(panel, wxID_ANY, wxT("Comment"));
 			wxBoxSizer* commentSizer = new wxStaticBoxSizer(commentBox, wxVERTICAL);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+ * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

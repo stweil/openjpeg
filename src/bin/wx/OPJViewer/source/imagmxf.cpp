@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -122,11 +122,11 @@ void mxflib::warning(const char *Fmt, ...)
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[WARNING_MXF] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -144,11 +144,11 @@ void mxflib::error(const char *Fmt, ...)
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[ERROR_MXF] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -166,11 +166,11 @@ void mxflib::debug(const char *Fmt, ...)
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[DEBUG_MXF] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -193,11 +193,11 @@ void mxf_error_callback(const char *msg, void *client_data) {
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[ERROR] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -207,11 +207,11 @@ void mxf_warning_callback(const char *msg, void *client_data) {
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[WARNING] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -221,11 +221,11 @@ void mxf_info_callback(const char *msg, void *client_data) {
 	int message_len = strlen(msg) - 1;
 	if (msg[message_len] != '\n')
 		message_len = MAX_MESSAGE_LEN;
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 		wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("[INFO] %.*s"), message_len, msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -244,7 +244,7 @@ bool wxMXFHandler::LoadFile(wxImage *image, wxInputStream& stream, bool verbose,
     unsigned char *ptr;
 	int file_length, j2k_point, j2k_len;
 	opj_codestream_info_t cstr_info;  /* Codestream information structure */
-	
+
 	// simply display the version of the library
 	wxLogMessage(wxT("Version of MXF: %s   "), wxString::FromAscii(LibraryVersion().c_str()));
 	//wxLogMessage(wxT("MXF file name: %s"), m_filename.GetFullPath());
@@ -270,12 +270,12 @@ bool wxMXFHandler::LoadFile(wxImage *image, wxInputStream& stream, bool verbose,
 	TestFile->Close();
 
 	return false;
-	
+
 	// destroy the image
     image->Destroy();
 
 	/* handle to a decompressor */
-	opj_dinfo_t* dinfo = NULL;	
+	opj_dinfo_t* dinfo = NULL;
 	opj_cio_t *cio = NULL;
 
 	/* configure the event callbacks (not required) */
@@ -411,7 +411,7 @@ bool BuildEssenceInfo(MXFFilePtr &File, EssenceInfoMap &EssenceLookup)
 		warning("File %s does not contain a cloased copy of header metadata - using the open copy in the file header\n", File->Name.c_str());
 	}
 
-	if(!MasterPartition) 
+	if(!MasterPartition)
 	{
 		error("Could not read header metadata from file %s\n", File->Name.c_str());
 		return false;
@@ -420,8 +420,8 @@ bool BuildEssenceInfo(MXFFilePtr &File, EssenceInfoMap &EssenceLookup)
 	// Read and parse the metadata
 	MasterPartition->ReadMetadata();
 	MetadataPtr HMeta = MasterPartition->ParseMetadata();
-	
-	if(!HMeta) 
+
+	if(!HMeta)
 	{
 		error("Could not read header metadata from file %s\n", File->Name.c_str());
 		return false;
@@ -473,7 +473,7 @@ bool BuildEssenceInfo(MXFFilePtr &File, EssenceInfoMap &EssenceLookup)
 					if(PackageID)
 					{
 						UMIDPtr TheID = new UMID(PackageID->PutData()->Data);
-						
+
 						/* Now do a lookup in the essence lookup map (it will need to be done the long way here */
 						EssenceInfoMap::iterator EL_it = EssenceLookup.begin();
 						while(EL_it != EssenceLookup.end())

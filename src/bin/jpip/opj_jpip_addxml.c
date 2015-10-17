@@ -36,7 +36,7 @@
  *   -# Input/output image file in JP2 format, this JP2 file is being modified
  *   -# Input XML file with metadata contents\n
  *   % ./addXMLinJP2 image.jp2 metadata.xml\n
- *  
+ *
  *  Currently, this program does not parse XML file, and the XML file contents is directly embedded as a XML Box.\n
  *  The following is an example of XML file contents specifying Region Of Interests with target names.\n
  *  <xmlbox>\n
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   fp = open_jp2file( argv[1]);
   if( !fp)
     return -1;
-  
+
   xmldata = read_xmlfile( argv[2], &fsize);
   if( fsize < 0 ) return -1;
   boxsize = fsize + 8;
@@ -97,10 +97,10 @@ int main(int argc, char *argv[])
   fputc( boxsize&0xff, fp);
   fwrite( type, 4, 1, fp);
   fwrite( xmldata, (size_t)fsize, 1, fp);
-  
+
   free( xmldata);
   fclose(fp);
-  
+
   return 0;
 }
 
@@ -108,7 +108,7 @@ FILE * open_jp2file( const char filename[])
 {
   FILE *fp;
   char *data;
-  
+
   if( !(fp = fopen( filename, "a+b"))){
     fprintf( stderr, "Original JP2 %s not found\n", filename);
     return NULL;
@@ -119,7 +119,7 @@ FILE * open_jp2file( const char filename[])
     fprintf( stderr, "Original JP2 %s broken (fseek error)\n", filename);
     return NULL;
   }
-  
+
   data = (char *)malloc( 12); /* size of header */
   if( fread( data, 12, 1, fp) != 1){
     free( data);
@@ -127,7 +127,7 @@ FILE * open_jp2file( const char filename[])
     fprintf( stderr, "Original JP2 %s broken (read error)\n", filename);
     return NULL;
   }
-    
+
   if( *data || *(data + 1) || *(data + 2) ||
       *(data + 3) != 12 || strncmp (data + 4, "jP  \r\n\x87\n", 8)){
     free( data);
@@ -143,7 +143,7 @@ char * read_xmlfile( const char filename[], long *fsize)
 {
   FILE *fp;
   char *data;
-  
+
   /*  fprintf( stderr, "open %s\n", filename);*/
   if(!(fp = fopen( filename, "r"))){
     fprintf( stderr, "XML file %s not found\n", filename);
@@ -155,7 +155,7 @@ char * read_xmlfile( const char filename[], long *fsize)
     fclose( fp);
     return NULL;
   }
-    
+
   if( (*fsize = ftell( fp)) == -1){
     fprintf( stderr, "XML file %s broken (seek error)\n", filename);
     fclose( fp);
@@ -170,7 +170,7 @@ char * read_xmlfile( const char filename[], long *fsize)
   }
 
   data = (char *)malloc( (size_t)*fsize);
-  
+
   if( fread( data, (size_t)*fsize, 1, fp) != 1){
     fprintf( stderr, "XML file %s broken (read error)\n", filename);
     free( data);

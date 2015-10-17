@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -1382,7 +1382,7 @@ static int parse_cmdline_encoder(int argc, char **argv, opj_cparameters_t *param
 #endif /* USE_JPWL */
 /* <<UniPG */
 /* ------------------------------------------------------ */
-			
+
 			case 'J':			/* jpip on */
 			{
 			  /*parameters->jpip_on = OPJ_TRUE;*/
@@ -1667,7 +1667,7 @@ int main(int argc, char **argv) {
 					break;
 #endif /* OPJ_HAVE_LIBPNG */
 		}
-/* Can happen if input file is TIFF or PNG 
+/* Can happen if input file is TIFF or PNG
  * and OPJ_HAVE_LIBTIF or OPJ_HAVE_LIBPNG is undefined
 */
 			if( !image)
@@ -1752,7 +1752,7 @@ int main(int argc, char **argv) {
 				FILE *f = NULL;
 				opj_cinfo_t *cinfo = NULL;
 
-				/* get a JP2 compressor handle */				
+				/* get a JP2 compressor handle */
 				cinfo = opj_create_compress(CODEC_JP2);
 
 				/* catch events using our callbacks and give a local context */

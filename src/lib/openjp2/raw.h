@@ -1,12 +1,12 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
  * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2014, Professor Benoit Macq
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * All rights reserved.
@@ -70,7 +70,7 @@ typedef struct opj_raw {
 /*@{*/
 /* ----------------------------------------------------------------------- */
 /**
-Create a new RAW handle 
+Create a new RAW handle
 @return Returns a new RAW handle if successful, returns NULL otherwise
 */
 opj_raw_t* opj_raw_create(void);

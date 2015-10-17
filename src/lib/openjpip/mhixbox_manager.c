@@ -51,25 +51,25 @@ mhixbox_param_t * gene_mhixbox( box_param_t *box)
   OPJ_OFF_T pos = 0;
 
   mhix = ( mhixbox_param_t *)malloc( sizeof( mhixbox_param_t));
-  
+
   mhix->tlen = fetch_DBox8bytebigendian( box, (pos+=8)-8);
- 
+
   mhix->first = lastmkidx = NULL;
   while( (OPJ_SIZE_T)pos < get_DBoxlen( box)){
-    
+
     mkridx = ( markeridx_param_t *)malloc( sizeof( markeridx_param_t));
     mkridx->code       = fetch_DBox2bytebigendian( box, (pos+=2)-2);
     mkridx->num_remain = fetch_DBox2bytebigendian( box, (pos+=2)-2);
     mkridx->offset     = (OPJ_OFF_T)fetch_DBox8bytebigendian( box, (pos+=8)-8);
     mkridx->length     = fetch_DBox2bytebigendian( box, (pos+=2)-2);
     mkridx->next = NULL;
-    
+
     if( mhix->first)
       lastmkidx->next = mkridx;
     else
       mhix->first = mkridx;
     lastmkidx = mkridx;
-  } 
+  }
   return mhix;
 }
 
@@ -77,14 +77,14 @@ mhixbox_param_t * gene_mhixbox( box_param_t *box)
 markeridx_param_t * search_markeridx( Byte2_t code, mhixbox_param_t *mhix)
 {
   markeridx_param_t *found;
-  
+
   found = mhix->first;
-  
+
   while( found != NULL){
-    
+
     if( code == found->code)
       return found;
-    
+
     found = found->next;
   }
   fprintf( FCGI_stderr, "Error: Marker index %#x not found\n", code);
@@ -125,7 +125,7 @@ void print_markeridx( markeridx_param_t *markeridx)
 void delete_mhixbox( mhixbox_param_t **mhix)
 {
   markeridx_param_t *mkPtr, *mkNext;
-  
+
   mkPtr = (*mhix)->first;
   while( mkPtr != NULL){
     mkNext=mkPtr->next;

@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,10 +8,10 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
- * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR 
+ * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -47,7 +47,7 @@
 
 static void opj_t2_putcommacode(opj_bio_t *bio, OPJ_INT32 n);
 
-static OPJ_UINT32 opj_t2_getcommacode(opj_bio_t *bio); 
+static OPJ_UINT32 opj_t2_getcommacode(opj_bio_t *bio);
 /**
 Variable length code for signalling delta Zil (truncation point)
 @param bio  Bit Input/Output component
@@ -365,7 +365,7 @@ OPJ_BOOL opj_t2_decode_packets( opj_t2_t *p_t2,
 #ifdef TODO_MSD
         OPJ_UINT32 curtp = 0;
         OPJ_UINT32 tp_start_packno;
-#endif 
+#endif
         opj_packet_info_t *l_pack_info = 00;
         opj_image_comp_t* l_img_comp = 00;
 
@@ -394,13 +394,13 @@ OPJ_BOOL opj_t2_decode_packets( opj_t2_t *p_t2,
                  * and no l_img_comp->resno_decoded are computed
                  */
                 OPJ_BOOL* first_pass_failed = NULL;
-					
+
                 if (l_current_pi->poc.prg == OPJ_PROG_UNKNOWN) {
                     /* TODO ADE : add an error */
                     opj_pi_destroy(l_pi, l_nb_pocs);
                     return OPJ_FALSE;
                 }
-					
+
                 first_pass_failed = (OPJ_BOOL*)opj_malloc(l_image->numcomps * sizeof(OPJ_BOOL));
                 if (!first_pass_failed)
                 {
@@ -1200,7 +1200,7 @@ static OPJ_BOOL opj_t2_read_packet_data(   opj_t2_t* p_t2,
                                     l_cblk->data_max_size = l_cblk->data_current_size + l_seg->newlen;
                                     l_cblk->data = new_cblk_data;
                                 }
-                               
+
                                 memcpy(l_cblk->data + l_cblk->data_current_size, l_current_data, l_seg->newlen);
 
                                 if (l_seg->numpasses == 0) {
@@ -1338,10 +1338,10 @@ static OPJ_BOOL opj_t2_skip_packet_data(   opj_t2_t* p_t2,
 }
 
 
-static OPJ_BOOL opj_t2_init_seg(   opj_tcd_cblk_dec_t* cblk,
-                            OPJ_UINT32 index, 
-                            OPJ_UINT32 cblksty, 
-                            OPJ_UINT32 first)
+static OPJ_BOOL opj_t2_init_seg(opj_tcd_cblk_dec_t* cblk,
+                                OPJ_UINT32 index,
+                                OPJ_UINT32 cblksty,
+                                OPJ_UINT32 first)
 {
         opj_tcd_seg_t* seg = 00;
         OPJ_UINT32 l_nb_segs = index + 1;

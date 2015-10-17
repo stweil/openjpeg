@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -57,7 +57,7 @@
 #define JP2_CDEF 0x63646566		/**< Channel Definition box */
 
 /* ----------------------------------------------------------------------- */
-/** 
+/**
 Channel description: channel index, type, association
 */
 typedef struct opj_jp2_cdef_info
@@ -65,7 +65,7 @@ typedef struct opj_jp2_cdef_info
     unsigned short cn, typ, asoc;
 } opj_jp2_cdef_info_t;
 
-/** 
+/**
 Channel descriptions and number of descriptions
 */
 typedef struct opj_jp2_cdef
@@ -74,7 +74,7 @@ typedef struct opj_jp2_cdef
     unsigned short n;
 } opj_jp2_cdef_t;
 
-/** 
+/**
 Component mappings: channel index, mapping type, palette index
 */
 typedef struct opj_jp2_cmap_comp
@@ -83,7 +83,7 @@ typedef struct opj_jp2_cmap_comp
     unsigned char mtyp, pcol;
 } opj_jp2_cmap_comp_t;
 
-/** 
+/**
 Palette data: table entries, palette columns
 */
 typedef struct opj_jp2_pclr
@@ -95,8 +95,8 @@ typedef struct opj_jp2_pclr
     unsigned short nr_entries, nr_channels;
 } opj_jp2_pclr_t;
 
-/** 
-Collector for ICC profile, palette, component mapping, channel description 
+/**
+Collector for ICC profile, palette, component mapping, channel description
 */
 typedef struct opj_jp2_color
 {
@@ -108,12 +108,12 @@ typedef struct opj_jp2_color
     unsigned char jp2_has_colr;
 } opj_jp2_color_t;
 
-/** 
+/**
 JP2 component
 */
 typedef struct opj_jp2_comps {
-  int depth;		  
-  int sgnd;		   
+  int depth;
+  int sgnd;
   int bpcc;
 } opj_jp2_comps_t;
 
@@ -185,7 +185,7 @@ Destroy a JP2 decompressor handle
 void jp2_destroy_decompress(opj_jp2_t *jp2);
 /**
 Setup the decoder decoding parameters using user parameters.
-Decoding parameters are returned in jp2->j2k->cp. 
+Decoding parameters are returned in jp2->j2k->cp.
 @param jp2 JP2 decompressor handle
 @param parameters decompression parameters
 */
@@ -210,8 +210,8 @@ Destroy a JP2 compressor handle
 */
 void jp2_destroy_compress(opj_jp2_t *jp2);
 /**
-Setup the encoder parameters using the current image and using user parameters. 
-Coding parameters are returned in jp2->j2k->cp. 
+Setup the encoder parameters using the current image and using user parameters.
+Coding parameters are returned in jp2->j2k->cp.
 @param jp2 JP2 compressor handle
 @param parameters compression parameters
 @param image input filled image

@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -47,31 +47,31 @@
 /**
 Get next packet in layer-resolution-component-precinct order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static opj_bool pi_next_lrcp(opj_pi_iterator_t * pi);
 /**
 Get next packet in resolution-layer-component-precinct order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static opj_bool pi_next_rlcp(opj_pi_iterator_t * pi);
 /**
 Get next packet in resolution-precinct-component-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static opj_bool pi_next_rpcl(opj_pi_iterator_t * pi);
 /**
 Get next packet in precinct-component-resolution-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static opj_bool pi_next_pcrl(opj_pi_iterator_t * pi);
 /**
 Get next packet in component-precinct-resolution-layer order.
 @param pi packet iterator to modify
-@return returns false if pi pointed to the last packet or else returns true 
+@return returns false if pi pointed to the last packet or else returns true
 */
 static opj_bool pi_next_cprl(opj_pi_iterator_t * pi);
 
@@ -79,7 +79,7 @@ static opj_bool pi_next_cprl(opj_pi_iterator_t * pi);
 
 /*@}*/
 
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
@@ -89,7 +89,7 @@ static opj_bool pi_next_lrcp(opj_pi_iterator_t * pi) {
 	opj_pi_comp_t *comp = NULL;
 	opj_pi_resolution_t *res = NULL;
 	long index = 0;
-	
+
 	if (!pi->first) {
 		comp = &pi->comps[pi->compno];
 		res = &comp->resolutions[pi->resno];
@@ -121,7 +121,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -160,7 +160,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -216,19 +216,19 @@ if (!pi->tp_on){
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
-						continue; 
+						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
-					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx) 
+
+					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx)
 						 - int_floordivpow2(trx0, res->pdx);
-					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy) 
+					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy)
 						 - int_floordivpow2(try0, res->pdy);
 					pi->precno = prci + prcj * res->pw;
 					for (pi->layno = pi->poc.layno0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -243,7 +243,7 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -297,19 +297,19 @@ static opj_bool pi_next_pcrl(opj_pi_iterator_t * pi) {
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
-						continue; 
+						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
-					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx) 
+
+					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx)
 						 - int_floordivpow2(trx0, res->pdx);
-					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy) 
+					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy)
 						 - int_floordivpow2(try0, res->pdy);
 					pi->precno = prci + prcj * res->pw;
 					for (pi->layno = pi->poc.layno0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -317,14 +317,14 @@ static opj_bool pi_next_pcrl(opj_pi_iterator_t * pi) {
 						if (!pi->include[index]) {
 							pi->include[index] = 1;
 							return OPJ_TRUE;
-						}	
+						}
 LABEL_SKIP:;
 					}
 				}
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -376,19 +376,19 @@ static opj_bool pi_next_cprl(opj_pi_iterator_t * pi) {
 					rpx = res->pdx + levelno;
 					rpy = res->pdy + levelno;
 					if (!((pi->y % (comp->dy << rpy) == 0) || ((pi->y == pi->ty0) && ((try0 << levelno) % (1 << rpy))))){
-						continue;	
+						continue;
 					}
 					if (!((pi->x % (comp->dx << rpx) == 0) || ((pi->x == pi->tx0) && ((trx0 << levelno) % (1 << rpx))))){
-						continue; 
+						continue;
 					}
-					
+
 					if ((res->pw==0)||(res->ph==0)) continue;
-					
+
 					if ((trx0==trx1)||(try0==try1)) continue;
-					
-					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx) 
+
+					prci = int_floordivpow2(int_ceildiv(pi->x, comp->dx << levelno), res->pdx)
 						 - int_floordivpow2(trx0, res->pdx);
-					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy) 
+					prcj = int_floordivpow2(int_ceildiv(pi->y, comp->dy << levelno), res->pdy)
 						 - int_floordivpow2(try0, res->pdy);
 					pi->precno = prci + prcj * res->pw;
 					for (pi->layno = pi->poc.layno0; pi->layno < pi->poc.layno1; pi->layno++) {
@@ -403,11 +403,11 @@ LABEL_SKIP:;
 			}
 		}
 	}
-	
+
 	return OPJ_FALSE;
 }
 
-/* 
+/*
 ==========================================================
    Packet iterator interface
 ==========================================================
@@ -446,7 +446,7 @@ opj_pi_iterator_t *pi_create_decode(opj_image_t *image, opj_cp_t *cp, int tileno
 			pi_destroy(pi, cp, tileno);
 			return NULL;
 		}
-		
+
 		for (compno = 0; compno < pi->numcomps; compno++) {
 			int tcx0, tcy0, tcx1, tcy1;
 			opj_pi_comp_t *comp = &pi[pino].comps[compno];
@@ -493,20 +493,20 @@ opj_pi_iterator_t *pi_create_decode(opj_image_t *image, opj_cp_t *cp, int tileno
 				py1 = int_ceildivpow2(ry1, res->pdy) << res->pdy;
 				res->pw = (rx0==rx1)?0:((px1 - px0) >> res->pdx);
 				res->ph = (ry0==ry1)?0:((py1 - py0) >> res->pdy);
-				
+
 				if (res->pw*res->ph > maxprec) {
 					maxprec = res->pw*res->ph;
 				}
-				
+
 			}
 		}
-		
+
 		tccp = &tcp->tccps[0];
 		pi[pino].step_p = 1;
 		pi[pino].step_c = maxprec * pi[pino].step_p;
 		pi[pino].step_r = image->numcomps * pi[pino].step_c;
 		pi[pino].step_l = maxres * pi[pino].step_r;
-		
+
 		if (pino == 0) {
 			pi[pino].include = (short int*) opj_calloc(image->numcomps * maxres * tcp->numlayers * maxprec, sizeof(short int));
 			if(!pi[pino].include) {
@@ -518,7 +518,7 @@ opj_pi_iterator_t *pi_create_decode(opj_image_t *image, opj_cp_t *cp, int tileno
 		else {
 			pi[pino].include = pi[pino - 1].include;
 		}
-		
+
 		if (tcp->POC == 0) {
 			pi[pino].first = 1;
 			pi[pino].poc.resno0 = 0;
@@ -537,16 +537,16 @@ opj_pi_iterator_t *pi_create_decode(opj_image_t *image, opj_cp_t *cp, int tileno
 			pi[pino].poc.prg = tcp->pocs[pino].prg;
 		}
 		pi[pino].poc.layno0  = 0;
-		pi[pino].poc.precno0 = 0; 
+		pi[pino].poc.precno0 = 0;
 		pi[pino].poc.precno1 = maxprec;
-			
+
 	}
-	
+
 	return pi;
 }
 
 
-opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int tileno, J2K_T2_MODE t2_mode){ 
+opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int tileno, J2K_T2_MODE t2_mode){
 	int p, q, pino;
 	int compno, resno;
 	int maxres = 0;
@@ -554,7 +554,7 @@ opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int ti
 	opj_pi_iterator_t *pi = NULL;
 	opj_tcp_t *tcp = NULL;
 	opj_tccp_t *tccp = NULL;
-	
+
 	tcp = &cp->tcps[tileno];
 
 	pi = (opj_pi_iterator_t*) opj_calloc((tcp->numpocs + 1), sizeof(opj_pi_iterator_t));
@@ -570,13 +570,13 @@ opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int ti
 		pi[pino].tx1 = int_min(cp->tx0 + (p + 1) * cp->tdx, image->x1);
 		pi[pino].ty1 = int_min(cp->ty0 + (q + 1) * cp->tdy, image->y1);
 		pi[pino].numcomps = image->numcomps;
-		
+
 		pi[pino].comps = (opj_pi_comp_t*) opj_calloc(image->numcomps, sizeof(opj_pi_comp_t));
 		if(!pi[pino].comps) {
 			pi_destroy(pi, cp, tileno);
 			return NULL;
 		}
-		
+
 		for (compno = 0; compno < pi[pino].numcomps; compno++) {
 			int tcx0, tcy0, tcx1, tcy1;
 			opj_pi_comp_t *comp = &pi[pino].comps[compno];
@@ -628,13 +628,13 @@ opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int ti
 				}
 			}
 		}
-		
+
 		tccp = &tcp->tccps[0];
 		pi[pino].step_p = 1;
 		pi[pino].step_c = maxprec * pi[pino].step_p;
 		pi[pino].step_r = image->numcomps * pi[pino].step_c;
 		pi[pino].step_l = maxres * pi[pino].step_r;
-		
+
 		for (compno = 0; compno < pi->numcomps; compno++) {
 			opj_pi_comp_t *comp = &pi->comps[compno];
 			for (resno = 0; resno < comp->numresolutions; resno++) {
@@ -657,7 +657,7 @@ opj_pi_iterator_t *pi_initialise_encode(opj_image_t *image, opj_cp_t *cp, int ti
 		else {
 			pi[pino].include = pi[pino - 1].include;
 		}
-		
+
 		/* Generation of boundaries for each prog flag*/
 			if(tcp->POC && ( cp->cinema || ((!cp->cinema) && (t2_mode == FINAL_PASS)))){
 				tcp->pocs[pino].compS= tcp->pocs[pino].compno0;
@@ -695,7 +695,7 @@ void pi_destroy(opj_pi_iterator_t *pi, opj_cp_t *cp, int tileno) {
 	int compno, pino;
 	opj_tcp_t *tcp = &cp->tcps[tileno];
 	if(pi) {
-		for (pino = 0; pino < tcp->numpocs + 1; pino++) {	
+		for (pino = 0; pino < tcp->numpocs + 1; pino++) {
 			if(pi[pino].comps) {
 				for (compno = 0; compno < pi->numcomps; compno++) {
 					opj_pi_comp_t *comp = &pi[pino].comps[compno];
@@ -728,7 +728,7 @@ opj_bool pi_next(opj_pi_iterator_t * pi) {
 		case PROG_UNKNOWN:
 			return OPJ_FALSE;
 	}
-	
+
 	return OPJ_FALSE;
 }
 
@@ -753,7 +753,7 @@ opj_bool pi_create_encode( opj_pi_iterator_t *pi, opj_cp_t *cp,int tileno, int p
 			break;
 		case RPCL: strncpy(prog, "RPCL",4);
 			break;
-		case PROG_UNKNOWN: 
+		case PROG_UNKNOWN:
 			return OPJ_TRUE;
 	}
 
@@ -882,7 +882,7 @@ opj_bool pi_create_encode( opj_pi_iterator_t *pi, opj_cp_t *cp,int tileno, int p
 									tcp->prc_t = tcp->prcS;
 									pi[pino].poc.precno0 = tcp->prc_t;
 									pi[pino].poc.precno1 = tcp->prc_t+1;
-									tcp->prc_t+=1; 
+									tcp->prc_t+=1;
 								}else{
 									if (incr_top == 1){
 										if(tcp->prc_t == tcp->prcE){
@@ -960,10 +960,10 @@ opj_bool pi_create_encode( opj_pi_iterator_t *pi, opj_cp_t *cp,int tileno, int p
 						break;
 						}
 						break;
-				}		
-			} 
+				}
+			}
 		}
-	}	
+	}
 	return OPJ_FALSE;
 }
 

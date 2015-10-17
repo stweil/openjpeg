@@ -3,7 +3,7 @@
 /* Contributed to Open JPEG by Glenn Pearson, contract software developer, U.S. National Library of Medicine.
 
 The base code in this file was developed by the author as part of a video archiving
-project for the U.S. National Library of Medicine, Bethesda, MD. 
+project for the U.S. National Library of Medicine, Bethesda, MD.
 It is the policy of NLM (and U.S. government) to not assert copyright.
 
 A non-exclusive copy of this code has been contributed to the Open JPEG project.
@@ -54,7 +54,7 @@ void help_display()
   fprintf(stdout,"                Help for the 'mj2_to_metadata' Program\n");
   fprintf(stdout,"                ======================================\n");
   fprintf(stdout,"The -h option displays this information on screen.\n\n");
-  
+
   fprintf(stdout,"mj2_to_metadata generates an XML file from a Motion JPEG 2000 file.\n");
   fprintf(stdout,"The generated XML shows the structural, but not (yet) curatorial,\n");
   fprintf(stdout,"metadata from the movie header and from the JPEG 2000 image and tile\n");
@@ -109,7 +109,7 @@ void help_display()
 
 int main(int argc, char *argv[]) {
 
-	opj_dinfo_t* dinfo; 
+	opj_dinfo_t* dinfo;
 	opj_event_mgr_t event_mgr;		/* event manager */
 
   FILE *file, *xmlout;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
       S2 = *s;
       s--;
       S1 = *s;
-      
+
       if ((S1 == 'm' && S2 == 'j' && S3 == '2')
       || (S1 == 'M' && S2 == 'J' && S3 == '2')) {
        break;
@@ -163,13 +163,13 @@ int main(int argc, char *argv[]) {
       S2 = *outfile;
       outfile--;
       S1 = *outfile;
-      
+
       outfile = optarg;
-      
+
       if ((S1 == 'x' && S2 == 'm' && S3 == 'l')
 	  || (S1 == 'X' && S2 == 'M' && S3 == 'L'))
         break;
-    
+
       fprintf(stderr,
 	  "Output file name must have .xml extension, not .%c%c%c\n", S1, S2, S3);
 	  return 1;
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
 
       if (strncmp(stringDTD,"PUBLIC ",7) == 0 || strncmp(stringDTD,"SYSTEM ",7) == 0)
         break;
-    
+
       fprintf(stderr, "-D's string must start with \"PUBLIC \" or \"SYSTEM \"\n");
 	  return 1;
 
@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 
 /* was:
   if (argc != 3) {
-    printf("Bad syntax: Usage: MJ2_to_metadata inputfile.mj2 outputfile.xml\n"); 
+    printf("Bad syntax: Usage: MJ2_to_metadata inputfile.mj2 outputfile.xml\n");
     printf("Example: MJ2_to_metadata foreman.mj2 foreman.xml\n");
     return 1;
   }
@@ -248,9 +248,9 @@ int main(int argc, char *argv[]) {
   {
     infile++; /* There may be a leading blank if user put space after -i */
   }
-  
+
   file = fopen(infile, "rb"); /* was: argv[1] */
-  
+
   if (!file) {
     fprintf(stderr, "Failed to open %s for reading.\n", infile); /* was: argv[1] */
     return 1;
@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
 	dinfo = mj2_create_decompress();
 
 	/* catch events using our callbacks and give a local context */
-	opj_set_event_mgr((opj_common_ptr)dinfo, &event_mgr, stderr);		
+	opj_set_event_mgr((opj_common_ptr)dinfo, &event_mgr, stderr);
 
 	/* setup the decoder decoding parameters using user parameters */
 	movie = (opj_mj2_t*) dinfo->mj2_handle;
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]) {
   xml_write_struct(file, xmlout, movie, sampleframe, stringDTD, &event_mgr);
   fclose(xmlout);
 
-	fprintf(stderr,"Metadata correctly extracted to XML file \n");;	
+	fprintf(stderr,"Metadata correctly extracted to XML file \n");;
 
 	/* free remaining structures */
 	if(dinfo) {

@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -130,7 +130,7 @@ void OPJ_CALLCONV opj_set_default_decoder_parameters(opj_dparameters_t *paramete
 
 		parameters->decod_format = -1;
 		parameters->cod_format = -1;
-		parameters->flags = 0;		
+		parameters->flags = 0;
 /* UniPG>> */
 #ifdef USE_JPWL
 		parameters->jpwl_correct = OPJ_FALSE;
@@ -236,7 +236,7 @@ void OPJ_CALLCONV opj_set_default_encoder_parameters(opj_cparameters_t *paramete
 	if(parameters) {
 		memset(parameters, 0, sizeof(opj_cparameters_t));
 		/* default coding parameters */
-		parameters->cp_cinema = OFF; 
+		parameters->cp_cinema = OFF;
 		parameters->max_comp_size = 0;
 		parameters->numresolution = 6;
 		parameters->cp_rsiz = STD_RSIZ;
@@ -249,7 +249,7 @@ void OPJ_CALLCONV opj_set_default_encoder_parameters(opj_cparameters_t *paramete
 		parameters->tp_on = 0;
 		parameters->decod_format = -1;
 		parameters->cod_format = -1;
-		parameters->tcp_rates[0] = 0;   
+		parameters->tcp_rates[0] = 0;
 		parameters->tcp_numlayers = 0;
     parameters->cp_disto_alloc = 0;
 		parameters->cp_fixed_alloc = 0;
@@ -320,7 +320,7 @@ opj_bool OPJ_CALLCONV opj_encode_with_info(opj_cinfo_t *cinfo, opj_cio_t *cio, o
 			case CODEC_J2K:
 				return j2k_encode((opj_j2k_t*)cinfo->j2k_handle, cio, image, cstr_info);
 			case CODEC_JP2:
-				return opj_jp2_encode((opj_jp2_t*)cinfo->jp2_handle, cio, image, cstr_info);	    
+				return opj_jp2_encode((opj_jp2_t*)cinfo->jp2_handle, cio, image, cstr_info);
 			case CODEC_JPT:
 			case CODEC_UNKNOWN:
 			default:

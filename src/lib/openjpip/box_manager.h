@@ -93,7 +93,7 @@ box_param_t * gene_boxbyOffinStream( Byte_t *stream, OPJ_OFF_T offset);
  *
  * @param[in] fd     file discriptor of the JP2 file
  * @param[in] offset start Byte position of the search
- * @param[in] length Byte length of the search, if 0, size to the end of file 
+ * @param[in] length Byte length of the search, if 0, size to the end of file
  * @param[in] TBox   Box Type
  * @return           pointer to the structure of generate/found box parameters
  */
@@ -104,7 +104,7 @@ box_param_t * gene_boxbyType( int fd, OPJ_OFF_T offset, OPJ_SIZE_T length, const
  *
  * @param[in] stream code stream ( from the first byte)
  * @param[in] offset start Byte position of the search
- * @param[in] length Byte length of the search, if 0, size to the end of file 
+ * @param[in] length Byte length of the search, if 0, size to the end of file
  * @param[in] TBox   Box Type
  * @return           pointer to the structure of generate/found box parameters
  */

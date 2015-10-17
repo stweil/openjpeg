@@ -45,7 +45,7 @@ public class ImageManager extends JPIPHttpClient
 	origwidth = 0;
 	origheight = 0;
     }
-    
+
     public int getOrigWidth(){
 	if( origwidth == 0){
 	    if( cid != null || tid != null){
@@ -61,18 +61,18 @@ public class ImageManager extends JPIPHttpClient
 	return origwidth;
     }
     public int getOrigHeight(){ return origheight;}
-    
+
     public Image getImage( String j2kfilename, int reqfw, int reqfh, boolean reqcnew, int reqaux, boolean reqJPP, boolean reqJPT)
     {
 	System.err.println();
-	
+
 	String refcid = null;
 	byte[] jpipstream;
-	
+
 	// Todo: check if the cid is for the same stream type
 	if( reqcnew)
 	    refcid = imgdecoder.query_cid( j2kfilename);
-	
+
 	if( refcid == null){
 	    String reftid = imgdecoder.query_tid( j2kfilename);
 	    if( reftid == null)
@@ -82,7 +82,7 @@ public class ImageManager extends JPIPHttpClient
 	}
 	else
 	    jpipstream = super.requestViewWindow( reqfw, reqfh, refcid, reqcnew, reqaux, reqJPP, reqJPT);
-	
+
 	System.err.println( "decoding to PNM image");
 	if((pnmimage = imgdecoder.decode_jpipstream( jpipstream, j2kfilename, tid, cid, fw, fh))!=null){
 	    System.err.println( "     done");
@@ -93,11 +93,11 @@ public class ImageManager extends JPIPHttpClient
 	    return null;
 	}
     }
-    
+
     public Image getImage( int reqfw, int reqfh, int reqrx, int reqry, int reqrw, int reqrh)
     {
 	System.err.println();
-	
+
 	byte[] jpipstream = super.requestViewWindow( reqfw, reqfh, reqrx, reqry, reqrw, reqrh);
 
 	System.err.println( "decoding to PNM image");
@@ -110,18 +110,18 @@ public class ImageManager extends JPIPHttpClient
 	    return null;
 	}
     }
-    
+
     public byte[] getXML()
     {
 	System.err.println();
-	
+
 	byte []xmldata = null;
 	byte[] jpipstream = super.requestXML();
-	
+
 	if( jpipstream != null){
 	    imgdecoder.send_JPIPstream( jpipstream);
-      
-	    xmldata = imgdecoder.get_XMLstream( cid);    
+
+	    xmldata = imgdecoder.get_XMLstream( cid);
 	}
 	return xmldata;
     }

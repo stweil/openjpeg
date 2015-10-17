@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 3-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 3-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -173,10 +173,10 @@ again:
 							fprintf(stderr,"%s: option does not require an argument. Ignoring %s\n",arg,argv[opj_optind+1]);
 							++opj_optind;
 						}
-					}else{ 
+					}else{
 						opj_optarg=argv[opj_optind+1];
 						if(opj_optarg){
-							if (opj_optarg[0] == '-'){ /* Has read next input parameter: No arg for current parameter */								
+							if (opj_optarg[0] == '-'){ /* Has read next input parameter: No arg for current parameter */
 								if (opj_opterr) {
 									fprintf(stderr,"%s: option requires an argument\n",arg);
 									return (BADCH);
@@ -246,7 +246,7 @@ found:
 				++opj_optind;
 				return (BADCH);
 			}/*end of not found*/
-		
+
 		}/* end of single character*/
 	}/*end '-'*/
 	fprintf(stderr,"Invalid option\n");

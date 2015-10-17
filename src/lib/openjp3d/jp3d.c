@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -386,7 +386,7 @@ static void j3d_dump_cp(FILE *fd, opj_volume_t * vol, opj_cp_t * cp) {
 				fprintf(fd, "(%d,%d) ", tccp->stepsizes[bandno].mant,tccp->stepsizes[bandno].expn);
 			}
 			fprintf(fd, "\n");
-			
+
 			if (tccp->csty & J3D_CCP_CSTY_PRT) {
 				fprintf(fd, "      prcw=");
 				for (resno = 0; resno < tccp->numresolution[0]; resno++) {
@@ -411,7 +411,7 @@ static void j3d_dump_cp(FILE *fd, opj_volume_t * vol, opj_cp_t * cp) {
 	fprintf(fd, "}\n");
 }
 
-/* ----------------------------------------------------------------------- 
+/* -----------------------------------------------------------------------
 Extended capabilities
 ------------------------------------------------------------------------*/
 
@@ -422,10 +422,10 @@ static void j3d_write_cap(opj_j3d_t *j3d){
 	cio_write(cio, J3D_MS_CAP, 2);	/* CAP */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
-	cio_write(cio,J3D_CAP_10, 4); 
+	cio_write(cio,J3D_CAP_10, 4);
   if( J3D_CAP_10 )
     {
-    cio_write(cio, 0x0, 2); 
+    cio_write(cio, 0x0, 2);
     }
 	len = cio_tell(cio) - lenp;
 	cio_seek(cio, lenp);
@@ -452,7 +452,7 @@ static void j3d_write_nsi(opj_j3d_t *j3d) {
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	cio_write(cio, J3D_MS_NSI, 2);	/* NSI */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
@@ -473,11 +473,11 @@ static void j3d_write_nsi(opj_j3d_t *j3d) {
 static void j3d_read_nsi(opj_j3d_t *j3d) {
   int ndim;
 	int len, i;
-	
+
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	len = cio_read(cio, 2);			/* Lnsi */
 	ndim = cio_read(cio, 1);			/* Ndim */
   assert( ndim == 3 );
@@ -488,7 +488,7 @@ static void j3d_read_nsi(opj_j3d_t *j3d) {
 	for (i = 0; i < volume->numcomps; i++) {
 		volume->comps[i].dz = cio_read(cio, 1);	/* ZRsiz_i */
 	}
-	
+
 	/*Initialization of volume*/
 	cp->tw = int_ceildiv(volume->x1 - cp->tx0, cp->tdx);
 	cp->th = int_ceildiv(volume->y1 - cp->ty0, cp->tdy);
@@ -496,20 +496,20 @@ static void j3d_read_nsi(opj_j3d_t *j3d) {
 	cp->tcps = (opj_tcp_t *) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(opj_tcp_t));
 	cp->tileno = (int *) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(int));
 	cp->tileno_size = 0;
-	
+
 	for (i = 0; i < cp->tw * cp->th * cp->tl ; i++) {
 		cp->tcps[i].POC = 0;
 		cp->tcps[i].numpocs = 0;
 		cp->tcps[i].first = 1;
 	}
-	
+
 	/* Initialization for PPM marker (Packets header)*/
 	cp->ppm = 0;
 	cp->ppm_data = NULL;
 	cp->ppm_data_first = NULL;
 	cp->ppm_previous = 0;
 	cp->ppm_store = 0;
-	
+
 	j3d->default_tcp->tccps = (opj_tccp_t *) opj_malloc(sizeof(opj_tccp_t) * volume->numcomps);
 	for (i = 0; i < cp->tw * cp->th * cp->tl ; i++) {
 		cp->tcps[i].tccps = (opj_tccp_t *) opj_malloc(sizeof(opj_tccp_t) * volume->numcomps);
@@ -517,26 +517,26 @@ static void j3d_read_nsi(opj_j3d_t *j3d) {
 	j3d->tile_data = (unsigned char **) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(unsigned char *));
 	j3d->tile_len = (int *) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(int));
 	j3d->state = J3D_STATE_MH;
-	
+
 }
 static void j3d_write_dco(opj_j3d_t *j3d){
 	int lenp, len, i;
-	int dcotype;	
+	int dcotype;
 
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	dcotype = 1; /* Offsets are 16bit signed integers Table A21 15444-2 */
 	cio_write(cio, J3D_MS_DCO, 2);	/* DCO */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
-	cio_write(cio, dcotype, 1);	
+	cio_write(cio, dcotype, 1);
 	if (dcotype == 0) {
-		for (i = 0; i < volume->numcomps; i++) 
+		for (i = 0; i < volume->numcomps; i++)
 			cio_write(cio, volume->comps[i].dcoffset, 1);	/* SPdco_i */
 	} else if (dcotype == 1) {
-		for (i = 0; i < volume->numcomps; i++){ 
+		for (i = 0; i < volume->numcomps; i++){
 			cio_write(cio, volume->comps[i].dcoffset, 1);	/* SPdco_i */
 			opj_event_msg(j3d->cinfo, EVT_INFO, "dcotype %d DCO %d \n",dcotype,volume->comps[i].dcoffset);
 		}
@@ -554,23 +554,23 @@ static void j3d_read_dco(opj_j3d_t *j3d){
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	len = cio_read(cio, 2);			/* Lsiz */
 	dcotype = cio_read(cio, 1); /*offset 8bit unsigned / 16bit signed integers*/
 	if (dcotype == 0) {
 		for (i = 0; i < volume->numcomps; i++) {
 			volume->comps[i].dcoffset = cio_read(cio, 1);
-			if (volume->comps[i].dcoffset > 128) 
+			if (volume->comps[i].dcoffset > 128)
 				volume->comps[i].dcoffset = volume->comps[i].dcoffset - 256;
 		}
 	} else if (dcotype == 1) {
 		for (i = 0; i < volume->numcomps; i++) {
 			volume->comps[i].dcoffset = cio_read(cio, 1);
-			if (volume->comps[i].dcoffset > 128) 
+			if (volume->comps[i].dcoffset > 128)
 				volume->comps[i].dcoffset = volume->comps[i].dcoffset - 256;
 		}
 	}
-	
+
 }
 static void j3d_write_atk(opj_j3d_t *j3d){
 	int lenp, len, s, k;
@@ -578,17 +578,17 @@ static void j3d_write_atk(opj_j3d_t *j3d){
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_atk_t *atk = j3d->cp->tcps->tccps->atk;
-	
+
 	cio_write(cio, J3D_MS_ATK, 2);	/* ATK */
 	lenp = cio_tell(cio);
-	cio_skip(cio, 2);				
-	cio_write(cio, atk->index + (atk->coeff_typ << 8) + (atk->filt_cat << 11) 
+	cio_skip(cio, 2);
+	cio_write(cio, atk->index + (atk->coeff_typ << 8) + (atk->filt_cat << 11)
 		+ (atk->wt_typ << 12) + (atk->minit << 13) + (atk->exten << 14), 2);			/* Satk */
-    if (atk->wt_typ == J3D_ATK_IRR) 
+    if (atk->wt_typ == J3D_ATK_IRR)
 		cio_write(cio,(unsigned int) (atk->Katk * 8192.0), 1 << atk->coeff_typ);
 	cio_write(cio, atk->Natk, 1);
 	for (s = 0; s < atk->Natk; s++){
-		if (atk->filt_cat == J3D_ATK_ARB) 
+		if (atk->filt_cat == J3D_ATK_ARB)
 			cio_write(cio, atk->Oatk[s], 1);
 		if (atk->wt_typ == J3D_ATK_REV){
 			cio_write(cio, atk->Eatk[s], 1);
@@ -605,25 +605,25 @@ static void j3d_write_atk(opj_j3d_t *j3d){
 }
 static void j3d_read_atk(opj_j3d_t *j3d){
 	int len, i, Satk, k;
-	
+
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	opj_atk_t *atk = cp->tcps->tccps->atk; 
-	
+	opj_atk_t *atk = cp->tcps->tccps->atk;
+
 	len = cio_read(cio, 2);			/* Latk */
-	Satk = cio_read(cio, 2); 
+	Satk = cio_read(cio, 2);
 	atk->index = Satk & 0x00ff;
 	atk->coeff_typ = Satk >> 8 & 0x0007;
 	atk->filt_cat = Satk >> 11 & 0x0001;
 	atk->wt_typ = Satk >> 12  & 0x0001;
 	atk->minit = Satk >> 13 & 0x0001;
 	atk->exten = Satk >> 14 & 0x0001;
-    if (atk->wt_typ == J3D_ATK_IRR) 
+    if (atk->wt_typ == J3D_ATK_IRR)
 		atk->Katk = ((double) cio_read(cio, 1 << atk->coeff_typ) / 8192.0);
 	atk->Natk = cio_read(cio, 1);
 	for (i = 0; i < atk->Natk; i++) {
-		if (atk->filt_cat == J3D_ATK_ARB) 
+		if (atk->filt_cat == J3D_ATK_ARB)
 			atk->Oatk[i] = cio_read(cio, 1);
 		if (atk->wt_typ == J3D_ATK_REV){
 			atk->Eatk[i] = cio_read(cio, 1);
@@ -654,7 +654,7 @@ static void j3d_write_nlt(opj_j3d_t *j3d){
 }
 static void j3d_read_nlt(opj_j3d_t *j3d){
 }
-/* ----------------------------------------------------------------------- 
+/* -----------------------------------------------------------------------
 15444-1 codestream syntax
 ------------------------------------------------------------------------*/
 static void j3d_write_soc(opj_j3d_t *j3d) {
@@ -674,7 +674,7 @@ static void j3d_write_siz(opj_j3d_t *j3d) {
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	cio_write(cio, J3D_MS_SIZ, 2);	/* SIZ */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
@@ -703,11 +703,11 @@ static void j3d_write_siz(opj_j3d_t *j3d) {
 
 static void j3d_read_siz(opj_j3d_t *j3d) {
 	int len, i;
-	
+
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
 	opj_cp_t *cp = j3d->cp;
-	
+
 	len = cio_read(cio, 2);			/* Lsiz */
 	cp->rsiz = cio_read(cio, 2);	/* Rsiz (capabilities) */
 	volume->x1 = cio_read(cio, 4);	/* Xsiz */
@@ -718,7 +718,7 @@ static void j3d_read_siz(opj_j3d_t *j3d) {
 	cp->tdy = cio_read(cio, 4);		/* YTsiz */
 	cp->tx0 = cio_read(cio, 4);		/* XT0siz */
 	cp->ty0 = cio_read(cio, 4);		/* YT0siz */
-	
+
 	volume->numcomps = cio_read(cio, 2);	/* Csiz */
 	volume->comps = (opj_volume_comp_t *) opj_malloc(volume->numcomps * sizeof(opj_volume_comp_t));
 	for (i = 0; i < volume->numcomps; i++) {
@@ -740,7 +740,7 @@ static void j3d_read_siz(opj_j3d_t *j3d) {
 		volume->numslices = 1;
 		cp->tdz = 1;
 		cp->tz0 = 0;
-		for (i = 0; i < volume->numcomps; i++) 
+		for (i = 0; i < volume->numcomps; i++)
 			volume->comps[i].dz = 1;
 
 		/*Initialization of volume*/
@@ -750,20 +750,20 @@ static void j3d_read_siz(opj_j3d_t *j3d) {
 		cp->tcps = (opj_tcp_t *) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(opj_tcp_t));
 		cp->tileno = (int *) opj_malloc(cp->tw * cp->th * cp->tl * sizeof(int));
 		cp->tileno_size = 0;
-		
+
 		for (i = 0; i < cp->tw * cp->th * cp->tl ; i++) {
 			cp->tcps[i].POC = 0;
 			cp->tcps[i].numpocs = 0;
 			cp->tcps[i].first = 1;
 		}
-		
+
 		/* Initialization for PPM marker (Packets header)*/
 		cp->ppm = 0;
 		cp->ppm_data = NULL;
 		cp->ppm_data_first = NULL;
 		cp->ppm_previous = 0;
 		cp->ppm_store = 0;
-		
+
 		j3d->default_tcp->tccps = (opj_tccp_t *) opj_malloc(sizeof(opj_tccp_t) * volume->numcomps);
 		for (i = 0; i < cp->tw * cp->th * cp->tl ; i++) {
 			cp->tcps[i].tccps = (opj_tccp_t *) opj_malloc(sizeof(opj_tccp_t) * volume->numcomps);
@@ -805,7 +805,7 @@ static void j3d_read_com(opj_j3d_t *j3d) {
 
 	len = cio_read(cio, 2);
 	cio_read(cio, 2); // read registration
-	
+
 	/*opj_event_msg(j3d->cinfo, EVT_INFO, "TRF %D ENCOD %d\n",j3d->cp->transform_format,j3d->cp->encoding_format);*/
 
 	cio_skip(cio, len - 4);  /*posible comments*/
@@ -819,7 +819,7 @@ static void j3d_write_cox(opj_j3d_t *j3d, int compno) {
 	opj_tcp_t *tcp = &cp->tcps[j3d->curtileno];
 	opj_tccp_t *tccp = &tcp->tccps[compno];
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, tccp->numresolution[0] - 1, 1);	/* SPcox (D) No of decomposition levels in x-axis*/
 	if (j3d->cinfo->codec_format == CODEC_J3D) {
 		cio_write(cio, tccp->numresolution[1] - 1, 1);	/* SPcox (E) No of decomposition levels in y-axis*/
@@ -841,13 +841,13 @@ static void j3d_write_cox(opj_j3d_t *j3d, int compno) {
 		cio_write(cio, tccp->dwtid[1], 1);				/* SPcox (L) WT in y-axis 15444-2 Table A10*/
 		cio_write(cio, tccp->dwtid[2], 1);				/* SPcox (M) WT in z-axis 15444-2 Table A10*/
 	}
-	
+
 	if (tccp->csty & J3D_CCP_CSTY_PRT) {
 		for (i = 0; i < tccp->numresolution[0]; i++) {
 			if (i < tccp->numresolution[2])
                 cio_write(cio, tccp->prctsiz[0][i] + (tccp->prctsiz[1][i] << 4) + (tccp->prctsiz[2][i] << 8), 2);	/* SPcox (N_i) Table A9*/
 			else
-				if (j3d->cinfo->codec_format == CODEC_J3D) 
+				if (j3d->cinfo->codec_format == CODEC_J3D)
                     cio_write(cio, tccp->prctsiz[0][i] + (tccp->prctsiz[1][i] << 4), 2);	/* SPcox (N_i) Table A9*/
 				else
                     cio_write(cio, tccp->prctsiz[0][i] + (tccp->prctsiz[1][i] << 4), 1);	/* SPcox (N_i) Table A9*/		}
@@ -868,14 +868,14 @@ static void j3d_read_cox(opj_j3d_t *j3d, int compno) {
 		tccp->numresolution[1] = cio_read(cio, 1) + 1;	/* SPcox (E) No of decomposition levels in y-axis*/
 		tccp->numresolution[2] = cio_read(cio, 1) + 1;	/* SPcox (F) No of decomposition levels in z-axis*/
 	}else if (j3d->cinfo->codec_format == CODEC_J2K) {
-		tccp->numresolution[1] = tccp->numresolution[0];	
-		tccp->numresolution[2] = 1;							
+		tccp->numresolution[1] = tccp->numresolution[0];
+		tccp->numresolution[2] = 1;
 	}
 	/* check the reduce value */
 	cp->reduce[0] = int_min((tccp->numresolution[0])-1, cp->reduce[0]);
 	cp->reduce[1] = int_min((tccp->numresolution[1])-1, cp->reduce[1]);
 	cp->reduce[2] = int_min((tccp->numresolution[2])-1, cp->reduce[2]);
-	
+
   if (j3d->cinfo->codec_format == CODEC_J3D) {
     /* Table A.7 */
     shift = 0;
@@ -913,12 +913,12 @@ static void j3d_write_cod(opj_j3d_t *j3d) {
 	int lenp, len;
 
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, J3D_MS_COD, 2);	/* COD */
-	
+
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
-	
+
 	cp = j3d->cp;
 	tcp = &cp->tcps[j3d->curtileno];
 
@@ -929,7 +929,7 @@ static void j3d_write_cod(opj_j3d_t *j3d) {
 	cio_write(cio, tcp->numlayers, 2);	/* SGcod (B) : No of layers */
 	cio_write(cio, tcp->mct, 1);		/* SGcod (C) : Multiple component transformation usage */
 	/* SPcod : Table A-6*/
-	j3d_write_cox(j3d, 0);				
+	j3d_write_cox(j3d, 0);
 	len = cio_tell(cio) - lenp;
 	cio_seek(cio, lenp);
 	cio_write(cio, len, 2);		/* Lcod */
@@ -938,21 +938,21 @@ static void j3d_write_cod(opj_j3d_t *j3d) {
 
 static void j3d_read_cod(opj_j3d_t *j3d) {
 	int len, i, pos;
-	
+
 	opj_cio_t *cio = j3d->cio;
 	opj_cp_t *cp = j3d->cp;
 	opj_tcp_t *tcp = j3d->state == J3D_STATE_TPH ? &cp->tcps[j3d->curtileno] : j3d->default_tcp;
 	opj_volume_t *volume = j3d->volume;
 
 	/* Lcod */
-	len = cio_read(cio, 2);				
+	len = cio_read(cio, 2);
 	/* Scod : Table A-4*/
-	tcp->csty = cio_read(cio, 1);		
+	tcp->csty = cio_read(cio, 1);
 	/* SGcod : Table A-5*/
 	tcp->prg = (OPJ_PROG_ORDER)cio_read(cio, 1);
-	tcp->numlayers = cio_read(cio, 2);	
-	tcp->mct = cio_read(cio, 1);		
-	
+	tcp->numlayers = cio_read(cio, 2);
+	tcp->mct = cio_read(cio, 1);
+
 	pos = cio_tell(cio);
 	for (i = 0; i < volume->numcomps; i++) {
 		tcp->tccps[i].csty = tcp->csty & J3D_CP_CSTY_PRT;
@@ -968,15 +968,15 @@ static void j3d_write_coc(opj_j3d_t *j3d, int compno) {
 	opj_tcp_t *tcp = &cp->tcps[j3d->curtileno];
 	opj_volume_t *volume = j3d->volume;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, J3D_MS_COC, 2);	/* COC */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
 	cio_write(cio, compno, volume->numcomps <= 256 ? 1 : 2);	/* Ccoc */
 	cio_write(cio, tcp->tccps[compno].csty, 1);					/* Scoc */
-	
+
 	j3d_write_cox(j3d, compno);
-	
+
 	len = cio_tell(cio) - lenp;
 	cio_seek(cio, lenp);
 	cio_write(cio, len, 2);			/* Lcoc */
@@ -990,7 +990,7 @@ static void j3d_read_coc(opj_j3d_t *j3d) {
 	opj_tcp_t *tcp = j3d->state == J3D_STATE_TPH ? &cp->tcps[j3d->curtileno] : j3d->default_tcp;
 	opj_volume_t *volume = j3d->volume;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);		/* Lcoc */
 	compno = cio_read(cio, volume->numcomps <= 256 ? 1 : 2);	/* Ccoc */
 	tcp->tccps[compno].csty = cio_read(cio, 1);	/* Scoc */
@@ -1000,26 +1000,26 @@ static void j3d_read_coc(opj_j3d_t *j3d) {
 static void j3d_write_qcx(opj_j3d_t *j3d, int compno) {
 	int bandno, numbands;
 	int expn, mant;
-	
+
 	opj_cp_t *cp = j3d->cp;
 	opj_tcp_t *tcp = &cp->tcps[j3d->curtileno];
 	opj_tccp_t *tccp = &tcp->tccps[compno];
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, tccp->qntsty + (tccp->numgbits << 5), 1);	/* Sqcx : Table A28 de 15444-1*/
-	
+
 	numbands = 0; // compiler warning
 	if (j3d->cinfo->codec_format == CODEC_J2K)
-        numbands = tccp->qntsty == J3D_CCP_QNTSTY_SIQNT ? 1 : tccp->numresolution[0] * 3 - 2; 
+        numbands = tccp->qntsty == J3D_CCP_QNTSTY_SIQNT ? 1 : tccp->numresolution[0] * 3 - 2;
 	else if (j3d->cinfo->codec_format == CODEC_J3D) {
 		int diff = tccp->numresolution[0] - tccp->numresolution[2];
         numbands = (tccp->qntsty == J3D_CCP_QNTSTY_SIQNT) ? 1 : (tccp->numresolution[0] * 7 - 6) - 4 *diff; /* SIQNT vs. SEQNT */
 	}
-	
+
 	for (bandno = 0; bandno < numbands; bandno++) {
 		expn = tccp->stepsizes[bandno].expn;
 		mant = tccp->stepsizes[bandno].mant;
-		
+
 		if (tccp->qntsty == J3D_CCP_QNTSTY_NOQNT) {
 			cio_write(cio, expn << 3, 1);	/* SPqcx_i */
 		} else {
@@ -1059,7 +1059,7 @@ static void j3d_read_qcx(opj_j3d_t *j3d, int compno, int len) {
 		tccp->stepsizes[bandno].expn = expn;
 		tccp->stepsizes[bandno].mant = mant;
 	}
-	
+
 	/* Add Antonin : if scalar_derived -> compute other stepsizes */
 	if (tccp->qntsty == J3D_CCP_QNTSTY_SIQNT) {
 		for (bandno = 1; bandno < J3D_MAXBANDS; bandno++) {
@@ -1075,7 +1075,7 @@ static void j3d_write_qcd(opj_j3d_t *j3d) {
 	int lenp, len;
 
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, J3D_MS_QCD, 2);	/* QCD */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
@@ -1091,7 +1091,7 @@ static void j3d_read_qcd(opj_j3d_t *j3d) {
 
 	opj_cio_t *cio = j3d->cio;
 	opj_volume_t *volume = j3d->volume;
-	
+
 	len = cio_read(cio, 2);		/* Lqcd */
 	pos = cio_tell(cio);
 	for (i = 0; i < volume->numcomps; i++) {
@@ -1104,7 +1104,7 @@ static void j3d_write_qcc(opj_j3d_t *j3d, int compno) {
 	int lenp, len;
 
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, J3D_MS_QCC, 2);	/* QCC */
 	lenp = cio_tell(cio);
 	cio_skip(cio, 2);
@@ -1120,7 +1120,7 @@ static void j3d_read_qcc(opj_j3d_t *j3d) {
 	int len, compno;
 	int numcomp = j3d->volume->numcomps;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);	/* Lqcc */
 	compno = cio_read(cio, numcomp <= 256 ? 1 : 2);	/* Cqcc */
 	j3d_read_qcx(j3d, compno, len - 2 - (numcomp <= 256 ? 1 : 2));
@@ -1130,7 +1130,7 @@ static void j3d_write_poc(opj_j3d_t *j3d) {
 	int len, numpchgs, i;
 
 	int numcomps = j3d->volume->numcomps;
-	
+
 	opj_cp_t *cp = j3d->cp;
 	opj_tcp_t *tcp = &cp->tcps[j3d->curtileno];
 	opj_tccp_t *tccp = &tcp->tccps[0];
@@ -1158,17 +1158,17 @@ static void j3d_read_poc(opj_j3d_t *j3d) {
 	int len, numpchgs, i, old_poc;
 
 	int numcomps = j3d->volume->numcomps;
-	
+
 	opj_cp_t *cp = j3d->cp;
 	opj_tcp_t *tcp = j3d->state == J3D_STATE_TPH ? &cp->tcps[j3d->curtileno] : j3d->default_tcp;
 	opj_tccp_t *tccp = &tcp->tccps[0];
 	opj_cio_t *cio = j3d->cio;
-	
+
 	old_poc = tcp->POC ? tcp->numpocs + 1 : 0;
 	tcp->POC = 1;
 	len = cio_read(cio, 2);		/* Lpoc */
 	numpchgs = (len - 2) / (5 + 2 * (numcomps <= 256 ? 1 : 2));
-	
+
 	for (i = old_poc; i < numpchgs + old_poc; i++) {
 		opj_poc_t *poc;
 		poc = &tcp->pocs[i];
@@ -1180,16 +1180,16 @@ static void j3d_read_poc(opj_j3d_t *j3d) {
 			cio_read(cio, numcomps <= 256 ? 1 : 2), (unsigned int) numcomps);	/* CEpoc_i */
 		poc->prg = (OPJ_PROG_ORDER)cio_read(cio, 1);	/* Ppoc_i */
 	}
-	
+
 	tcp->numpocs = numpchgs + old_poc - 1;
 }
 
 static void j3d_read_crg(opj_j3d_t *j3d) {
 	int len, i, Xcrg_i, Ycrg_i, Zcrg_i;
-	
+
 	opj_cio_t *cio = j3d->cio;
 	int numcomps = j3d->volume->numcomps;
-	
+
 	len = cio_read(cio, 2);			/* Lcrg */
 	for (i = 0; i < numcomps; i++) {
 		Xcrg_i = cio_read(cio, 2);	/* Xcrg_i */
@@ -1203,7 +1203,7 @@ static void j3d_read_tlm(opj_j3d_t *j3d) {
 	long int Ttlm_i, Ptlm_i;
 
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);		/* Ltlm */
 	Ztlm = cio_read(cio, 1);	/* Ztlm */
 	Stlm = cio_read(cio, 1);	/* Stlm */
@@ -1218,7 +1218,7 @@ static void j3d_read_tlm(opj_j3d_t *j3d) {
 
 static void j3d_read_plm(opj_j3d_t *j3d) {
 	int len, i, Zplm, Nplm, add, packet_len = 0;
-	
+
 	opj_cio_t *cio = j3d->cio;
 
 	len = cio_read(cio, 2);		/* Lplm */
@@ -1243,9 +1243,9 @@ static void j3d_read_plm(opj_j3d_t *j3d) {
 
 static void j3d_read_plt(opj_j3d_t *j3d) {
 	int len, i, Zplt, packet_len = 0, add;
-	
+
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);		/* Lplt */
 	Zplt = cio_read(cio, 1);	/* Zplt */
 	for (i = len - 3; i > 0; i--) {
@@ -1264,10 +1264,10 @@ static void j3d_read_ppm(opj_j3d_t *j3d) {
 
 	opj_cp_t *cp = j3d->cp;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);
 	cp->ppm = 1;
-	
+
 	Z_ppm = cio_read(cio, 1);	/* Z_ppm */
 	len -= 3;
 	while (len > 0) {
@@ -1353,10 +1353,10 @@ static void j3d_read_sot(opj_j3d_t *j3d) {
 
 	opj_cp_t *cp = j3d->cp;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	len = cio_read(cio, 2);
 	tileno = cio_read(cio, 2);
-	
+
 	if (cp->tileno_size == 0) {
 		cp->tileno[cp->tileno_size] = tileno;
 		cp->tileno_size++;
@@ -1371,21 +1371,21 @@ static void j3d_read_sot(opj_j3d_t *j3d) {
 			cp->tileno_size++;
 		}
 	}
-	
+
 	totlen = cio_read(cio, 4);
 	if (!totlen)
 		totlen = cio_numbytesleft(cio) + 8;
-	
+
 	partno = cio_read(cio, 1);
 	numparts = cio_read(cio, 1);
-	
+
 	j3d->curtileno = tileno;
 	j3d->eot = cio_getbp(cio) - 12 + totlen;
 	j3d->state = J3D_STATE_TPH;
 	tcp = &cp->tcps[j3d->curtileno];
-	
+
 	if (tcp->first == 1) {
-		
+
 		/* Initialization PPT */
 		opj_tccp_t *tmp = tcp->tccps;
 		memcpy(tcp, j3d->default_tcp, sizeof(opj_tcp_t));
@@ -1406,34 +1406,34 @@ static void j3d_write_sod(opj_j3d_t *j3d, void *tile_coder) {
 	int totlen;
 	opj_tcp_t *tcp = NULL;
 	opj_volume_info_t *volume_info = NULL;
-	
+
 	opj_tcd_t *tcd = (opj_tcd_t*)tile_coder;	/* cast is needed because of conflicts in header inclusions */
 	opj_cp_t *cp = j3d->cp;
 	opj_cio_t *cio = j3d->cio;
-	
+
 	cio_write(cio, J3D_MS_SOD, 2);
 	if (j3d->curtileno == 0) {
 		j3d->sod_start = cio_tell(cio) + j3d->pos_correction;
 	}
-	
+
 	/* INDEX >> */
 	volume_info = j3d->volume_info;
 	if (volume_info && volume_info->index_on) {
 		volume_info->tile[j3d->curtileno].end_header = cio_tell(cio) + j3d->pos_correction - 1;
 	}
 	/* << INDEX */
-	
+
 	tcp = &cp->tcps[j3d->curtileno];
 	for (layno = 0; layno < tcp->numlayers; layno++) {
 		tcp->rates[layno] -= tcp->rates[layno] ? (j3d->sod_start / (cp->th * cp->tw * cp->tl)) : 0;
 	}
-	
+
 	if(volume_info) {
 		volume_info->num = 0;
 	}
 
 	l = tcd_encode_tile(tcd, j3d->curtileno, cio_getbp(cio), cio_numbytesleft(cio) - 2, volume_info);
-	
+
 	/* Writing Psot in SOT marker */
 	totlen = cio_tell(cio) + l - j3d->sot_start;
 	cio_seek(cio, j3d->sot_start + 6);
@@ -1447,13 +1447,13 @@ static void j3d_read_sod(opj_j3d_t *j3d) {
 
 	opj_cio_t *cio = j3d->cio;
 	int curtileno = j3d->curtileno;
-	
+
 	len = int_min(j3d->eot - cio_getbp(cio), cio_numbytesleft(cio) + 1);
-	
+
 	if (len == cio_numbytesleft(cio) + 1) {
 		truncate = 1;		/* Case of a truncate codestream */
 	}
-	
+
 	data = (unsigned char *) opj_malloc((j3d->tile_len[curtileno] + len) * sizeof(unsigned char));
 
 	for (i = 0; i < j3d->tile_len[curtileno]; i++) {
@@ -1464,11 +1464,11 @@ static void j3d_read_sod(opj_j3d_t *j3d) {
 	for (i = 0; i < len; i++) {
 		data_ptr[i] = cio_read(cio, 1);
 	}
-	
+
 	j3d->tile_len[curtileno] += len;
 	opj_free(j3d->tile_data[curtileno]);
 	j3d->tile_data[curtileno] = data;
-	
+
 	if (!truncate) {
 		j3d->state = J3D_STATE_TPHSOT;
 	} else {
@@ -1477,12 +1477,12 @@ static void j3d_read_sod(opj_j3d_t *j3d) {
 }
 
 static void j3d_write_rgn(opj_j3d_t *j3d, int compno, int tileno) {
-	
+
 	opj_cp_t *cp = j3d->cp;
 	opj_tcp_t *tcp = &cp->tcps[tileno];
 	opj_cio_t *cio = j3d->cio;
 	int numcomps = j3d->volume->numcomps;
-	
+
 	cio_write(cio, J3D_MS_RGN, 2);						/* RGN  */
 	cio_write(cio, numcomps <= 256 ? 5 : 6, 2);			/* Lrgn */
 	cio_write(cio, compno, numcomps <= 256 ? 1 : 2);	/* Crgn */
@@ -1513,7 +1513,7 @@ static void j3d_write_eoc(opj_j3d_t *j3d) {
 static void j3d_read_eoc(opj_j3d_t *j3d) {
 	int i, tileno;
 
-#ifndef NO_PACKETS_DECODING  
+#ifndef NO_PACKETS_DECODING
 	opj_tcd_t *tcd = tcd_create(j3d->cinfo);
     tcd_malloc_decode(tcd, j3d->volume, j3d->cp);
 	/*j3d_dump_volume(stdout, tcd->volume);
@@ -1527,14 +1527,14 @@ static void j3d_read_eoc(opj_j3d_t *j3d) {
 	}
 	tcd_free_decode(tcd);
 	tcd_destroy(tcd);
-#else 
+#else
 	for (i = 0; i < j3d->cp->tileno_size; i++) {
 		tileno = j3d->cp->tileno[i];
 		opj_free(j3d->tile_data[tileno]);
 		j3d->tile_data[tileno] = NULL;
 	}
 #endif
-	
+
 	j3d->state = J3D_STATE_MT;
 }
 
@@ -1669,7 +1669,7 @@ void j3d_destroy_decompress(opj_j3d_t *j3d) {
 			opj_free(cp->ppm_data_first);
 		}
 		if(cp->tileno != NULL) {
-			opj_free(cp->tileno);  
+			opj_free(cp->tileno);
 		}
 		if(cp->comment != NULL) {
 			opj_free(cp->comment);
@@ -1713,7 +1713,7 @@ opj_volume_t* j3d_decode(opj_j3d_t *j3d, opj_cio_t *cio) {
 	j3d->volume = volume;
 
 	j3d->state = J3D_STATE_MHSOC;
-	
+
 	for (;;) {
 		opj_dec_mstabent_t *e;
 		int id = cio_read(cio, 2);
@@ -1747,7 +1747,7 @@ opj_volume_t* j3d_decode(opj_j3d_t *j3d, opj_cio_t *cio) {
 	if (j3d->state != J3D_STATE_MT) {
 		opj_event_msg(cinfo, EVT_WARNING, "Incomplete bitstream\n");
 	}
-	
+
 	return volume;
 }
 
@@ -1833,14 +1833,14 @@ void j3d_setup_encoder(opj_j3d_t *j3d, opj_cparameters_t *parameters, opj_volume
 		size_t array_size = parameters->tcp_numlayers * 3 * parameters->numresolution[0] * sizeof(int);
 		cp->matrice = (int *) opj_malloc(array_size);
 		memcpy(cp->matrice, parameters->cp_matrice, array_size);
-	} 
+	}
 
 	/* creation of an index file ? */
 	cp->index_on = parameters->index_on;
 	if(cp->index_on) {
 		j3d->volume_info = (opj_volume_info_t*)opj_malloc(sizeof(opj_volume_info_t));
 	}
-	
+
 	/* tiles */
 	cp->tdx = parameters->cp_tdx;
 	cp->tdy = parameters->cp_tdy;
@@ -1908,7 +1908,7 @@ void j3d_setup_encoder(opj_j3d_t *j3d, opj_cparameters_t *parameters, opj_volume
 		tcp->numpocs = numpocs_tile;
 
 		tcp->tccps = (opj_tccp_t *) opj_malloc(volume->numcomps * sizeof(opj_tccp_t));
-		
+
 		for (i = 0; i < volume->numcomps; i++) {
 			opj_tccp_t *tccp = &tcp->tccps[i];
 			tccp->csty = parameters->csty & J3D_CCP_CSTY_PRT;	/* 0 => standard precint || 1 => custom-defined precinct  */
@@ -1921,9 +1921,9 @@ void j3d_setup_encoder(opj_j3d_t *j3d, opj_cparameters_t *parameters, opj_volume
 						assert (parameters->cblock_init[1] >= T1_MINCBLKH);
 						assert (parameters->cblock_init[2] <= T1_MAXCBLKD);
 						assert (parameters->cblock_init[2] >= T1_MINCBLKD);
-			tccp->cblk[0] = int_floorlog2(parameters->cblock_init[0]); 
-			tccp->cblk[1] = int_floorlog2(parameters->cblock_init[1]); 
-			tccp->cblk[2] = int_floorlog2(parameters->cblock_init[2]); 
+			tccp->cblk[0] = int_floorlog2(parameters->cblock_init[0]);
+			tccp->cblk[1] = int_floorlog2(parameters->cblock_init[1]);
+			tccp->cblk[2] = int_floorlog2(parameters->cblock_init[2]);
 						assert (tccp->cblk[0]+tccp->cblk[1]+tccp->cblk[1] <= T1_MAXWHD);
 			tccp->cblksty = parameters->mode; /*Codeblock style --> Table A.19 (default 0)*/
 
@@ -1932,7 +1932,7 @@ void j3d_setup_encoder(opj_j3d_t *j3d, opj_cparameters_t *parameters, opj_volume
 			for (j = 0; j < 3; j++) {
 					tccp->dwtid[j] = parameters->irreversible ? 0 : 1; /* 0 => DWT 9-7 || 1 => DWT 5-3  */
 			}
-      						
+
 			/* Quantification: SEQNT (Scalar Expounded, value for each subband) / NOQNT (no quant)*/
 			tccp->qntsty = parameters->irreversible ? J3D_CCP_QNTSTY_SEQNT : J3D_CCP_QNTSTY_NOQNT;
 			tccp->numgbits = 2;
@@ -1988,7 +1988,7 @@ Create an index file
 @return Returns 1 if successful, returns 0 otherwise
 */
 static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *volume_info, char *index) {
-	
+
 	int tileno, compno, layno, resno, precno, pack_nb, x, y, z;
 	FILE *stream = NULL;
 	double total_disto = 0;
@@ -2000,7 +2000,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 		opj_event_msg(j3d->cinfo, EVT_ERROR, "failed to open %s for writing\n", index);
 		return 0;
 	}
-	
+
 	fprintf(stream, "w %d\t h %d\t l %d\n", volume_info->volume_w, volume_info->volume_h, volume_info->volume_l);
 	fprintf(stream, "TRASNFORM\t%d\n", volume_info->transform_format);
 	fprintf(stream, "ENTROPY CODING\t%d\n", volume_info->encoding_format);
@@ -2010,7 +2010,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 	fprintf(stream, "COMPONENTS\t%d\n", volume_info->comp);
 	fprintf(stream, "LAYER\t%d\n", volume_info->layer);
 	fprintf(stream, "RESOLUTIONS\tx %d y %d z %d\n", volume_info->decomposition[0], volume_info->decomposition[1], volume_info->decomposition[2]);
-	
+
 	fprintf(stream, "Precint sizes for each resolution:\n");
 	for (resno = volume_info->decomposition[0]; resno >= 0; resno--) {
 		fprintf(stream, "Resno %d \t [%d,%d,%d] \n", resno,
@@ -2028,7 +2028,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 			volume_info->tile[tileno].distotile, volume_info->tile[tileno].nbpix,
 			volume_info->tile[tileno].distotile / volume_info->tile[tileno].nbpix);
 	}
-	
+
 	for (tileno = 0; tileno < (volume_info->tw * volume_info->th * volume_info->tl); tileno++) {
 		int start_pos, end_pos;
 		double disto = 0;
@@ -2074,7 +2074,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 		} /* RLCP */
 		else if (volume_info->prog == RPCL) {	/* RPCL */
 			/*
-			fprintf(stream, "\npack_nb tileno resno precno compno layno start_pos  end_pos   disto\n"); 
+			fprintf(stream, "\npack_nb tileno resno precno compno layno start_pos  end_pos   disto\n");
 			*/
 			for (resno = 0; resno < volume_info->decomposition[0] + 1; resno++) {
 				/* I suppose components have same XRsiz, YRsiz */
@@ -2105,9 +2105,9 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 												end_pos = volume_info->tile[tileno].packet[pack_nb].end_pos;
 												disto = volume_info->tile[tileno].packet[pack_nb].disto;
 												fprintf(stream, "%4d %6d %5d %6d %6d %7d %9d %9d %8e\n",
-													pack_nb, tileno, resno, precno, compno, layno, start_pos, end_pos, disto); 
+													pack_nb, tileno, resno, precno, compno, layno, start_pos, end_pos, disto);
 												total_disto += disto;
-												pack_nb++; 
+												pack_nb++;
 											}
 										}
 									}
@@ -2127,7 +2127,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 			int y1 = y0 + volume_info->tile_y;
 			int z1 = z0 + volume_info->tile_z;
 			/*
-			fprintf(stream, "\npack_nb tileno precno compno resno layno start_pos  end_pos   disto\n"); 
+			fprintf(stream, "\npack_nb tileno precno compno resno layno start_pos  end_pos   disto\n");
 			*/
 			for(z = z0; z < z1; z++) {
 				for(y = y0; y < y1; y++) {
@@ -2151,9 +2151,9 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 												end_pos = volume_info->tile[tileno].packet[pack_nb].end_pos;
 												disto = volume_info->tile[tileno].packet[pack_nb].disto;
 												fprintf(stream, "%4d %6d %6d %6d %5d %7d %9d %9d %8e\n",
-													pack_nb, tileno, precno, compno, resno, layno, start_pos, end_pos, disto); 
+													pack_nb, tileno, precno, compno, resno, layno, start_pos, end_pos, disto);
 												total_disto += disto;
-												pack_nb++; 
+												pack_nb++;
 											}
 										}
 									}
@@ -2167,7 +2167,7 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 		} /* PCRL */
 		else {	/* CPRL */
 			/*
-			fprintf(stream, "\npack_nb tileno compno precno resno layno start_pos  end_pos   disto\n"); 
+			fprintf(stream, "\npack_nb tileno compno precno resno layno start_pos  end_pos   disto\n");
 			*/
 			for (compno = 0; compno < volume_info->comp; compno++) {
 				/* I suppose components have same XRsiz, YRsiz */
@@ -2199,9 +2199,9 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 													end_pos = volume_info->tile[tileno].packet[pack_nb].end_pos;
 													disto = volume_info->tile[tileno].packet[pack_nb].disto;
 													fprintf(stream, "%4d %6d %6d %6d %5d %7d %9d %9d %8e\n",
-														pack_nb, tileno, compno, precno, resno, layno, start_pos, end_pos, disto); 
+														pack_nb, tileno, compno, precno, resno, layno, start_pos, end_pos, disto);
 													total_disto += disto;
-													pack_nb++; 
+													pack_nb++;
 												}
 											}
 										}
@@ -2212,12 +2212,12 @@ static int j3d_create_index(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_info_t *v
 					} /* y = y0..y1 */
 				} /* z = z0..z1 */
 			} /* comno */
-		} /* CPRL */   
+		} /* CPRL */
 	} /* tileno */
-	
+
 	fprintf(stream, "SE_MAX\t%8e\n", volume_info->D_max);	/* SE max */
 	fprintf(stream, "SE_TOTAL\t%.8e\n", total_disto);			/* SE totale */
-	
+
 
 	fclose(stream);
 
@@ -2230,7 +2230,7 @@ bool j3d_encode(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_t *volume, char *inde
 	opj_cp_t *cp = NULL;
 	opj_tcd_t *tcd = NULL;	/* TCD component */
 
-	j3d->cio = cio;	
+	j3d->cio = cio;
 	j3d->volume = volume;
 	cp = j3d->cp;
 
@@ -2281,7 +2281,7 @@ bool j3d_encode(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_t *volume, char *inde
 	for (compno = 0; compno < volume->numcomps; compno++) {
 		opj_tcp_t *tcp = &cp->tcps[0];
 		if (tcp->tccps[compno].roishift)
-			j3d_write_rgn(j3d, compno, 0);			
+			j3d_write_rgn(j3d, compno, 0);
 	}
 	/*Optional 15444-2 markers*/
 	if (j3d->cp->tcps->tccps[0].atk != NULL)
@@ -2301,25 +2301,25 @@ bool j3d_encode(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_t *volume, char *inde
 	/* encode each tile */
 	for (tileno = 0; tileno < cp->tw * cp->th * cp->tl; tileno++) {
 		opj_event_msg(j3d->cinfo, EVT_INFO, "tile number %d / %d\n", tileno + 1, cp->tw * cp->th * cp->tl);
-		
+
 		j3d->curtileno = tileno;
 
 		/* initialisation before tile encoding  */
-		if (tileno == 0) {	
+		if (tileno == 0) {
 			tcd_malloc_encode(tcd, volume, cp, j3d->curtileno);
 		} else {
 			tcd_init_encode(tcd, volume, cp, j3d->curtileno);
 		}
-		
+
 		/* INDEX >> */
 		if(volume_info && volume_info->index_on) {
 			volume_info->tile[j3d->curtileno].num_tile = j3d->curtileno;
 			volume_info->tile[j3d->curtileno].start_pos = cio_tell(cio) + j3d->pos_correction;
 		}
 		/* << INDEX */
-		
+
 		j3d_write_sot(j3d);
-	
+
 		for (compno = 1; compno < volume->numcomps; compno++) {
 			j3d_write_coc(j3d, compno);
 			j3d_write_qcc(j3d, compno);
@@ -2334,15 +2334,15 @@ bool j3d_encode(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_t *volume, char *inde
 		if(volume_info && volume_info->index_on) {
 			volume_info->tile[j3d->curtileno].end_pos = cio_tell(cio) + j3d->pos_correction - 1;
 		}
-		/* << INDEX */		
+		/* << INDEX */
 	}
-	
+
 	/* destroy the tile encoder */
 	tcd_free_encode(tcd);
 	tcd_destroy(tcd);
 
 	j3d_write_eoc(j3d);
-	
+
 	/* Creation of the index file */
 	if(volume_info && volume_info->index_on) {
 		if(!j3d_create_index(j3d, cio, volume_info, index)) {
@@ -2350,7 +2350,7 @@ bool j3d_encode(opj_j3d_t *j3d, opj_cio_t *cio, opj_volume_t *volume, char *inde
 			return false;
 		}
 	}
-	  
+
 	return true;
 }
 

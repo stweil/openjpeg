@@ -70,17 +70,17 @@ The documentation can be build this way (requires doxygen utility):
 5. Usage
 ----------
 
-Preliminary notes : 
+Preliminary notes :
   * HTML documentation is available at http://www.openjpeg.org/jpip/doc/html
   * Example image is available at http://www.openjpeg.org/jpip/data/copenhague1.zip (20 Mb !)
 
-Webserver: 
-  You need a webserver running with the fastcgi module enabled and correctly configured. 
+Webserver:
+  You need a webserver running with the fastcgi module enabled and correctly configured.
   For Apache, add the following line to your /etc/apache2/mods-available/fastcgi.conf configuration file:
-  
+
       FastCGIExternalServer /var/www/myFCGI -host localhost:3000
-  
-  where /var/www is your DocumentRoot. 
+
+  where /var/www is your DocumentRoot.
   Please refer to 'http://www.openjpeg.org/jpip/doc/ApacheFastCGITutorial.pdf' for more details.
 
 Server:
@@ -88,7 +88,7 @@ Server:
 
  2. Launch opj_server from the server terminal:
     % spawn-fcgi -f ./opj_server -p 3000 -n
- 
+
  For shutting down JPIP server:
      %GET http://hostname/myFCGI?quitJPIP
      Notice, http://hostname/myFCGI is the HTTP server URI (myFCGI refers to opj_server by the server setting)
@@ -105,7 +105,7 @@ Client:
 
  2. Open image viewers (as many as needed)
     % java -jar opj_viewer.jar http://hostname/myFCGI path/filename.jp2 [hostname] [portnumber] [stateless/session] [jptstream/jppstream] [tcp/udp]
-    ( The arguments 
+    ( The arguments
       - http://hostname/myFCGI is the HTTP server URI (myFCGI refers to opj_server by the server setting)
       - path/filename.jp2 is the server local path or URL of a JP2 file
       - host name of opj_dec_server, localhost by default

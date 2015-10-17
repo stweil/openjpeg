@@ -1,6 +1,6 @@
 What is OpenJPEG ?
 ==================
-The OpenJPEG library is an open-source JPEG 2000 codec written in C language. It has been developed in order to promote the use of JPEG 2000, the new still-image compression standard from the Joint Photographic Experts Group (JPEG). In addition to the basic codec, various other features are under development, among them the JP2 and MJ2 (Motion JPEG 2000) file formats, an indexing tool useful for the JPIP protocol, JPWL-tools for error-resilience, a Java-viewer for j2k-images, ... 
+The OpenJPEG library is an open-source JPEG 2000 codec written in C language. It has been developed in order to promote the use of JPEG 2000, the new still-image compression standard from the Joint Photographic Experts Group (JPEG). In addition to the basic codec, various other features are under development, among them the JP2 and MJ2 (Motion JPEG 2000) file formats, an indexing tool useful for the JPIP protocol, JPWL-tools for error-resilience, a Java-viewer for j2k-images, ...
 
 Who can use the library ?
 =========================

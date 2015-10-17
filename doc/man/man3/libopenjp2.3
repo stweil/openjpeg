@@ -54,7 +54,7 @@ a library for reading and writing JPEG2000 image files.
 .P
 .B PNG: imagetopng() \fR/\fB pngtoimage()
 .P
-.B YUV: imagetoyuv() \fR/\fB yuvtoimage() \fR(MJ2) 
+.B YUV: imagetoyuv() \fR/\fB yuvtoimage() \fR(MJ2)
 .P
 .SS READ
 .B opj_set_default_decoder_parameters(opj_dparameters_t *\fIparams\fB);
@@ -125,14 +125,14 @@ a library for reading and writing JPEG2000 image files.
 .P
 .SH DECOMPRESSION PARAMETERS
 .p
-typedef struct opj_dparameters 
+typedef struct opj_dparameters
 .br
 {
     /*
     Set the number of highest resolution levels to be discarded.
-    The image resolution is effectively divided by 2 to the power 
+    The image resolution is effectively divided by 2 to the power
     of the number of discarded levels.
-    The reduce factor is limited by the smallest total number of 
+    The reduce factor is limited by the smallest total number of
     decomposition levels among tiles.
     if != 0, then original dimension divided by 2^(reduce);
     if == 0 or not used, image is decoded to the full resolution
@@ -140,7 +140,7 @@ typedef struct opj_dparameters
     \fBint\fR cp_reduce;
     /*
     Set the maximum number of quality layers to decode.
-    If there are less quality layers than the specified number, 
+    If there are less quality layers than the specified number,
     all the quality layers are decoded.
     if != 0, then only the first "layer" layers are decoded;
     if == 0 or not used, all the quality layers are decoded
@@ -166,9 +166,9 @@ typedef struct opj_dparameters
     \fBint\fR jpwl_max_tiles;
 
     /*
-    Specify whether the decoding should be done on the entire 
+    Specify whether the decoding should be done on the entire
     codestream, or be limited to the main header
-    Limiting the decoding to the main header makes it possible 
+    Limiting the decoding to the main header makes it possible
     to extract the characteristics of the codestream
     if == NO_LIMITATION, the entire codestream is decoded;
     if == LIMIT_TO_MAIN_HEADER, only the main header is decoded;
@@ -179,10 +179,10 @@ typedef struct opj_dparameters
 
 .SH COMPRESSION PARAMETERS
 .P
-typedef struct opj_cparameters 
+typedef struct opj_cparameters
 .br
 {
-    /* size of tile: tile_size_on = false (not in argument) 
+    /* size of tile: tile_size_on = false (not in argument)
     or tile_size_on = true (in argument) */
     \fBbool\fR tile_size_on;
     /* XTOsiz */
@@ -225,10 +225,10 @@ typedef struct opj_cparameters
     /* initial code block height, default: 64 */
     \fBint\fR cblockh_init;
     /* mode switch (cblk_style) */
-    /* 1 : use the irreversible DWT 9-7, 
+    /* 1 : use the irreversible DWT 9-7,
         0 : use lossless compression (default) */
     \fBint\fR irreversible;
-    /* region of interest: affected component in [0..3], 
+    /* region of interest: affected component in [0..3],
         -1 means no ROI */
     \fBint\fR roi_compno;
     /* region of interest: upshift value */
@@ -245,10 +245,10 @@ typedef struct opj_cparameters
     \fBchar\fR infile[OPJ_PATH_LEN];
     /* output file name */
     \fBchar\fR outfile[OPJ_PATH_LEN];
-    /* DEPRECATED. Index generation is now handeld with the 
+    /* DEPRECATED. Index generation is now handeld with the
         opj_encode_with_info() function. Set to NULL */
     \fBint\fR index_on;
-    /* DEPRECATED. Index generation is now handeld with the 
+    /* DEPRECATED. Index generation is now handeld with the
         opj_encode_with_info() function. Set to NULL */
     \fBchar\fR index[OPJ_PATH_LEN];
     /* subimage encoding: origin image offset in x direction */
@@ -292,10 +292,10 @@ typedef struct opj_cparameters
     /* sensitivity methods for TPHs (-1=no,0-7) */
     \fBint\fR jpwl_sens_TPH[JPWL_MAX_NO_TILESPECS];
 
-    /* Digital Cinema compliance: OFF-not compliant, 
+    /* Digital Cinema compliance: OFF-not compliant,
        CINEMA2K_24, CINEMA2K_48, CINEMA4K_24 */
     \fBOPJ_CINEMA_MODE\fR cp_cinema;
-    /* Maximum rate for each component. 
+    /* Maximum rate for each component.
         If == 0, component size limitation is not considered */
     \fBint\fR max_comp_size;
     /* Profile name*/
@@ -333,5 +333,5 @@ Copyright (c) 2006-2007, Parvatha Elangovan
 
 \fBJPWL_image_to_j2k\fR(1) \fBJPWL_j2k_to_image\fR(1)
 
-\fBextract_j2k_from_mj2\fR(1) \fBwrap_j2k_in_mj2\fR(1) 
+\fBextract_j2k_from_mj2\fR(1) \fBwrap_j2k_in_mj2\fR(1)
 \fBframes_to_mj2\fR(1) \fBmj2_to_frames\fR(1)

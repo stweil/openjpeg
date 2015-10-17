@@ -35,11 +35,11 @@ class MML implements MouseMotionListener, MouseListener
     public void mouseExited(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
-  
+
     private ImageViewer iv;
     private int x1, y1, x2, y2, zf, btn;
     private boolean zoomrq;
-  
+
     public MML(ImageViewer imageviewer)
     {
 	x1 = y1 = -1;
@@ -47,7 +47,7 @@ class MML implements MouseMotionListener, MouseListener
 	zoomrq = false;
 	zf = 0;
     }
-  
+
     private boolean isInside(int x, int y)
     {
 	x -= iv.getX();
@@ -59,7 +59,7 @@ class MML implements MouseMotionListener, MouseListener
     public void mousePressed(MouseEvent e)
     {
 	btn = e.getButton();
-	
+
 	if( iv.hasAnnotation()){
 	    if( iv.isInsideROIRect(e.getX(), e.getY())){
 		iv.zoomIn();
@@ -78,7 +78,7 @@ class MML implements MouseMotionListener, MouseListener
 	    x1 = y1 = -1;
 	}
     }
-  
+
     public void mouseReleased(MouseEvent e)
     {
 	if(e.getButton() == 1) {
@@ -92,7 +92,7 @@ class MML implements MouseMotionListener, MouseListener
     public void mouseMoved(MouseEvent e)
     {
     }
-  
+
     public void mouseDragged(MouseEvent e)
     {
 	if (btn == 1) {
@@ -111,6 +111,6 @@ class MML implements MouseMotionListener, MouseListener
 		    iv.repaint();
 		}
 	    }
-	}    
+	}
     }
 }

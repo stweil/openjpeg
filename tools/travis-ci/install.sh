@@ -21,7 +21,7 @@ set -o pipefail  ## Fail on error in pipe
 function exit_handler ()
 {
 	local exit_code="$?"
-	
+
 	test ${exit_code} == 0 && return;
 
 	echo -e "\nInstall failed !!!\nLast command at line ${BASH_LINENO}: ${BASH_COMMAND}";
@@ -77,7 +77,7 @@ if [ "${OPJ_CI_SKIP_TESTS:-}" != "1" ]; then
 
 	# When OPJ_NONCOMMERCIAL=1, kakadu trial binaries are used for testing. Here's the copyright notice from kakadu:
 	# Copyright is owned by NewSouth Innovations Pty Limited, commercial arm of the UNSW Australia in Sydney.
-	# You are free to trial these executables and even to re-distribute them, 
+	# You are free to trial these executables and even to re-distribute them,
 	# so long as such use or re-distribution is accompanied with this copyright notice and is not for commercial gain.
 	# Note: Binaries can only be used for non-commercial purposes.
 	if [ "${OPJ_NONCOMMERCIAL:-}" == "1" ]; then
@@ -98,7 +98,7 @@ if [ "${OPJ_CI_SKIP_TESTS:-}" != "1" ]; then
 			cat libkduv77r.pkg/Payload | gzip -d | cpio -id
 			cat kduexpand.pkg/Payload | gzip -d | cpio -id
 			cat kducompress.pkg/Payload | gzip -d | cpio -id
-			install_name_tool -id ${PWD}/libkdu_v77R.dylib libkdu_v77R.dylib 
+			install_name_tool -id ${PWD}/libkdu_v77R.dylib libkdu_v77R.dylib
 			install_name_tool -change /usr/local/lib/libkdu_v77R.dylib ${PWD}/libkdu_v77R.dylib kdu_compress
 			install_name_tool -change /usr/local/lib/libkdu_v77R.dylib ${PWD}/libkdu_v77R.dylib kdu_expand
 		elif [ "${APPVEYOR:-}" == "True" ] || uname -s | grep -i MINGW &> /dev/null || uname -s | grep -i CYGWIN &> /dev/null; then

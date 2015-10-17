@@ -110,7 +110,7 @@ void send_responsedata_on_aux( OPJ_BOOL istcp, auxtrans_param_t auxtrans, const 
   pthread_t thread;
   int status;
 #endif
-  
+
   if( istcp){
     if( auxtrans.tcplistensock == -1){
       fprintf( FCGI_stderr, "Error: error in send_responsedata_on_aux(), tcp listening socket no open\n");
@@ -127,7 +127,7 @@ void send_responsedata_on_aux( OPJ_BOOL istcp, auxtrans_param_t auxtrans, const 
     status = pthread_create( &thread, NULL, &aux_streaming, auxresponse);
     if( status != 0)
       fprintf( FCGI_stderr,"ERROR: pthread_create() %s",strerror(status));
-#endif   
+#endif
   }
   else
     fprintf( FCGI_stderr, "Error: error in send_responsedata_on_aux(), udp not implemented\n");
@@ -177,7 +177,7 @@ void * aux_streaming( void *arg)
   unsigned char *chunk, *ptr;
   OPJ_SIZE_T maxLenOfBody, remlen, chunklen;
   const OPJ_SIZE_T headlen = 8;
-  
+
   aux_response_param_t *auxresponse = (aux_response_param_t *)arg;
 
 #ifdef _WIN32
@@ -219,7 +219,7 @@ void * aux_streaming( void *arg)
   opj_free( chunk);
 
   delete_auxresponse( &auxresponse);
-  
+
 #ifdef _WIN32
   _endthreadex(0);
 #else
@@ -239,11 +239,11 @@ OPJ_BOOL identify_cid( SOCKET connected_socket, char refcid[], FILE *fp)
     fprintf( fp, "Error: error in identify_cid(), while receiving cid from client\n");
     return OPJ_FALSE;
   }
-  
+
   succeed = OPJ_FALSE;
   if( strncmp( refcid, cid, strlen( refcid)) == 0)
     succeed = OPJ_TRUE;
-  
+
   opj_free( cid);
 
   return succeed;
@@ -253,14 +253,14 @@ OPJ_BOOL recv_ack( SOCKET connected_socket, void *data)
 {
   char *header;
   OPJ_BOOL succeed;
-  
+
   header = receive_stream( connected_socket, 8);
-  
+
   if( memcmp( header, data, 8) != 0)
     succeed = OPJ_FALSE;
   else
     succeed = OPJ_TRUE;
-  
+
   opj_free( header);
 
   return succeed;

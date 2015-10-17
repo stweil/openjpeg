@@ -49,9 +49,9 @@ faixbox_param_t * gene_faixbox( box_param_t *box)
   long pos = 0;
 
   faix = ( faixbox_param_t *)malloc( sizeof(faixbox_param_t));
-  
+
   faix->version = fetch_DBox1byte( box, (pos+=1)-1);
-  
+
   if( 3< faix->version){
     fprintf( FCGI_stderr, "Error: version %d in faix box is reserved for ISO use.\n", faix->version);
     free(faix);
@@ -61,20 +61,20 @@ faixbox_param_t * gene_faixbox( box_param_t *box)
   if( faix->version%2){
     subfaixbox8_param_t *subfaixbox;
     size_t i;
-    
+
     faix->subfaixbox.byte8_params = (subfaixbox8_param_t *)malloc( sizeof(subfaixbox8_param_t));
-    
+
     subfaixbox = faix->subfaixbox.byte8_params;
     subfaixbox->nmax = fetch_DBox8bytebigendian( box, (pos+=8)-8);
     subfaixbox->m    = fetch_DBox8bytebigendian( box, (pos+=8)-8);
-    
+
     numOfelem = subfaixbox->nmax*subfaixbox->m;
-    
+
     subfaixbox->elem = ( faixelem8_param_t *)malloc( numOfelem*sizeof(faixelem8_param_t));
-    
+
     if( faix->version == 3)
       subfaixbox->aux = ( Byte4_t *)malloc( numOfelem*sizeof(Byte4_t));
-    
+
     for( i=0; i<numOfelem; i++){
       subfaixbox->elem[i].off = fetch_DBox8bytebigendian( box, (pos+=8)-8);
       subfaixbox->elem[i].len = fetch_DBox8bytebigendian( box, (pos+=8)-8);
@@ -87,18 +87,18 @@ faixbox_param_t * gene_faixbox( box_param_t *box)
     size_t i;
 
     faix->subfaixbox.byte4_params = (subfaixbox4_param_t *)malloc( sizeof(subfaixbox4_param_t));
-    
+
     subfaixbox = faix->subfaixbox.byte4_params;
     subfaixbox->nmax = fetch_DBox4bytebigendian( box, (pos+=4)-4);
     subfaixbox->m    = fetch_DBox4bytebigendian( box, (pos+=4)-4);
-    
+
     numOfelem = subfaixbox->nmax*subfaixbox->m;
-    
+
     subfaixbox->elem = ( faixelem4_param_t *)malloc( numOfelem*sizeof(faixelem4_param_t));
-    
+
     if( faix->version == 2)
       subfaixbox->aux = ( Byte4_t *)malloc( numOfelem*sizeof(Byte4_t));
-    
+
     for( i=0; i<numOfelem; i++){
       subfaixbox->elem[i].off = fetch_DBox4bytebigendian( box, (pos+=4)-4);
       subfaixbox->elem[i].len = fetch_DBox4bytebigendian( box, (pos+=4)-4);
@@ -115,7 +115,7 @@ void print_faixbox( faixbox_param_t *faix)
 
   fprintf( logstream, "faix box info\n");
   fprintf( logstream, "\tversion: %d\n", faix->version);
-  
+
   fprintf( logstream, "\t nmax: %#" PRIx64 " = %" PRId64 "\n", get_nmax( faix), get_nmax( faix));
   fprintf( logstream, "\t m: %#" PRIx64 " = %" PRId64 "\n", get_m( faix), get_m( faix));
 

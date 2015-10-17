@@ -39,38 +39,38 @@ import java.util.*;
 import java.io.*;
 
 public class ImageViewer extends JPanel
-{  
+{
     private ImageManager imgmanager;
     private int vw, vh;
     private int iw, ih;
     private int selected = 0;
     private Image img;
-  
+
     private String cmdline = new String();
     private boolean fullRefresh = false;
     private Point offset = new Point(0,0);
     private Rectangle rect = new Rectangle();
     private Rectangle roirect[] = null;
     private String roiname[] = null;
-      
+
     public ImageViewer( String j2kfilename, ImageManager manager, boolean session, boolean jppstream, int aux)
     {
 	String str;
 	MML myMML;
-	
+
 	this.setSize( 170, 170);
 	Dimension asz = this.getSize();
-    
+
 	vw = asz.width;
 	vh = asz.height;
-    
+
 	setBackground(Color.black);
 	myMML = new MML(this);
 
 	imgmanager = manager;
 
 	img = imgmanager.getImage( j2kfilename, vw, vh, session, aux, jppstream, !jppstream);
-	
+
 	addMouseListener(myMML);
 	addMouseMotionListener(myMML);
 	addComponentListener( new ResizeListener(this));
@@ -80,7 +80,7 @@ public class ImageViewer extends JPanel
     {
 	return img;
     }
-    
+
     public void zoomIn()
     {
 	roirect = null;
@@ -88,16 +88,16 @@ public class ImageViewer extends JPanel
 
 	double scalex = (double)vw/(double)rect.width;
 	double scaley = (double)vh/(double)rect.height;
-    
+
 	int fw = (int)(imgmanager.getFw()*scalex);
 	int fh = (int)(imgmanager.getFh()*scaley);
 	int rx = (int)((imgmanager.getRx()+rect.x)*scalex);
 	int ry = (int)((imgmanager.getRy()+rect.y)*scaley);
 
 	img = imgmanager.getImage( fw, fh, rx, ry, vw, vh);
-  
+
 	rect.x = rect.y = rect.width = rect.height = 0;
-        
+
 	selected = 0;
 	fullRefresh = true;
 	repaint();
@@ -107,9 +107,9 @@ public class ImageViewer extends JPanel
     {
 	roirect = null;
 	roiname = null;
-	
+
 	Dimension asz = this.getSize();
-    
+
 	vw = asz.width;
 	vh = asz.height;
 
@@ -120,7 +120,7 @@ public class ImageViewer extends JPanel
 	int fh = (int)(imgmanager.getFh()*scaley);
 	int rx = (int)(imgmanager.getRx()*scalex);
 	int ry = (int)(imgmanager.getRy()*scaley);
-	
+
 	img = imgmanager.getImage( fw, fh, rx, ry, vw, vh);
 
 	fullRefresh = true;
@@ -133,12 +133,12 @@ public class ImageViewer extends JPanel
 	roiname = null;
 
 	if (state != selected) {
-	    
+
 	    selected = state;
 	    repaint();
 	}
     }
-  
+
     public boolean isInsideRect(int x, int y)
     {
 	return rect.contains(x - offset.x, y - offset.y);
@@ -151,14 +151,14 @@ public class ImageViewer extends JPanel
 	rect.width = Math.abs(x2-x1);
 	rect.height = Math.abs(y2-y1);
     }
-    
+
     // public void annotate( JP2XMLparser.ROIparams roi[])
     // {
     // 	int numofroi = roi.length;
 
     // 	roirect = new Rectangle [numofroi];
     // 	roiname = new String [numofroi];
-	
+
     // 	double scale_x = imgmanager.getFw()/(double)imgmanager.getOrigWidth();
     // 	double scale_y = imgmanager.getFh()/(double)imgmanager.getOrigHeight();
     // 	int rx = imgmanager.getRx();
@@ -182,7 +182,7 @@ public class ImageViewer extends JPanel
     // 	}
     // 	repaint();
     // }
-    
+
     public boolean hasAnnotation()
     {
 	if( roirect == null)
@@ -190,7 +190,7 @@ public class ImageViewer extends JPanel
 	else
 	    return true;
     }
-    
+
     public boolean isInsideROIRect(int x, int y)
     {
 	for( int i=0; i<roirect.length; i++)
@@ -222,10 +222,10 @@ public class ImageViewer extends JPanel
 
 	iw = img.getWidth(this);
 	ih = img.getHeight(this);
-    
+
 	bi = new BufferedImage( iw, ih, BufferedImage.TYPE_INT_RGB);
 	big = bi.createGraphics();
-    
+
 	big.drawImage(img, 0, 0, this);
 	big.setPaint(Color.red);
 	if ((rect.width > 0) && (rect.height > 0))
@@ -252,7 +252,7 @@ public class ImageViewer extends JPanel
 	g2.setPaint(new Color(r, g, b, a));
 	g2.fillRect(rect.x + 1, rect.y + 1, rect.width - 1, rect.height - 1);
     }
-  
+
     private void shadeExt(Graphics2D g2, int r, int g, int b, int a)
     {
 	g2.setPaint(new Color(r, g, b, a));

@@ -48,7 +48,7 @@ manfbox_param_t * gene_manfbox( box_param_t *box)
   boxheader_param_t *bh;   /* current box pointer */
   boxheader_param_t *last; /* last boxheader pointer of the list */
   OPJ_OFF_T pos;                 /* current position in manf_box contents; */
-  
+
   manf = ( manfbox_param_t *)malloc( sizeof( manfbox_param_t));
 
   pos = 0;
@@ -58,7 +58,7 @@ manfbox_param_t * gene_manfbox( box_param_t *box)
 
     bh = gene_childboxheader( box, pos);
     pos += bh->headlen;
-    
+
     /* insert into the list */
     if( manf->first)
       last->next = bh;
@@ -72,7 +72,7 @@ manfbox_param_t * gene_manfbox( box_param_t *box)
 void delete_manfbox( manfbox_param_t **manf)
 {
   boxheader_param_t *bhPtr, *bhNext;
-  
+
   bhPtr = (*manf)->first;
   while( bhPtr != NULL){
     bhNext = bhPtr->next;
@@ -99,14 +99,14 @@ void print_manfbox( manfbox_param_t *manf)
 boxheader_param_t * search_boxheader( const char type[], manfbox_param_t *manf)
 {
   boxheader_param_t *found;
-  
+
   found = manf->first;
-  
+
   while( found != NULL){
-    
+
     if( strncmp( type, found->type, 4) == 0)
       return found;
-      
+
     found = found->next;
   }
   fprintf( FCGI_stderr, "Error: Boxheader %s not found\n", type);

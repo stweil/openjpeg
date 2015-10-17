@@ -51,7 +51,7 @@ metadatalist_param_t * gene_metadatalist(void)
   metadatalist_param_t *list;
 
   list = (metadatalist_param_t *)malloc( sizeof(metadatalist_param_t));
-  
+
   list->first = NULL;
   list->last  = NULL;
 
@@ -71,12 +71,12 @@ metadatalist_param_t * const_metadatalist( int fd)
 
   if(!(filesize = (Byte8_t)get_filesize( fd)))
     return NULL;
-  
+
   if( !(toplev_boxlist = get_boxstructure( fd, 0, filesize))){
     fprintf( FCGI_stderr, "Error: Not correctl JP2 format\n");
     return NULL;
   }
-  
+
   phldlist = gene_placeholderlist();
   metadatalist = gene_metadatalist();
 
@@ -94,7 +94,7 @@ metadatalist_param_t * const_metadatalist( int fd)
       boxlist = get_boxstructure( box->fd, get_DBoxoff( box), get_DBoxlen(box));
       if( !boxlist)
 	boxcontents = gene_boxcontents( get_DBoxoff( box), get_DBoxlen(box));
-      
+
       delete_box_in_list( &box, toplev_boxlist);
       metabin = gene_metadata( idx, boxlist, NULL, boxcontents);
       insert_metadata_into_list( metabin, metadatalist);
@@ -125,7 +125,7 @@ void delete_metadatalist( metadatalist_param_t **list)
 metadata_param_t * gene_metadata( Byte8_t idx, boxlist_param_t *boxlist, placeholderlist_param_t *phldlist, boxcontents_param_t *boxcontents)
 {
   metadata_param_t *bin;
-  
+
   bin = (metadata_param_t *)malloc( sizeof(metadata_param_t));
   bin->idx = idx;
   bin->boxlist = boxlist;
@@ -163,11 +163,11 @@ void print_metadata( metadata_param_t *metadata)
   fprintf( logstream, "metadata-bin %" PRIu64 " info:\n", metadata->idx);
   print_allbox( metadata->boxlist);
   print_allplaceholder( metadata->placeholderlist);
- 
+
   boxcont = metadata->boxcontents;
   if( boxcont)
       fprintf( logstream, "box contents:\n"
-	       "\t offset: %" PRId64 " %#" PRIx64 "\n" 
+	       "\t offset: %" PRId64 " %#" PRIx64 "\n"
          "\t length: %" PRId64 " %#" PRIx64 "\n", boxcont->offset,
          boxcont->offset, boxcont->length, boxcont->length);
 }
@@ -175,7 +175,7 @@ void print_metadata( metadata_param_t *metadata)
 void print_allmetadata( metadatalist_param_t *list)
 {
   metadata_param_t *ptr;
-  
+
   fprintf( logstream, "all metadata info: \n");
   ptr = list->first;
   while( ptr != NULL){
@@ -197,16 +197,16 @@ boxcontents_param_t * gene_boxcontents( OPJ_OFF_T offset, OPJ_SIZE_T length)
 }
 
 metadata_param_t * search_metadata( Byte8_t idx, metadatalist_param_t *list)
-{ 
+{
   metadata_param_t *found;
 
   found = list->first;
-  
+
   while( found){
-    
+
     if( found->idx == idx)
       return found;
-      
+
     found = found->next;
   }
   return NULL;
@@ -222,7 +222,7 @@ Byte8_t search_metadataidx( char boxtype[4], metadatalist_param_t *list)
   for( i=0; i<4; i++)
     if( boxtype[i] == '_')
       boxtype[i] = ' ';
-  
+
   ptr = list->first;
   while( ptr){
     if( ptr->boxlist){

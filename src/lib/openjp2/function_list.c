@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -71,9 +71,9 @@ void  opj_procedure_list_destroy(opj_procedure_list_t * p_list)
 
 OPJ_BOOL opj_procedure_list_add_procedure (opj_procedure_list_t * p_validation_list, opj_procedure p_procedure, opj_event_mgr_t* p_manager )
 {
-	
+
         assert(p_manager != NULL);
-	
+
         if (p_validation_list->m_nb_max_procedures == p_validation_list->m_nb_procedures)
         {
                 opj_procedure * new_procedures;

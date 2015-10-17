@@ -84,11 +84,11 @@ cmsBool RegisterTypesPlugin(cmsContext id, cmsPluginBase* Data, _cmsMemoryClient
     pt ->Next      = ctx ->TagTypes;
 
     ctx ->TagTypes = pt;
-     
+
     return TRUE;
 }
 
-// Return handler for a given type or NULL if not found. Shared between normal types and MPE. It first tries the additons 
+// Return handler for a given type or NULL if not found. Shared between normal types and MPE. It first tries the additons
 // made by plug-ins and then the built-in defaults.
 static
 cmsTagTypeHandler* GetHandler(cmsTagTypeSignature sig, _cmsTagTypeLinkedList* PluginLinkedList, _cmsTagTypeLinkedList* DefaultLinkedList)
@@ -1076,7 +1076,7 @@ void *Type_Curve_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* io, cm
 {
     cmsUInt32Number Count;
     cmsToneCurve* NewGamma;
-    
+
     *nItems = 0;
     if (!_cmsReadUInt32Number(io, &Count)) return NULL;
 
@@ -1091,7 +1091,7 @@ void *Type_Curve_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* io, cm
                    *nItems = 1;
                    return NewGamma;
                }
-              
+
            case 1:  // Specified as the exponent of gamma function
                {
                    cmsUInt16Number SingleGammaFixed;
@@ -1358,9 +1358,9 @@ void *Type_Measurement_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* 
 {
     cmsICCMeasurementConditions mc;
 
-	
+
     memset(&mc, 0, sizeof(mc));
-	
+
     if (!_cmsReadUInt32Number(io, &mc.Observer)) return NULL;
     if (!_cmsReadXYZNumber(io,    &mc.Backing)) return NULL;
     if (!_cmsReadUInt32Number(io, &mc.Geometry)) return NULL;
@@ -1673,18 +1673,18 @@ cmsBool Write8bitTables(cmsContext ContextID, cmsIOHANDLER* io, cmsUInt32Number 
         if (Tables) {
 
             // Usual case of identity curves
-            if ((Tables ->TheCurves[i]->nEntries == 2) && 
-                (Tables->TheCurves[i]->Table16[0] == 0) && 
+            if ((Tables ->TheCurves[i]->nEntries == 2) &&
+                (Tables->TheCurves[i]->Table16[0] == 0) &&
                 (Tables->TheCurves[i]->Table16[1] == 65535)) {
 
                     for (j=0; j < 256; j++) {
                         if (!_cmsWriteUInt8Number(io, (cmsUInt8Number) j)) return FALSE;
                     }
             }
-            else 
+            else
                 if (Tables ->TheCurves[i]->nEntries != 256) {
                     cmsSignalError(ContextID, cmsERROR_RANGE, "LUT8 needs 256 entries on prelinearization");
-                    return FALSE;                
+                    return FALSE;
                 }
                 else
                     for (j=0; j < 256; j++) {
@@ -1787,7 +1787,7 @@ void *Type_LUT8_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* io, cms
     if (nTabSize > 0) {
 
         cmsUInt16Number *PtrW, *T;
-       
+
         PtrW = T  = (cmsUInt16Number*) _cmsCalloc(self ->ContextID, nTabSize, sizeof(cmsUInt16Number));
         if (T  == NULL) goto Error;
 
@@ -2017,7 +2017,7 @@ cmsBool Write16bitTables(cmsContext ContextID, cmsIOHANDLER* io, _cmsStageToneCu
 
         for (j=0; j < nEntries; j++) {
 
-            val = Tables->TheCurves[i]->Table16[j];        
+            val = Tables->TheCurves[i]->Table16[j];
             if (!_cmsWriteUInt16Number(io, val)) return FALSE;
         }
     }
@@ -5100,8 +5100,8 @@ void *Type_Dictionary_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* i
         }
 
         if (NameWCS == NULL || ValueWCS == NULL) {
-        
-            cmsSignalError(self->ContextID, cmsERROR_CORRUPTION_DETECTED, "Bad dictionary Name/Value");        
+
+            cmsSignalError(self->ContextID, cmsERROR_CORRUPTION_DETECTED, "Bad dictionary Name/Value");
             rc = FALSE;
         }
         else {
@@ -5270,8 +5270,8 @@ _cmsTagTypePluginChunkType _cmsTagTypePluginChunk = { NULL };
 
 // Duplicates the zone of memory used by the plug-in in the new context
 static
-void DupTagTypeList(struct _cmsContext_struct* ctx, 
-                    const struct _cmsContext_struct* src, 
+void DupTagTypeList(struct _cmsContext_struct* ctx,
+                    const struct _cmsContext_struct* src,
                     int loc)
 {
    _cmsTagTypePluginChunkType newHead = { NULL };
@@ -5286,7 +5286,7 @@ void DupTagTypeList(struct _cmsContext_struct* ctx,
 
            _cmsTagTypeLinkedList *newEntry = ( _cmsTagTypeLinkedList *) _cmsSubAllocDup(ctx ->MemPool, entry, sizeof(_cmsTagTypeLinkedList));
 
-           if (newEntry == NULL) 
+           if (newEntry == NULL)
                return;
 
            // We want to keep the linked list order, so this is a little bit tricky
@@ -5304,11 +5304,11 @@ void DupTagTypeList(struct _cmsContext_struct* ctx,
 }
 
 
-void _cmsAllocTagTypePluginChunk(struct _cmsContext_struct* ctx, 
+void _cmsAllocTagTypePluginChunk(struct _cmsContext_struct* ctx,
                                  const struct _cmsContext_struct* src)
 {
     if (src != NULL) {
-        
+
         // Duplicate the LIST
         DupTagTypeList(ctx, src, TagTypePlugin);
     }
@@ -5318,11 +5318,11 @@ void _cmsAllocTagTypePluginChunk(struct _cmsContext_struct* ctx,
     }
 }
 
-void _cmsAllocMPETypePluginChunk(struct _cmsContext_struct* ctx, 
+void _cmsAllocMPETypePluginChunk(struct _cmsContext_struct* ctx,
                                const struct _cmsContext_struct* src)
 {
     if (src != NULL) {
-        
+
         // Duplicate the LIST
         DupTagTypeList(ctx, src, MPEPlugin);
     }
@@ -5472,7 +5472,7 @@ _cmsTagPluginChunkType _cmsTagPluginChunk = { NULL };
 
 // Duplicates the zone of memory used by the plug-in in the new context
 static
-void DupTagList(struct _cmsContext_struct* ctx, 
+void DupTagList(struct _cmsContext_struct* ctx,
                     const struct _cmsContext_struct* src)
 {
    _cmsTagPluginChunkType newHead = { NULL };
@@ -5487,7 +5487,7 @@ void DupTagList(struct _cmsContext_struct* ctx,
 
            _cmsTagLinkedList *newEntry = ( _cmsTagLinkedList *) _cmsSubAllocDup(ctx ->MemPool, entry, sizeof(_cmsTagLinkedList));
 
-           if (newEntry == NULL) 
+           if (newEntry == NULL)
                return;
 
            // We want to keep the linked list order, so this is a little bit tricky
@@ -5504,7 +5504,7 @@ void DupTagList(struct _cmsContext_struct* ctx,
    ctx ->chunks[TagPlugin] = _cmsSubAllocDup(ctx->MemPool, &newHead, sizeof(_cmsTagPluginChunkType));
 }
 
-void _cmsAllocTagPluginChunk(struct _cmsContext_struct* ctx, 
+void _cmsAllocTagPluginChunk(struct _cmsContext_struct* ctx,
                                  const struct _cmsContext_struct* src)
 {
     if (src != NULL) {
@@ -5538,7 +5538,7 @@ cmsBool  _cmsRegisterTagPlugin(cmsContext id, cmsPluginBase* Data)
     pt ->Next       = TagPluginChunk ->Tag;
 
     TagPluginChunk ->Tag = pt;
-    
+
     return TRUE;
 }
 

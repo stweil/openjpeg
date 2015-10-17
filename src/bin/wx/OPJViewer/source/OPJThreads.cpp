@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -49,14 +49,14 @@ void OPJEncoThread::WriteText(const wxString& text)
     // before doing any GUI calls we must ensure that this thread is the only
     // one doing it!
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiEnter();
 #endif // __WXGTK__
 
     msg << text;
     m_canvas->WriteText(msg);
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif // __WXGTK__
 }
@@ -145,10 +145,10 @@ OPJDecoThread::OPJDecoThread(OPJCanvas *canvas)
 void OPJDecoThread::WriteText(const wxString& text)
 {
     wxString msg;
-	
+
 	// we use a fake event and post it for inter-thread gui communication
     wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, OPJFRAME_THREADLOGMSG);
-    event.SetInt(-1); 
+    event.SetInt(-1);
 	msg << text;
 	event.SetString(msg);
     wxPostEvent(this->m_canvas->m_childframe->m_frame, event);
@@ -157,14 +157,14 @@ void OPJDecoThread::WriteText(const wxString& text)
     // before doing any GUI calls we must ensure that this thread is the only
     // one doing it!
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiEnter();
 #endif // __WXGTK__
 
     msg << text;
     m_canvas->WriteText(msg);
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif // __WXGTK__
 */
@@ -261,7 +261,7 @@ void *OPJDecoThread::Entry()
 	// signal the frame to refresh the canvas
     wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, OPJFRAME_VIEWFIT);
 	event.SetString(wxT("Fit me"));
-    event.SetInt(m_canvas->m_childframe->m_winnumber); 
+    event.SetInt(m_canvas->m_childframe->m_winnumber);
     wxPostEvent(m_canvas->m_childframe->m_frame, event);
 
 	// find a fit-to-width zoom
@@ -302,10 +302,10 @@ OPJParseThread::OPJParseThread(OPJMarkerTree *tree, wxTreeItemId parentid)
 void OPJParseThread::WriteText(const wxString& text)
 {
     wxString msg;
-	
+
 	// we use a fake event and post it for inter-thread gui communication
     wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, OPJFRAME_THREADLOGMSG);
-    event.SetInt(-1); 
+    event.SetInt(-1);
 	msg << text;
 	event.SetString(msg);
     wxPostEvent(this->m_tree->m_childframe->m_frame, event);
@@ -313,14 +313,14 @@ void OPJParseThread::WriteText(const wxString& text)
 /*    // before doing any GUI calls we must ensure that this thread is the only
     // one doing it!
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiEnter();
 #endif // __WXGTK
 
     msg << text;
     m_tree->WriteText(msg);
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif // __WXGTK*/
 }

@@ -288,8 +288,8 @@ cmsUInt8Number* Unroll3BytesSkip1Swap(register _cmsTRANSFORM* info,
 }
 
 static
-cmsUInt8Number* Unroll3BytesSkip1SwapSwapFirst(register _cmsTRANSFORM* info, 
-                                              register cmsUInt16Number wIn[], 
+cmsUInt8Number* Unroll3BytesSkip1SwapSwapFirst(register _cmsTRANSFORM* info,
+                                              register cmsUInt16Number wIn[],
                                               register cmsUInt8Number* accum,
                                               register cmsUInt32Number Stride)
 {
@@ -305,8 +305,8 @@ cmsUInt8Number* Unroll3BytesSkip1SwapSwapFirst(register _cmsTRANSFORM* info,
 }
 
 static
-cmsUInt8Number* Unroll3BytesSkip1SwapFirst(register _cmsTRANSFORM* info, 
-                                           register cmsUInt16Number wIn[], 
+cmsUInt8Number* Unroll3BytesSkip1SwapFirst(register _cmsTRANSFORM* info,
+                                           register cmsUInt16Number wIn[],
                                            register cmsUInt8Number* accum,
                                            register cmsUInt32Number Stride)
 {
@@ -800,12 +800,12 @@ cmsUInt8Number* UnrollLabFloatTo16(register _cmsTRANSFORM* info,
                                     register cmsUInt32Number  Stride)
 {
     cmsCIELab Lab;
-    
+
     if (T_PLANAR(info -> InputFormat)) {
 
         cmsFloat32Number* Pt = (cmsFloat32Number*) accum;
 
-     
+
         Lab.L = Pt[0];
         Lab.a = Pt[Stride];
         Lab.b = Pt[Stride*2];
@@ -814,7 +814,7 @@ cmsUInt8Number* UnrollLabFloatTo16(register _cmsTRANSFORM* info,
         return accum + sizeof(cmsFloat32Number);
     }
     else {
- 
+
         Lab.L = ((cmsFloat32Number*) accum)[0];
         Lab.a = ((cmsFloat32Number*) accum)[1];
         Lab.b = ((cmsFloat32Number*) accum)[2];
@@ -2294,9 +2294,9 @@ cmsUInt8Number* PackLabFloatFrom16(register _cmsTRANSFORM* info,
     cmsLabEncoded2Float(&Lab, wOut);
 
     if (T_PLANAR(info -> OutputFormat)) {
-       
+
         cmsFloat32Number* Out = (cmsFloat32Number*) output;
-    
+
         Out[0]        = (cmsFloat32Number)Lab.L;
         Out[Stride]   = (cmsFloat32Number)Lab.a;
         Out[Stride*2] = (cmsFloat32Number)Lab.b;
@@ -2708,7 +2708,7 @@ cmsUInt8Number* PackXYZDoubleFromFloat(_cmsTRANSFORM* Info,
 
 // ----------------------------------------------------------------------------------------------------------------
 
-#ifndef CMS_NO_HALF_SUPPORT 
+#ifndef CMS_NO_HALF_SUPPORT
 
 // Decodes an stream of half floats to wIn[] described by input format
 
@@ -2939,7 +2939,7 @@ static cmsFormatters16 InputFormatters16[] = {
                                              ANYSWAP|ANYEXTRA|ANYSPACE,   UnrollDoubleTo16},
     { FLOAT_SH(1)|BYTES_SH(4), ANYCHANNELS|ANYPLANAR|ANYSWAPFIRST|ANYFLAVOR|
                                              ANYSWAP|ANYEXTRA|ANYSPACE,   UnrollFloatTo16},
-#ifndef CMS_NO_HALF_SUPPORT 
+#ifndef CMS_NO_HALF_SUPPORT
     { FLOAT_SH(1)|BYTES_SH(2), ANYCHANNELS|ANYPLANAR|ANYSWAPFIRST|ANYFLAVOR|
                                             ANYEXTRA|ANYSWAP|ANYSPACE,   UnrollHalfTo16},
 #endif
@@ -2959,7 +2959,7 @@ static cmsFormatters16 InputFormatters16[] = {
     { CHANNELS_SH(3)|EXTRA_SH(1)|BYTES_SH(1)|DOSWAP_SH(1),     ANYSPACE,  Unroll3BytesSkip1Swap},
     { CHANNELS_SH(3)|EXTRA_SH(1)|BYTES_SH(1)|SWAPFIRST_SH(1),  ANYSPACE,  Unroll3BytesSkip1SwapFirst},
 
-    { CHANNELS_SH(3)|EXTRA_SH(1)|BYTES_SH(1)|DOSWAP_SH(1)|SWAPFIRST_SH(1),  
+    { CHANNELS_SH(3)|EXTRA_SH(1)|BYTES_SH(1)|DOSWAP_SH(1)|SWAPFIRST_SH(1),
                                                                ANYSPACE,  Unroll3BytesSkip1SwapSwapFirst},
 
     { CHANNELS_SH(4)|BYTES_SH(1),                              ANYSPACE,  Unroll4Bytes},
@@ -3012,7 +3012,7 @@ static cmsFormattersFloat InputFormattersFloat[] = {
 
     {     FLOAT_SH(1)|BYTES_SH(0), ANYPLANAR|ANYSWAPFIRST|ANYSWAP|ANYEXTRA|
                                                         ANYCHANNELS|ANYSPACE,  UnrollDoublesToFloat},
-#ifndef CMS_NO_HALF_SUPPORT 
+#ifndef CMS_NO_HALF_SUPPORT
     {     FLOAT_SH(1)|BYTES_SH(2), ANYPLANAR|ANYSWAPFIRST|ANYSWAP|ANYEXTRA|
                                                         ANYCHANNELS|ANYSPACE,  UnrollHalfToFloat},
 #endif
@@ -3069,12 +3069,12 @@ static cmsFormatters16 OutputFormatters16[] = {
 
     { TYPE_Lab_FLT,                                      ANYPLANAR|ANYEXTRA,  PackLabFloatFrom16},
     { TYPE_XYZ_FLT,                                      ANYPLANAR|ANYEXTRA,  PackXYZFloatFrom16},
-    
+
     { FLOAT_SH(1)|BYTES_SH(0),      ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|
                                     ANYCHANNELS|ANYPLANAR|ANYEXTRA|ANYSPACE,  PackDoubleFrom16},
     { FLOAT_SH(1)|BYTES_SH(4),      ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|
                                     ANYCHANNELS|ANYPLANAR|ANYEXTRA|ANYSPACE,  PackFloatFrom16},
-#ifndef CMS_NO_HALF_SUPPORT 
+#ifndef CMS_NO_HALF_SUPPORT
     { FLOAT_SH(1)|BYTES_SH(2),      ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|
                                     ANYCHANNELS|ANYPLANAR|ANYEXTRA|ANYSPACE,  PackHalfFrom16},
 #endif
@@ -3161,8 +3161,8 @@ static cmsFormattersFloat OutputFormattersFloat[] = {
                              ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|ANYEXTRA|ANYCHANNELS|ANYSPACE,   PackFloatsFromFloat },
     {     FLOAT_SH(1)|BYTES_SH(0), ANYPLANAR|
                              ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|ANYEXTRA|ANYCHANNELS|ANYSPACE,   PackDoublesFromFloat },
-#ifndef CMS_NO_HALF_SUPPORT 
-    {     FLOAT_SH(1)|BYTES_SH(2),                                   
+#ifndef CMS_NO_HALF_SUPPORT
+    {     FLOAT_SH(1)|BYTES_SH(2),
                              ANYFLAVOR|ANYSWAPFIRST|ANYSWAP|ANYEXTRA|ANYCHANNELS|ANYSPACE,   PackHalfFromFloat },
 #endif
 
@@ -3229,7 +3229,7 @@ _cmsFormattersPluginChunkType _cmsFormattersPluginChunk = { NULL };
 
 // Duplicates the zone of memory used by the plug-in in the new context
 static
-void DupFormatterFactoryList(struct _cmsContext_struct* ctx, 
+void DupFormatterFactoryList(struct _cmsContext_struct* ctx,
                                                const struct _cmsContext_struct* src)
 {
    _cmsFormattersPluginChunkType newHead = { NULL };
@@ -3246,7 +3246,7 @@ void DupFormatterFactoryList(struct _cmsContext_struct* ctx,
 
            cmsFormattersFactoryList *newEntry = ( cmsFormattersFactoryList *) _cmsSubAllocDup(ctx ->MemPool, entry, sizeof(cmsFormattersFactoryList));
 
-           if (newEntry == NULL) 
+           if (newEntry == NULL)
                return;
 
            // We want to keep the linked list order, so this is a little bit tricky
@@ -3264,13 +3264,13 @@ void DupFormatterFactoryList(struct _cmsContext_struct* ctx,
 }
 
 // The interpolation plug-in memory chunk allocator/dup
-void _cmsAllocFormattersPluginChunk(struct _cmsContext_struct* ctx, 
+void _cmsAllocFormattersPluginChunk(struct _cmsContext_struct* ctx,
                                     const struct _cmsContext_struct* src)
 {
       _cmsAssert(ctx != NULL);
 
      if (src != NULL) {
-        
+
          // Duplicate the LIST
          DupFormatterFactoryList(ctx, src);
      }

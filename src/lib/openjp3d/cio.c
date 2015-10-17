@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -180,7 +180,7 @@ unsigned int cio_read(opj_cio_t *cio, int n) {
 	return v;
 }
 
-/* 
+/*
  * Skip some bytes.
  *
  * n : number of bytes to skip

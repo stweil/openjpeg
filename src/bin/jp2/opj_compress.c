@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -460,7 +460,7 @@ static char get_next_file(int imageno,dircnt_t *dirptr,img_fol_t *img_fol, opj_c
     if (opj_strcpy_s(parameters->infile, sizeof(parameters->infile), infilename) != 0) {
         return 1;
     }
-	
+
     /*Set output file*/
     strcpy(temp_ofname,get_file_name(image_filename));
     while((temp_p = strtok(NULL,".")) != NULL){
@@ -1897,7 +1897,7 @@ int main(int argc, char **argv) {
     if(parameters.cp_comment)   free(parameters.cp_comment);
     if(parameters.cp_matrice)   free(parameters.cp_matrice);
     if(raw_cp.rawComps) free(raw_cp.rawComps);
-	
+
     t = opj_clock() - t;
     if (num_compressed_files) {
 		    fprintf(stdout, "encode time: %d ms \n", (int)((t * 1000.0)/(OPJ_FLOAT64)num_compressed_files));

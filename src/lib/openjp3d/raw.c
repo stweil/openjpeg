@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -33,14 +33,14 @@
 
 #include "opj_includes.h"
 
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
 */
 
 
-/* 
+/*
 ==========================================================
    RAW encoding interface
 ==========================================================
@@ -85,7 +85,7 @@ int raw_decode(opj_raw_t *raw) {
 	}
 	raw->ct--;
 	d = (raw->c >> raw->ct) & 0x01;
-	
+
 	return d;
 }
 

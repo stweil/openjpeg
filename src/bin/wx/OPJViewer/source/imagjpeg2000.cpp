@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -136,11 +136,11 @@ jpeg2000familytype(unsigned char *hdr, int hdr_len)
 /* we have to use this to avoid GUI-noGUI threads crashing */
 void printevent(const char *msg)
 {
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 	wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 	wxLogMessage(wxT("%s"), msg);
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 }
@@ -152,7 +152,7 @@ void jpeg2000_error_callback(const char *msg, void *client_data) {
 
 	if (message_len > MAX_MESSAGE_LEN)
 		message_len = MAX_MESSAGE_LEN;
-	
+
 	if (msg[message_len - 1] == '\n')
 		message_len--;
 
@@ -167,7 +167,7 @@ void jpeg2000_warning_callback(const char *msg, void *client_data) {
 
 	if (message_len > MAX_MESSAGE_LEN)
 		message_len = MAX_MESSAGE_LEN;
-	
+
 	if (msg[message_len - 1] == '\n')
 		message_len--;
 
@@ -182,7 +182,7 @@ void jpeg2000_info_callback(const char *msg, void *client_data) {
 
 	if (message_len > MAX_MESSAGE_LEN)
 		message_len = MAX_MESSAGE_LEN;
-	
+
 	if (msg[message_len - 1] == '\n')
 		message_len--;
 
@@ -541,7 +541,7 @@ jpeg2000_file_parse(wxInputStream& stream, unsigned long int filepoint, unsigned
 		/* determine the box type */
 		for (box_type = JP_BOX; box_type < UNK_BOX; box_type++)
 			if (memcmp(TBox, jpeg2000box[box_type].value, 4) == 0)
-				break;	
+				break;
 
 		/* read the optional XLBox, 8 bytes */
 		if (LBox == 1) {
@@ -555,7 +555,7 @@ jpeg2000_file_parse(wxInputStream& stream, unsigned long int filepoint, unsigned
 		} else if (LBox == 0x00000000) {
 
 			/* last box in file */
-			last_box = 1; 
+			last_box = 1;
 			box_length = filelimit - filepoint;
 
 		} else
@@ -593,7 +593,7 @@ searchjpeg2000c(wxInputStream& stream, unsigned long int fsize, int number)
 	wxLogMessage(wxT("Searching jp2c box... "));
 
 	/* do the parsing */
-	if (jpeg2000_file_parse(stream, 0, fsize, number, scansign, &scanpoint) < 0)		
+	if (jpeg2000_file_parse(stream, 0, fsize, number, scansign, &scanpoint) < 0)
 		wxLogMessage(wxT("Unrecoverable error during JPEG 2000 box parsing: stopping"));
 
 	if (strcmp(scansign, "    "))
@@ -617,7 +617,7 @@ searchjpeg2000headerbox(wxInputStream& stream, unsigned long int fsize)
 	wxLogMessage(wxT("Searching jp2h box... "));
 
 	/* do the parsing */
-	if (jpeg2000_file_parse(stream, 0, fsize, 0, scansign, &scanpoint) < 0)		
+	if (jpeg2000_file_parse(stream, 0, fsize, 0, scansign, &scanpoint) < 0)
 		wxLogMessage(wxT("Unrecoverable error during JPEG 2000 box parsing: stopping"));
 
 	if (strcmp(scansign, "    "))
@@ -648,7 +648,7 @@ jpeg2000_box_handler_function(jpeg2000boxtype boxtype, wxInputStream& stream, un
 	case (MJP2_BOX):
 		jpeg2000_file_parse(stream, filepoint + 78, filelimit, level, scansign, scanpoint);
 		break;
-		
+
 	/* not yet implemented */
 	default:
 		break;
@@ -664,7 +664,7 @@ unsigned char jpeg2000head[jpeg2000headSIZE] = {
 		0x00, 0x00, 0x00, 0x0C,  'j',  'P',  ' ',  ' ',
 		0x0D, 0x0A, 0x87, 0x0A, 0x00, 0x00, 0x00, 0x14,
 		 'f',  't',  'y',  'p',  'j',  'p',  '2',  ' ',
-		0x00, 0x00, 0x00, 0x00,  'j',  'p',  '2',  ' '			
+		0x00, 0x00, 0x00, 0x00,  'j',  'p',  '2',  ' '
 };
 
 /////////////////////////////////////////////////
@@ -687,7 +687,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 	// destroy the image
     image->Destroy();
 
-	/* read the beginning of the file to check the type */ 
+	/* read the beginning of the file to check the type */
     if (!stream.Read(hdr, WXSIZEOF(hdr)))
         return false;
 	if ((jpfamform = jpeg2000familytype(hdr, WXSIZEOF(hdr))) < 0)
@@ -695,7 +695,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 	stream.SeekI(0, wxFromStart);
 
 	/* handle to a decompressor */
-	opj_dinfo_t* dinfo = NULL;	
+	opj_dinfo_t* dinfo = NULL;
 	opj_cio_t *cio = NULL;
 
 	/* configure the event callbacks */
@@ -841,11 +841,11 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 
 		// workaround for components different from 1 or 3
 		if ((opjimage->numcomps != 1) && (opjimage->numcomps != 3)) {
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 			wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 			wxLogMessage(wxT("JPEG2000: weird number of components"));
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
 			wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 			tempcomps = 1;
@@ -881,7 +881,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 			if (shiftbpp > 0) {
 				for (row = 0; row < opjimage->comps[0].h; row++) {
 					for (col = 0; col < opjimage->comps[0].w; col++) {
-						
+
 						*(ptr++) = (*(r++)) >> shiftbpp;
 						*(ptr++) = (*(g++)) >> shiftbpp;
 						*(ptr++) = (*(b++)) >> shiftbpp;
@@ -892,14 +892,14 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 			} else if (shiftbpp < 0) {
 				for (row = 0; row < opjimage->comps[0].h; row++) {
 					for (col = 0; col < opjimage->comps[0].w; col++) {
-						
+
 						*(ptr++) = (*(r++)) << -shiftbpp;
 						*(ptr++) = (*(g++)) << -shiftbpp;
 						*(ptr++) = (*(b++)) << -shiftbpp;
 
 					}
 				}
-				
+
 			} else {
 				for (row = 0; row < opjimage->comps[0].h; row++) {
 					for (col = 0; col < opjimage->comps[0].w; col++) {
@@ -907,7 +907,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 						*(ptr++) = *(r++);
 						*(ptr++) = *(g++);
 						*(ptr++) = *(b++);
-					
+
 					}
 				}
 			}
@@ -927,7 +927,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 			if (shiftbpp > 0) {
 				for (row = 0; row < opjimage->comps[selcomp].h; row++) {
 					for (col = 0; col < opjimage->comps[selcomp].w; col++) {
-						
+
 						*(ptr++) = (*(y)) >> shiftbpp;
 						*(ptr++) = (*(y)) >> shiftbpp;
 						*(ptr++) = (*(y++)) >> shiftbpp;
@@ -937,7 +937,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 			} else if (shiftbpp < 0) {
 				for (row = 0; row < opjimage->comps[selcomp].h; row++) {
 					for (col = 0; col < opjimage->comps[selcomp].w; col++) {
-						
+
 						*(ptr++) = (*(y)) << -shiftbpp;
 						*(ptr++) = (*(y)) << -shiftbpp;
 						*(ptr++) = (*(y++)) << -shiftbpp;
@@ -947,7 +947,7 @@ bool wxJPEG2000Handler::LoadFile(wxImage *image, wxInputStream& stream, bool ver
 			} else {
 				for (row = 0; row < opjimage->comps[selcomp].h; row++) {
 					for (col = 0; col < opjimage->comps[selcomp].w; col++) {
-						
+
 						*(ptr++) = *(y);
 						*(ptr++) = *(y);
 						*(ptr++) = *(y++);
@@ -987,7 +987,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
         opj_cparameters_t parameters;	/* compression parameters */
         opj_event_mgr_t event_mgr;		/* event manager */
         opj_image_t *oimage = NULL;
-        opj_image_cmptparm_t *cmptparm;	
+        opj_image_cmptparm_t *cmptparm;
         opj_cio_t *cio = NULL;
         opj_codestream_info_t cstr_info;
         int codestream_length;
@@ -1055,7 +1055,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                 wxLogError(wxT("bad coordinate of the image origin: x0,y0"));
                 return false;
         }
-                                
+
         /* Create comment for codestream */
         if(m_enablecomm) {
                 parameters.cp_comment = (char *) malloc(strlen(m_comment.ToAscii()) + 1);
@@ -1200,7 +1200,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                 parameters.tile_size_on = false;
                 parameters.cp_tdx=1;
                 parameters.cp_tdy=1;
-                
+
                 /*Tile part*/
                 parameters.tp_flag = 'C';
                 parameters.tp_on = 1;
@@ -1212,7 +1212,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                 parameters.image_offset_y0 = 0;
 
                 /*Codeblock size= 32*32*/
-                parameters.cblockw_init = 32;	
+                parameters.cblockw_init = 32;
                 parameters.cblockh_init = 32;
                 parameters.csty |= 0x01;
 
@@ -1228,14 +1228,14 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                 /* 9-7 transform */
                 parameters.irreversible = 1;
 
-        }				
+        }
 
         /* convert wx image into opj image */
         cmptparm = (opj_image_cmptparm_t*) malloc(3 * sizeof(opj_image_cmptparm_t));
 
-        /* initialize opj image components */	
+        /* initialize opj image components */
         memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
-        for(i = 0; i < 3; i++) {		
+        for(i = 0; i < 3; i++) {
                 cmptparm[i].prec = 8;
                 cmptparm[i].bpp = 8;
                 cmptparm[i].sgnd = false;
@@ -1260,7 +1260,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
         oimage->y1 = parameters.image_offset_y0 + (wimage->GetHeight() - 1) * 1 + 1;
 
         /* load image data */
-        unsigned char *value = wimage->GetData(); 
+        unsigned char *value = wimage->GetData();
         int area = wimage->GetWidth() * wimage->GetHeight();
         for (i = 0; i < area; i++) {
                         oimage->comps[0].data[i] = *(value++);
@@ -1288,7 +1288,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                                 parameters.cp_rsiz = STD_RSIZ;
                         }
                 break;
-                
+
                 case CINEMA4K_24:
                         if (parameters.numresolution < 1) {
                                         parameters.numresolution = 1;
@@ -1296,20 +1296,20 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                                         parameters.numresolution = 7;
                         }
                         if (!((oimage->comps[0].w == 4096) | (oimage->comps[0].h == 2160))) {
-                                wxLogWarning(wxT("Image coordinates %d x %d is not 4K compliant. JPEG Digital Cinema Profile-4" 
+                                wxLogWarning(wxT("Image coordinates %d x %d is not 4K compliant. JPEG Digital Cinema Profile-4"
                                         "(4K profile) compliance requires that at least one of coordinates match 4096 x 2160"),
                                         oimage->comps[0].w, oimage->comps[0].h);
                                 parameters.cp_rsiz = STD_RSIZ;
                         }
-                        parameters.POC[0].tile  = 1; 
-                        parameters.POC[0].resno0  = 0; 
+                        parameters.POC[0].tile  = 1;
+                        parameters.POC[0].resno0  = 0;
                         parameters.POC[0].compno0 = 0;
                         parameters.POC[0].layno1  = 1;
                         parameters.POC[0].resno1  = parameters.numresolution - 1;
                         parameters.POC[0].compno1 = 3;
                         parameters.POC[0].prg1 = CPRL;
                         parameters.POC[1].tile  = 1;
-                        parameters.POC[1].resno0  = parameters.numresolution - 1; 
+                        parameters.POC[1].resno0  = parameters.numresolution - 1;
                         parameters.POC[1].compno0 = 0;
                         parameters.POC[1].layno1  = 1;
                         parameters.POC[1].resno1  = parameters.numresolution;
@@ -1325,13 +1325,13 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                         for (i = 0 ; i < parameters.tcp_numlayers; i++) {
                                 temp_rate = 0;
                                 if (parameters.tcp_rates[i] == 0) {
-                                        parameters.tcp_rates[0] = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                        parameters.tcp_rates[0] = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                         (CINEMA_24_CS * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                 }else{
-                                        temp_rate = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                        temp_rate = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                                 (parameters.tcp_rates[i] * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                         if (temp_rate > CINEMA_24_CS ) {
-                                                parameters.tcp_rates[i]= ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                                parameters.tcp_rates[i]= ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                                 (CINEMA_24_CS * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                         } else {
                                                 /* do nothing */
@@ -1340,18 +1340,18 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                         }
                         parameters.max_comp_size = COMP_24_CS;
                         break;
-                        
+
                 case CINEMA2K_48:
                         for (i = 0; i < parameters.tcp_numlayers; i++) {
                                 temp_rate = 0 ;
                                 if (parameters.tcp_rates[i] == 0) {
-                                        parameters.tcp_rates[0] = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                        parameters.tcp_rates[0] = ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                         (CINEMA_48_CS * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                 }else{
-                                        temp_rate =((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                        temp_rate =((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                                 (parameters.tcp_rates[i] * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                         if (temp_rate > CINEMA_48_CS ){
-                                                parameters.tcp_rates[0]= ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) / 
+                                                parameters.tcp_rates[0]= ((float) (oimage->numcomps * oimage->comps[0].w * oimage->comps[0].h * oimage->comps[0].prec)) /
                                                 (CINEMA_48_CS * 8 * oimage->comps[0].dx * oimage->comps[0].dy);
                                         }else{
                                                 /* do nothing */
@@ -1364,7 +1364,7 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
 
                 parameters.cp_disto_alloc = 1;
         }
-        
+
         /* get a J2K compressor handle */
         opj_cinfo_t* cinfo = opj_create_compress(CODEC_J2K);
 
@@ -1392,13 +1392,13 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
                 if(parameters.cp_matrice)
                         free(parameters.cp_matrice);
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 
                 wxLogError(wxT("failed to encode image"));
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 
@@ -1433,13 +1433,13 @@ bool wxJPEG2000Handler::SaveFile( wxImage *wimage, wxOutputStream& stream, bool 
         if(parameters.cp_matrice)
                 free(parameters.cp_matrice);
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiEnter();
 #endif /* __WXGTK__ */
 
     wxLogMessage(wxT("J2K: Image encoded!"));
 
-#ifndef __WXGTK__ 
+#ifndef __WXGTK__
     wxMutexGuiLeave();
 #endif /* __WXGTK__ */
 

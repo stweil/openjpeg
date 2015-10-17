@@ -45,14 +45,14 @@
 static int jpip_to_jp2(char *argv[])
 {
   jpip_dec_param_t *dec;
-    
+
   dec = init_jpipdecoder( OPJ_TRUE);
-  
+
   if(!( fread_jpip( argv[1], dec)))
     return 1;
-  
+
   decode_jpip( dec);
-  
+
   if(!(fwrite_jp2k( argv[2], dec)))
     return 1;
 
@@ -77,19 +77,19 @@ static int jpip_to_jp2(char *argv[])
 static int jpip_to_j2k(char *argv[])
 {
   jpip_dec_param_t *dec;
-  
+
   dec = init_jpipdecoder( OPJ_FALSE);
-  
+
   if(!( fread_jpip( argv[1], dec)))
     return 1;
-  
+
   decode_jpip( dec);
-  
+
   if(!(fwrite_jp2k( argv[2], dec)))
     return 1;
-  
+
   /*  output_log( OPJ_TRUE, OPJ_FALSE, OPJ_FALSE, dec); */
-  
+
   destroy_jpipdecoder( &dec);
 
   return 0;
@@ -104,7 +104,7 @@ int main(int argc,char *argv[])
     fprintf( stderr, " - output j2k file\n");
     return 1;
   }
-  
+
   ext = strrchr( argv[2], '.' );
   if( ext )
     {

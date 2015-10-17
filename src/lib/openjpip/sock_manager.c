@@ -57,13 +57,13 @@ SOCKET open_listeningsocket( uint16_t port)
   SOCKET listening_socket;
   struct sockaddr_in sin;
   int sock_optval = 1;
-  
+
   listening_socket = socket(AF_INET, SOCK_STREAM, 0);
   if ( listening_socket == -1 ){
     perror("socket");
     exit(1);
   }
-  
+
   if ( setsockopt(listening_socket, SOL_SOCKET, SO_REUSEADDR, (const char *)&sock_optval, sizeof(sock_optval)) == -1 ){
     perror("setsockopt");
     exit(1);
@@ -164,11 +164,11 @@ OPJ_SIZE_T receive_line(SOCKET connected_socket, char *p)
 char * receive_string( SOCKET connected_socket)
 {
   char buf[BUF_LEN];
-  
+
   /* MM FIXME: there is a nasty bug here, size of buf if BUF_LEN which is never
   indicated to downstream receive_line */
   receive_line( connected_socket, buf);
-    
+
   return strdup(buf);
 }
 

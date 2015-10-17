@@ -124,7 +124,7 @@ void response_signal( SOCKET connected_socket, OPJ_BOOL succeed);
  *
  * client -> server: JPIP-stream\\n version 1.1\\n (optional for cid registration: targetnamestring\\n  tidstring\\n  cidstring\\n) bytelengthvalue\\n data \n
  * server -> client: 1 or 0 (of 1Byte response signal)
- * 
+ *
  *\section sec2 PNM request
  * Get decoded PGM/PPM image
  *

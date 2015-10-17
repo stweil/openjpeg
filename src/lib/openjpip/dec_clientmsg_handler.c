@@ -47,11 +47,11 @@ void handle_JPIPstreamMSG( SOCKET connected_socket, cachelist_param_t *cachelist
   cache_param_t *cache;
   char *target, *tid, *cid;
   metadatalist_param_t *metadatalist;
-  
+
   newjpipstream = receive_JPIPstream( connected_socket, &target, &tid, &cid, &newstreamlen);
 
   fprintf( stderr, "newjpipstream length: %" PRIu64 "\n", newstreamlen);
-  
+
   parse_JPIPstream( newjpipstream, newstreamlen, (OPJ_OFF_T)*streamlen, msgqueue);
 
   *jpipstream = update_JPIPstream( newjpipstream, newstreamlen, *jpipstream, streamlen);
@@ -97,15 +97,15 @@ void handle_PNMreqMSG( SOCKET connected_socket, Byte_t *jpipstream, msgqueue_par
   cache_param_t *cache;
   int fw, fh;
   int maxval;
-  
+
   CIDorTID = receive_string( connected_socket);
-  
+
   if(!(cache = search_cacheBycid( CIDorTID, cachelist)))
     if(!(cache = search_cacheBytid( CIDorTID, cachelist))){
       opj_free( CIDorTID);
       return;
     }
-  
+
   opj_free( CIDorTID);
 
   receive_line( connected_socket, tmp);
@@ -140,7 +140,7 @@ void handle_XMLreqMSG( SOCKET connected_socket, Byte_t *jpipstream, cachelist_pa
   }
 
   opj_free( cid);
-  
+
   boxcontents = cache->metadatalist->last->boxcontents;
   xmlstream = (Byte_t *)opj_malloc( boxcontents->length);
   memcpy( xmlstream, jpipstream+boxcontents->offset, boxcontents->length);
@@ -158,7 +158,7 @@ void handle_TIDreqMSG( SOCKET connected_socket, cachelist_param_t *cachelist)
   cache = search_cache( target, cachelist);
 
   opj_free( target);
-  
+
   if( cache){
     tid = cache->tid;
     tidlen = strlen(tid);
@@ -174,7 +174,7 @@ void handle_CIDreqMSG( SOCKET connected_socket, cachelist_param_t *cachelist)
 
   target = receive_string( connected_socket);
   cache = search_cache( target, cachelist);
-  
+
   opj_free( target);
 
   if( cache){
@@ -193,7 +193,7 @@ void handle_dstCIDreqMSG( SOCKET connected_socket, cachelist_param_t *cachelist)
   cid = receive_string( connected_socket);
   remove_cachecid( cid, cachelist);
   response_signal( connected_socket, OPJ_TRUE);
-  
+
   opj_free( cid);
 }
 
@@ -202,21 +202,21 @@ void handle_SIZreqMSG( SOCKET connected_socket, Byte_t *jpipstream, msgqueue_par
   char *tid, *cid;
   cache_param_t *cache;
   Byte4_t width, height;
-  
+
   tid = receive_string( connected_socket);
   cid = receive_string( connected_socket);
-  
+
   cache = NULL;
 
   if( tid[0] != '0')
     cache = search_cacheBytid( tid, cachelist);
-  
+
   if( !cache && cid[0] != '0')
     cache = search_cacheBycid( cid, cachelist);
 
   opj_free( tid);
   opj_free( cid);
-  
+
   width = height = 0;
   if( cache){
     assert( cache->csn >= 0);
@@ -240,9 +240,9 @@ void handle_JP2saveMSG( SOCKET connected_socket, cachelist_param_t *cachelist, m
     opj_free( cid);
     return;
   }
-  
+
   opj_free( cid);
-  
+
   assert( cache->csn >= 0);
   jp2stream = recons_jp2( msgqueue, jpipstream, (Byte8_t)cache->csn, &jp2len);
 

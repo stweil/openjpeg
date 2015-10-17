@@ -58,7 +58,7 @@ Byte_t * fetch_bytes( int fd, OPJ_OFF_T offset, OPJ_SIZE_T size)
     fprintf( FCGI_stderr, "Error: error in fetch_bytes( %d, %ld, %lu)\n", fd, offset, size);
     return NULL;
   }
-  
+
   data = (Byte_t *)malloc( size);
 
   if( (OPJ_SIZE_T)read( fd, data, size) != size){
@@ -79,7 +79,7 @@ Byte_t fetch_1byte( int fd, OPJ_OFF_T offset)
     fprintf( FCGI_stderr, "Error: error in fetch_1byte( %d, %ld)\n", fd, offset);
     return 0;
   }
-   
+
   if( read( fd, &code, 1) != 1){
     fprintf( FCGI_stdout, "Reason: Target broken (read error)\r\n");
     fprintf( FCGI_stderr, "Error: error in fetch_bytes( %d, %ld)\n", fd, offset);
@@ -162,7 +162,7 @@ void modify_4Bytecode( Byte4_t code, Byte_t *stream)
 OPJ_OFF_T get_filesize( int fd)
 {
   struct stat sb;
-    
+
   if( fstat( fd, &sb) == -1){
     fprintf( FCGI_stdout, "Reason: Target broken (fstat error)\r\n");
     fprintf( FCGI_stderr, "Error: error in get_filesize( %d)\n", fd);

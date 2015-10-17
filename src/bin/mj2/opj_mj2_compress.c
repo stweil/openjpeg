@@ -42,7 +42,7 @@
 /**
 Size of memory first allocated for MOOV box
 */
-#define TEMP_BUF 10000 
+#define TEMP_BUF 10000
 
 
 /* -------------------------------------------------------------------------- */
@@ -69,8 +69,8 @@ static void help_display()
 {
   fprintf(stdout,"HELP for frames_to_mj2\n----\n\n");
   fprintf(stdout,"- the -h option displays this help information on screen\n\n");
-  
-  
+
+
   fprintf(stdout,"List of parameters for the MJ2 encoder:\n");
   fprintf(stdout,"\n");
   fprintf(stdout,"REMARKS:\n");
@@ -118,10 +118,10 @@ static void help_display()
   fprintf(stdout,"       Example: -r 20,10,1 means quality 1: compress 20x, \n");
   fprintf(stdout,"       quality 2: compress 10x and quality 3: compress lossless\n");
   fprintf(stdout,"       (options -r and -q cannot be used together)\n");
-  
+
   fprintf(stdout,"-q : different psnr for successive layers (-q 30,40,50) \n");
   fprintf(stdout,"        (options -r and -q cannot be used together)\n");
-  
+
   fprintf(stdout,"-n : number of resolutions (-n 3) \n");
   fprintf(stdout,"-b : size of code block (-b 32,32) \n");
   fprintf(stdout,"-c : size of precinct (-c 128,128) \n");
@@ -184,9 +184,9 @@ static void help_display()
   fprintf(stdout,"Tpacket_0 Tile layer res. comp. prec. start_pos end_pos disto\n");
   fprintf(stdout,"...\n");
   fprintf(stdout,"Tpacket_Np ''   ''    ''   ''    ''       ''       ''     ''\n");
-  
+
   fprintf(stdout,"MaxDisto\n");
-  
+
   fprintf(stdout,"TotalDisto\n\n");
 }
 
@@ -238,12 +238,12 @@ int main(int argc, char **argv)
 	int x1, y1,  len;
 	long mdat_initpos, offset;
 	FILE *mj2file;
-	int sampleno;  
+	int sampleno;
 	opj_cinfo_t* cinfo;
 	opj_bool bSuccess;
 	int numframes;
 	int prec = 8;/* DEFAULT */
-	double total_time = 0;	
+	double total_time = 0;
 
 	memset(&mj2_parameters, 0, sizeof(mj2_cparameters_t));
   /* default value */
@@ -265,7 +265,7 @@ int main(int argc, char **argv)
 	event_mgr.error_handler = error_callback;
 	event_mgr.warning_handler = warning_callback;
 	event_mgr.info_handler = NULL;
-    
+
 	/* set J2K encoding parameters to default values */
 	opj_set_default_encoder_parameters(&mj2_parameters.j2k_parameters);
 	j2k_parameters = &mj2_parameters.j2k_parameters;
@@ -298,10 +298,10 @@ int main(int argc, char **argv)
 				S2 = *s;
 				s--;
 				S1 = *s;
-				
+
 				if ((S1 == 'y' && S2 == 'u' && S3 == 'v')
 					|| (S1 == 'Y' && S2 == 'U' && S3 == 'V')) {
-					mj2_parameters.decod_format = YUV_DFMT;				
+					mj2_parameters.decod_format = YUV_DFMT;
 				}
 				else {
 					fprintf(stderr,
@@ -325,9 +325,9 @@ int main(int argc, char **argv)
 				S2 = *outfile;
 				outfile--;
 				S1 = *outfile;
-				
+
 				outfile = opj_optarg;
-				
+
 				if ((S1 == 'm' && S2 == 'j' && S3 == '2')
 					|| (S1 == 'M' && S2 == 'J' && S3 == '2'))
 					mj2_parameters.cod_format = MJ2_CFMT;
@@ -337,7 +337,7 @@ int main(int argc, char **argv)
 						S1, S2, S3);
 					return 1;
 				}
-				strncpy(mj2_parameters.outfile, outfile, sizeof(mj2_parameters.outfile)-1);      
+				strncpy(mj2_parameters.outfile, outfile, sizeof(mj2_parameters.outfile)-1);
       }
       break;
       /* ----------------------------------------------------- */
@@ -378,19 +378,19 @@ int main(int argc, char **argv)
 			{
 				int *row = NULL, *col = NULL;
 				int numlayers = 0, numresolution = 0, matrix_width = 0;
-				
+
 				s = opj_optarg;
 				sscanf(s, "%d", &numlayers);
 				s++;
 				if (numlayers > 9)
 					s++;
-				
+
 				j2k_parameters->tcp_numlayers = numlayers;
 				numresolution = j2k_parameters->numresolution;
 				matrix_width = numresolution * 3;
 				j2k_parameters->cp_matrice = (int *) malloc(numlayers * matrix_width * sizeof(int));
 				s = s + 2;
-				
+
 				for (i = 0; i < numlayers; i++) {
 					row = &j2k_parameters->cp_matrice[i * matrix_width];
 					col = row;
@@ -467,7 +467,7 @@ int main(int argc, char **argv)
     case 'p':			/* progression order */
 			{
 				char progression[5];
-				
+
 				strncpy(progression, opj_optarg, 5);
 				j2k_parameters->prog_order = give_progression(progression);
 				if (j2k_parameters->prog_order == -1) {
@@ -606,7 +606,7 @@ int main(int argc, char **argv)
       return 1;
     }
   }
-    
+
   /* Error messages */
   /* -------------- */
 	if (!mj2_parameters.cod_format || !mj2_parameters.decod_format) {
@@ -617,7 +617,7 @@ int main(int argc, char **argv)
     if(prec < 1 || prec > 16)
   {
 	fprintf(stderr, "Error: Depth %d must be in the range 8 .. 16\n",prec);
-	return 1;	
+	return 1;
   }
 	if ((j2k_parameters->cp_disto_alloc || j2k_parameters->cp_fixed_alloc || j2k_parameters->cp_fixed_quality)
 		&& (!(j2k_parameters->cp_disto_alloc ^ j2k_parameters->cp_fixed_alloc ^ j2k_parameters->cp_fixed_quality))) {
@@ -646,45 +646,45 @@ int main(int argc, char **argv)
 				i + 1);
 		}
 	}
-  
+
   if (j2k_parameters->cp_tdx > mj2_parameters.Dim[0] || j2k_parameters->cp_tdy > mj2_parameters.Dim[1]) {
     fprintf(stderr,
       "Error: Tile offset dimension is unnappropriate --> TX0(%d)<=IMG_X0(%d) TYO(%d)<=IMG_Y0(%d) \n",
       j2k_parameters->cp_tdx, mj2_parameters.Dim[0], j2k_parameters->cp_tdy, mj2_parameters.Dim[1]);
     return 1;
   }
-    
+
   /* to respect profile - 0 */
   /* ---------------------- */
-  
-  x1 = !mj2_parameters.Dim[0] ? (mj2_parameters.w - 1) * j2k_parameters->subsampling_dx 
+
+  x1 = !mj2_parameters.Dim[0] ? (mj2_parameters.w - 1) * j2k_parameters->subsampling_dx
 		+ 1 : mj2_parameters.Dim[0] + (mj2_parameters.w - 1) * j2k_parameters->subsampling_dx + 1;
-  y1 = !mj2_parameters.Dim[1] ? (mj2_parameters.h - 1) * j2k_parameters->subsampling_dy 
-		+ 1 : mj2_parameters.Dim[1] + (mj2_parameters.h - 1) * j2k_parameters->subsampling_dy + 1;   
-	mj2_parameters.numcomps = 3; /* YUV files only have 3 components */ 
+  y1 = !mj2_parameters.Dim[1] ? (mj2_parameters.h - 1) * j2k_parameters->subsampling_dy
+		+ 1 : mj2_parameters.Dim[1] + (mj2_parameters.h - 1) * j2k_parameters->subsampling_dy + 1;
+	mj2_parameters.numcomps = 3; /* YUV files only have 3 components */
 
 	mj2_parameters.prec = prec;
 
 	j2k_parameters->tcp_mct = 0;
-    
+
 	mj2file = fopen(mj2_parameters.outfile, "wb");
-  
+
 	if (!mj2file) {
     fprintf(stderr, "failed to open %s for writing\n", argv[2]);
     return 1;
 	}
-    
+
 	/* get a MJ2 decompressor handle */
 	cinfo = mj2_create_compress();
 	movie = (opj_mj2_t*)cinfo->mj2_handle;
-	
+
 	/* catch events using our callbacks and give a local context */
 	opj_set_event_mgr((opj_common_ptr)cinfo, &event_mgr, stderr);
 
 	/* setup encoder parameters */
-	mj2_setup_encoder(movie, &mj2_parameters);   
-  
-	movie->tk[0].num_samples = 
+	mj2_setup_encoder(movie, &mj2_parameters);
+
+	movie->tk[0].num_samples =
 	 yuv_num_frames(&movie->tk[0],mj2_parameters.infile);
 
 	if (movie->tk[0].num_samples == 0) {
@@ -692,19 +692,19 @@ int main(int argc, char **argv)
 	}
 
   /* One sample per chunk*/
-	movie->tk[0].chunk = (mj2_chunk_t*) 
-	 malloc(movie->tk[0].num_samples * sizeof(mj2_chunk_t));     
-	movie->tk[0].sample = (mj2_sample_t*) 
+	movie->tk[0].chunk = (mj2_chunk_t*)
+	 malloc(movie->tk[0].num_samples * sizeof(mj2_chunk_t));
+	movie->tk[0].sample = (mj2_sample_t*)
 	 malloc(movie->tk[0].num_samples * sizeof(mj2_sample_t));
-  
+
 	if (mj2_init_stdmovie(movie)) {
     fprintf(stderr, "Error with movie initialization");
     return 1;
-	}    
-  
+	}
+
 /* Writing JP, FTYP and MDAT boxes */
 /* Assuming that the JP and FTYP boxes won't be longer than 300 bytes:*/
-	buf = (unsigned char*) 
+	buf = (unsigned char*)
 	 malloc (300 * sizeof(unsigned char));
 
 	cio = opj_cio_open((opj_common_ptr)movie->cinfo, buf, 300);
@@ -715,7 +715,7 @@ int main(int argc, char **argv)
 	mdat_initpos = cio_tell(cio);
 	cio_skip(cio, 4);
 
-	cio_write(cio, MJ2_MDAT, 4);	
+	cio_write(cio, MJ2_MDAT, 4);
 
 	fwrite(buf,cio_tell(cio),1,mj2file);
 
@@ -723,35 +723,35 @@ int main(int argc, char **argv)
 	opj_cio_close(cio);
 	free(buf);
 
-	for(i = 0; i < movie->num_stk + movie->num_htk + movie->num_vtk; i++) 
+	for(i = 0; i < movie->num_stk + movie->num_htk + movie->num_vtk; i++)
    {
-    if(movie->tk[i].track_type != 0) 
+    if(movie->tk[i].track_type != 0)
   {
 	fprintf(stderr, "Unable to write sound or hint tracks\n");
   }
-	else 
+	else
   {
 	mj2_tk_t *tk;
 	int buflen = 0;
-  
-	tk = &movie->tk[i];     
+
+	tk = &movie->tk[i];
 	tk->num_chunks = tk->num_samples;
 	numframes = tk->num_samples;
-	tk->depth = prec; 
+	tk->depth = prec;
 
 	fprintf(stderr, "Video Track number %d\n", i);
 
-	img = mj2_image_create(tk, j2k_parameters);          
+	img = mj2_image_create(tk, j2k_parameters);
 
 	buflen = 2 * (tk->w * tk->h * 8);
-	buf = (unsigned char *) malloc(buflen*sizeof(unsigned char));	
+	buf = (unsigned char *) malloc(buflen*sizeof(unsigned char));
 
-	for(sampleno = 0; sampleno < numframes; sampleno++) 
+	for(sampleno = 0; sampleno < numframes; sampleno++)
  {
 	double init_time = opj_clock();
 	double elapsed_time;
 
-		if(yuvtoimage(tk, img, sampleno, j2k_parameters, 
+		if(yuvtoimage(tk, img, sampleno, j2k_parameters,
 			mj2_parameters.infile))
 	   {
 		fprintf(stderr, "Error with frame number %d in YUV file\n", sampleno);
@@ -762,7 +762,7 @@ int main(int argc, char **argv)
 	opj_setup_encoder(cinfo, j2k_parameters, img);
 
 	cio = opj_cio_open((opj_common_ptr)movie->cinfo, buf, buflen);
-								
+
 	cio_skip(cio, 4);
 	cio_write(cio, JP2_JP2C, 4);	/* JP2C*/
 
@@ -780,14 +780,14 @@ int main(int argc, char **argv)
 	cio_write(cio, len+8,4);
 	opj_cio_close(cio);
 
-	tk->sample[sampleno].sample_size = len+8;				
+	tk->sample[sampleno].sample_size = len+8;
 	tk->sample[sampleno].offset = offset;
 	tk->chunk[sampleno].offset = offset;	/* There is one sample per chunk */
-	fwrite(buf, 1, len+8, mj2file);				
-	offset += len+8;				
+	fwrite(buf, 1, len+8, mj2file);
+	offset += len+8;
 
 	elapsed_time = opj_clock()-init_time;
-	fprintf(stderr, "Frame number %d/%d encoded in %.2f mseconds\n", 
+	fprintf(stderr, "Frame number %d/%d encoded in %.2f mseconds\n",
 		sampleno + 1, numframes, elapsed_time*1000);
 	total_time += elapsed_time;
  }	/* for(sampleno */
@@ -796,9 +796,9 @@ int main(int argc, char **argv)
 	opj_image_destroy(img);
   }
    }/* for(i */
-  
+
 	fseek(mj2file, mdat_initpos, SEEK_SET);
-	
+
 	buf = (unsigned char*) malloc(4*sizeof(unsigned char));
 
 /* Init a cio to write box length variable in a little endian way */
@@ -809,7 +809,7 @@ int main(int argc, char **argv)
 	free(buf);
 
 /* Writing MOOV box */
-	buf = (unsigned char*) 
+	buf = (unsigned char*)
 	 malloc ((TEMP_BUF+numframes*20) * sizeof(unsigned char));
 	cio = opj_cio_open(movie->cinfo, buf, (TEMP_BUF+numframes*20));
 	mj2_write_moov(movie, cio);
@@ -820,7 +820,7 @@ int main(int argc, char **argv)
 	 total_time, numframes, (float)numframes/total_time);
 
   /* Ending program */
-  
+
 	fclose(mj2file);
 /* free remaining compression structures */
 	mj2_destroy_compress(movie);

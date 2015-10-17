@@ -179,7 +179,7 @@ cmsHPROFILE CMSEXPORT cmsCreateRGBProfileTHR(cmsContext ContextID,
 
     if (TransferFunction) {
 
-        // Tries to minimize space. Thanks to Richard Hughes for this nice idea         
+        // Tries to minimize space. Thanks to Richard Hughes for this nice idea
         if (!cmsWriteTag(hICC, cmsSigRedTRCTag,   (void*) TransferFunction[0])) goto Error;
 
         if (TransferFunction[1] == TransferFunction[0]) {
@@ -1053,7 +1053,7 @@ cmsHPROFILE CMSEXPORT cmsTransform2DeviceLink(cmsHTRANSFORM hTransform, cmsFloat
     cmsContext ContextID = cmsGetTransformContextID(hTransform);
     const cmsAllowedLUT* AllowedLUT;
     cmsTagSignature DestinationTag;
-    cmsProfileClassSignature deviceClass; 
+    cmsProfileClassSignature deviceClass;
 
     _cmsAssert(hTransform != NULL);
 
@@ -1180,7 +1180,7 @@ cmsHPROFILE CMSEXPORT cmsTransform2DeviceLink(cmsHTRANSFORM hTransform, cmsFloat
          if (!cmsWriteTag(hProfile, cmsSigMediaWhitePointTag, &xform ->ExitWhitePoint)) goto Error;
     }
 
-  
+
     // Per 7.2.15 in spec 4.3
     cmsSetHeaderRenderingIntent(hProfile, xform ->RenderingIntent);
 

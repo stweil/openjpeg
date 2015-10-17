@@ -40,7 +40,7 @@ in these aspects:
 <!ELEMENT Timescale (#PCDATA)> <!-- Timescale defines time units in one second -->
 <!ELEMENT Rate (AsHex | (AsHex, AsDecimal) | AsDecimal)>  <!-- Decimal is Approximation; Optional on input. -->
 <!ELEMENT AsHex (#PCDATA)>
-<!ELEMENT AsDecimal (#PCDATA)> 
+<!ELEMENT AsDecimal (#PCDATA)>
 <!ELEMENT Duration (InTimeUnits | (InTimeUnits, InSeconds) | InSeconds)>  <!-- InSeconds Optional on input. -->
 <!ELEMENT InTimeUnits (#PCDATA)>
 <!ELEMENT Volume (AsHex | (AsHex, AsDecimal) | AsDecimal)>   <!-- hex default = 0x0100 -->
@@ -50,8 +50,8 @@ in these aspects:
 <!-- Maps decompressed point (p,q) to rendered point (ap + cq + x, bp + dq + y) -->
 <!-- Stored as Fixed Point Hex: all are 16.16, except u,v,w are 2.30 -->
 <!-- Unity = 0x00010000,0,0,0,0x00010000,0,0,0,0x40000000 -->
-<!ELEMENT TMa (#PCDATA)>    
-<!ELEMENT TMb (#PCDATA)>  
+<!ELEMENT TMa (#PCDATA)>
+<!ELEMENT TMb (#PCDATA)>
 <!ELEMENT TMu (#PCDATA)> <!--Always "0x00000000" -->
 <!ELEMENT TMc (#PCDATA)>
 <!ELEMENT TMd (#PCDATA)>
@@ -65,7 +65,7 @@ in these aspects:
 <!ELEMENT Video (#PCDATA)>
 <!ELEMENT Audio (#PCDATA)>
 <!ELEMENT Hint (#PCDATA)>
- 
+
 
 <!-- For now, output info on at most one video track -->
 
@@ -134,7 +134,7 @@ in these aspects:
           <!-- Averate rate in bits per second over the entire presentation. -->
 <!ELEMENT SlidingAvgBit (#PCDATA)>
           <!-- Maximum rate in bits per second over any window of one minute. -->
- 
+
 <!ELEMENT DataInfo (DataReference)>
 <!ATTLIST DataInfo BoxType CDATA #FIXED "dinf">
 <!ELEMENT DataReference (DataEntryUrlBox | DataEntryUrnBox )*>
@@ -156,7 +156,7 @@ in these aspects:
 <!ELEMENT SampleTable (VisualSampleEntry,TimeToSample,SampleToChunk,SampleSize,ChunkOffset)>  <!-- structure doesn't do non-visual sample entry yet -->
 <!ATTLIST SampleTable BoxType CDATA #FIXED "stbl">  <!-- to add: entry count -->
             <!-- Next are instances of generic SampleDescription BoxType=\"stsd\" -->
- 
+
     <!-- There could be multiple instances of this, but "entry_count" is just a local at read-time.
        And it's used wrong, too, as count of just visual type, when it's really all 3 types.
        This is referred to as "smj2" within mj2.c -->
@@ -247,8 +247,8 @@ in these aspects:
 
 <!-- Within SampleTable: -->
 <!ELEMENT TimeToSample (SampleStatistics, SampleEntries)>
-<!ATTLIST TimeToSample BoxType CDATA #FIXED "stts">  
-<!ELEMENT SampleStatistics (TotalSamples)>  <!-- Not part of standard -->  
+<!ATTLIST TimeToSample BoxType CDATA #FIXED "stts">
+<!ELEMENT SampleStatistics (TotalSamples)>  <!-- Not part of standard -->
 <!ELEMENT TotalSamples (#PCDATA)>
                 <!-- For video, gives the total frames in the track, by summing all entries in the Sample Table -->
 

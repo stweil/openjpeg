@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,10 +8,10 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
- * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR 
+ * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -192,7 +192,7 @@ opj_stream_t* OPJ_CALLCONV opj_stream_default_create(OPJ_BOOL l_is_input)
 void OPJ_CALLCONV opj_stream_destroy(opj_stream_t* p_stream)
 {
 	opj_stream_private_t* l_stream = (opj_stream_private_t*) p_stream;
-	
+
 	if (l_stream) {
 		if (l_stream->m_free_user_data_fn) {
 			l_stream->m_free_user_data_fn(l_stream->m_user_data);
@@ -217,7 +217,7 @@ void OPJ_CALLCONV opj_stream_set_read_function(opj_stream_t* p_stream, opj_strea
 void OPJ_CALLCONV opj_stream_set_seek_function(opj_stream_t* p_stream, opj_stream_seek_fn p_function)
 {
 	opj_stream_private_t* l_stream = (opj_stream_private_t*) p_stream;
-	
+
 	if (!l_stream) {
 		return;
 	}
@@ -227,7 +227,7 @@ void OPJ_CALLCONV opj_stream_set_seek_function(opj_stream_t* p_stream, opj_strea
 void OPJ_CALLCONV opj_stream_set_write_function(opj_stream_t* p_stream, opj_stream_write_fn p_function)
 {
 	opj_stream_private_t* l_stream = (opj_stream_private_t*) p_stream;
-	
+
 	if ((!l_stream )|| (! (l_stream->m_status & OPJ_STREAM_STATUS_OUTPUT))) {
 		return;
 	}
@@ -238,7 +238,7 @@ void OPJ_CALLCONV opj_stream_set_write_function(opj_stream_t* p_stream, opj_stre
 void OPJ_CALLCONV opj_stream_set_skip_function(opj_stream_t* p_stream, opj_stream_skip_fn p_function)
 {
 	opj_stream_private_t* l_stream = (opj_stream_private_t*) p_stream;
-	
+
 	if (! l_stream) {
 		return;
 	}
@@ -372,7 +372,7 @@ OPJ_SIZE_T opj_stream_read_data (opj_stream_private_t * p_stream,OPJ_BYTE * p_bu
 
 OPJ_SIZE_T opj_stream_write_data (opj_stream_private_t * p_stream,
 								  const OPJ_BYTE * p_buffer,
-								  OPJ_SIZE_T p_size, 
+								  OPJ_SIZE_T p_size,
 								  opj_event_mgr_t * p_event_mgr)
 {
 	OPJ_SIZE_T l_remaining_bytes = 0;
@@ -384,27 +384,27 @@ OPJ_SIZE_T opj_stream_write_data (opj_stream_private_t * p_stream,
 
 	for (;;) {
 		l_remaining_bytes = p_stream->m_buffer_size - p_stream->m_bytes_in_buffer;
-		
+
 		/* we have more memory than required */
 		if (l_remaining_bytes >= p_size) {
 			memcpy(p_stream->m_current_data, p_buffer, p_size);
-			
+
 			p_stream->m_current_data += p_size;
 			p_stream->m_bytes_in_buffer += p_size;
 			l_write_nb_bytes += p_size;
 			p_stream->m_byte_offset += (OPJ_OFF_T)p_size;
-			
+
 			return l_write_nb_bytes;
 		}
 
 		/* we copy data and then do an actual read on the stream */
 		if (l_remaining_bytes) {
 			l_write_nb_bytes += l_remaining_bytes;
-			
+
 			memcpy(p_stream->m_current_data,p_buffer,l_remaining_bytes);
-			
+
 			p_stream->m_current_data = p_stream->m_stored_data;
-			
+
 			p_buffer += l_remaining_bytes;
 			p_size -= l_remaining_bytes;
 			p_stream->m_bytes_in_buffer += l_remaining_bytes;
@@ -430,7 +430,7 @@ OPJ_BOOL opj_stream_flush (opj_stream_private_t * p_stream, opj_event_mgr_t * p_
 		l_current_write_nb_bytes = p_stream->m_write_fn(p_stream->m_current_data,
 														p_stream->m_bytes_in_buffer,
 														p_stream->m_user_data);
-		
+
 		if (l_current_write_nb_bytes == (OPJ_SIZE_T)-1) {
 			p_stream->m_status |= OPJ_STREAM_STATUS_ERROR;
 			opj_event_msg(p_event_mgr, EVT_INFO, "Error on writing stream!\n");
@@ -443,7 +443,7 @@ OPJ_BOOL opj_stream_flush (opj_stream_private_t * p_stream, opj_event_mgr_t * p_
 	}
 
 	p_stream->m_current_data = p_stream->m_stored_data;
-	
+
 	return OPJ_TRUE;
 }
 
@@ -451,9 +451,9 @@ OPJ_OFF_T opj_stream_read_skip (opj_stream_private_t * p_stream, OPJ_OFF_T p_siz
 {
 	OPJ_OFF_T l_skip_nb_bytes = 0;
 	OPJ_OFF_T l_current_skip_nb_bytes = 0;
-	
+
 	assert( p_size >= 0 );
-	
+
 	if (p_stream->m_bytes_in_buffer >= (OPJ_SIZE_T)p_size) {
 		p_stream->m_current_data += p_size;
 		/* it is safe to cast p_size to OPJ_SIZE_T since it is <= m_bytes_in_buffer
@@ -497,7 +497,7 @@ OPJ_OFF_T opj_stream_read_skip (opj_stream_private_t * p_stream, OPJ_OFF_T p_siz
 	}
 
 	p_stream->m_byte_offset += l_skip_nb_bytes;
-	
+
 	return l_skip_nb_bytes;
 }
 
@@ -523,7 +523,7 @@ OPJ_OFF_T opj_stream_write_skip (opj_stream_private_t * p_stream, OPJ_OFF_T p_si
 	while (p_size > 0) {
 		/* we should do an actual skip on the media */
 		l_current_skip_nb_bytes = p_stream->m_skip_fn(p_size, p_stream->m_user_data);
-		
+
 		if (l_current_skip_nb_bytes == (OPJ_OFF_T)-1) {
 			opj_event_msg(p_event_mgr, EVT_INFO, "Stream error!\n");
 
@@ -537,7 +537,7 @@ OPJ_OFF_T opj_stream_write_skip (opj_stream_private_t * p_stream, OPJ_OFF_T p_si
 	}
 
 	p_stream->m_byte_offset += l_skip_nb_bytes;
-	
+
 	return l_skip_nb_bytes;
 }
 

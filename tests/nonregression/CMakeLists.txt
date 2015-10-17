@@ -54,11 +54,11 @@ set(BLACKLIST_JPEG2000_TMP
 # Define a list of file which should be gracefully rejected:
 set(BLACKLIST_JPEG2000
     ${BLACKLIST_JPEG2000_TMP}
-    broken1.jp2 
+    broken1.jp2
     broken2.jp2
     broken3.jp2
     broken4.jp2
-    gdal_fuzzer_assert_in_opj_j2k_read_SQcd_SQcc.patch.jp2	
+    gdal_fuzzer_assert_in_opj_j2k_read_SQcd_SQcc.patch.jp2
     gdal_fuzzer_check_comp_dx_dy.jp2
     gdal_fuzzer_check_number_of_tiles.jp2
     gdal_fuzzer_unchecked_numresolutions.jp2
@@ -105,13 +105,13 @@ foreach(INPUT_FILENAME ${OPJ_DATA_NR_LIST})
   	       -o ${TEMP}/${INPUT_FILENAME_NAME}.txt
   	       -v
   	       )
-  	
+
   if(bad_jpeg2000)
     set_tests_properties(NR-${INPUT_FILENAME_NAME}-dump
                          PROPERTIES WILL_FAIL TRUE)
 
   else()
-  	
+
     # Compare the dump output with the baseline
     add_test(NAME NR-${INPUT_FILENAME_NAME}-compare_dump2base
   	        COMMAND compare_dump_files
@@ -339,7 +339,7 @@ foreach(OPJ_TEST_CMD_LINE ${OPJ_TEST_CMD_LINE_LIST})
                                  NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-decode-ref)
 
           endif()
-          
+
           # Test the encoded file is a valid JP2 file
           if (JPYLYZER_EXECUTABLE)
             if (${OUTPUT_FILENAME} MATCHES "\\.jp2$")
@@ -347,13 +347,13 @@ foreach(OPJ_TEST_CMD_LINE ${OPJ_TEST_CMD_LINE_LIST})
                 COMMAND ${JPYLYZER_EXECUTABLE}
                 ${OUTPUT_FILENAME}
                 )
-              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-jpylyser PROPERTIES 
+              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-jpylyser PROPERTIES
                 DEPENDS NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-encode
                 PASS_REGULAR_EXPRESSION "<isValidJP2>True</isValidJP2>"
-                )		
+                )
             endif()
           endif(JPYLYZER_EXECUTABLE)
-          
+
           # If lossless compression (simple test is 4 arguments), decompress & compare
           list(LENGTH CMD_ARG_LIST_2 ARG_COUNT)
           if (ARG_COUNT EQUAL 4)
@@ -362,15 +362,15 @@ foreach(OPJ_TEST_CMD_LINE ${OPJ_TEST_CMD_LINE_LIST})
               add_test(NAME NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-decode
                 COMMAND opj_decompress -i ${OUTPUT_FILENAME} -o ${OUTPUT_FILENAME}.lossless.tif
                 )
-              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-decode PROPERTIES 
+              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-decode PROPERTIES
                 DEPENDS NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-encode
                 )
               add_test(NAME NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-compare
                 COMMAND compare_images -b ${INPUT_FILENAME} -t ${OUTPUT_FILENAME}.lossless.tif -n 1 -d
                 )
-              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-compare PROPERTIES 
+              set_tests_properties(NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-compare PROPERTIES
                 DEPENDS NR-ENC-${INPUT_FILENAME_NAME}-${IT_TEST_ENC}-lossless-decode
-                )	
+                )
             endif()
           endif()
       endif()
@@ -400,7 +400,7 @@ foreach(OPJ_TEST_CMD_LINE ${OPJ_TEST_CMD_LINE_LIST})
           -DOUTFILENAME:STRING=${OUTPUT_FILENAME}
           -P ${CMAKE_CURRENT_SOURCE_DIR}/checkmd5refs.cmake)
 
-        set_tests_properties(NR-DEC-${INPUT_FILENAME_NAME}-${IT_TEST_DEC}-decode-md5 
+        set_tests_properties(NR-DEC-${INPUT_FILENAME_NAME}-${IT_TEST_DEC}-decode-md5
           PROPERTIES DEPENDS NR-DEC-${INPUT_FILENAME_NAME}-${IT_TEST_DEC}-decode
         )
 

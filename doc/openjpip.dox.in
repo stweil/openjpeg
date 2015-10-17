@@ -62,24 +62,24 @@
  * Be sure that any object files and library file libopenjpip.a are not reused to compile in the two different mode (server mode and non server mode).\n
  * In other words, do make clean before making new targets which are in different modes as previous make.\n
  *
- * 
+ *
  * \section sysarchtect System Architecture
  * JPIP protocol is implemented between the JPIP server program (opj_server) and the JPIP client java program (opj_viewer).\n
  * Figure below represents the overview of our system architecture.\n
  * The JPIP server parses JPIP query and sends corresponding JPT/JPP-stream.
  * The JPIP client viewer is an image viewer with GUI to publish JPIP requests and receive JPT/JPP-stream.\n
- * Particularly, our system has the image decoding module implemented on a server (opj_dec_server, Image decoding Server). 
- * Image decoding Server and JPIP client viewer communicate closely. 
+ * Particularly, our system has the image decoding module implemented on a server (opj_dec_server, Image decoding Server).
+ * Image decoding Server and JPIP client viewer communicate closely.
  * This specific architecture enables sharing cache of image codestream data among all viewers connected to the same Image decoding Server not only locally but also remotely.
  *
  *  \image html jpip_architect.png "OpenJPIP system architecture"
  *
  * JPIP server follows up the client cache during a session. \n
- * Concretely, the JPIP server models cache in each session, to which Channel IDs are associated. 
- * A Channel ID identifies a JPIP client viewer. 
+ * Concretely, the JPIP server models cache in each session, to which Channel IDs are associated.
+ * A Channel ID identifies a JPIP client viewer.
  * And, new viewers can belong to a session by referring to one of its channel ID.
  * The Image decoding Server maintains the association between channel IDs and targets, and provides a reference channel ID to a Viewer on demand.\n
- * 
+ *
  * Typical requests and replies among JPIP server, JPIP client, and Image decoding server is presented below.\n
  * The JPIP server parses HTTP query and sends corresponding JPT/JPP-stream back to the JPIP client (Viewer).
  * JPT/JPP-stream is unreadable by JPIP client, and it is directly passed to Image decoding Server, and which provides the image in raw format (PGM or PPM) to the JPIP client.

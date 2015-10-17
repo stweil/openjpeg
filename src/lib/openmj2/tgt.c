@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * All rights reserved.
@@ -37,7 +37,7 @@
 
 #include "opj_includes.h"
 
-/* 
+/*
 ==========================================================
    Tag-tree coder interface
 ==========================================================
@@ -70,7 +70,7 @@ opj_tgt_tree_t *tgt_create(int numleafsh, int numleafsv) {
 		tree->numnodes += n;
 		++numlvls;
 	} while (n > 1);
-	
+
 	/* ADD */
 	if (tree->numnodes == 0) {
 		opj_free(tree);
@@ -86,7 +86,7 @@ opj_tgt_tree_t *tgt_create(int numleafsh, int numleafsv) {
 	node = tree->nodes;
 	parentnode = &tree->nodes[tree->numleafsh * tree->numleafsv];
 	parentnode0 = parentnode;
-	
+
 	for (i = 0; i < numlvls - 1; ++i) {
 		for (j = 0; j < nplv[i]; ++j) {
 			k = nplh[i];
@@ -108,9 +108,9 @@ opj_tgt_tree_t *tgt_create(int numleafsh, int numleafsv) {
 		}
 	}
 	node->parent = 0;
-	
+
 	tgt_reset(tree);
-	
+
 	return tree;
 }
 
@@ -124,7 +124,7 @@ void tgt_reset(opj_tgt_tree_t *tree) {
 
 	if (NULL == tree)
 		return;
-	
+
 	for (i = 0; i < tree->numnodes; i++) {
 		tree->nodes[i].value = 999;
 		tree->nodes[i].low = 0;
@@ -153,7 +153,7 @@ void tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, int leafno, int threshold)
 		*stkptr++ = node;
 		node = node->parent;
 	}
-	
+
 	low = 0;
 	for (;;) {
 		if (low > node->low) {
@@ -161,7 +161,7 @@ void tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, int leafno, int threshold)
 		} else {
 			low = node->low;
 		}
-		
+
 		while (low < threshold) {
 			if (low >= node->value) {
 				if (!node->known) {
@@ -173,7 +173,7 @@ void tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, int leafno, int threshold)
 			bio_write(bio, 0, 1);
 			++low;
 		}
-		
+
 		node->low = low;
 		if (stkptr == stk)
 			break;
@@ -193,7 +193,7 @@ int tgt_decode(opj_bio_t *bio, opj_tgt_tree_t *tree, int leafno, int threshold) 
 		*stkptr++ = node;
 		node = node->parent;
 	}
-	
+
 	low = 0;
 	for (;;) {
 		if (low > node->low) {
@@ -214,6 +214,6 @@ int tgt_decode(opj_bio_t *bio, opj_tgt_tree_t *tree, int leafno, int threshold) 
 		}
 		node = *--stkptr;
 	}
-	
+
 	return (node->value < threshold) ? 1 : 0;
 }

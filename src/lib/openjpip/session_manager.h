@@ -73,9 +73,9 @@ session_param_t * gene_session( sessionlist_param_t *sessionlist);
  * @param[in,out] foundchannel  address of the found channel pointer
  * @return                      if the channel is found (true) or not (false)
  */
-OPJ_BOOL search_session_and_channel( char cid[], 
-				 sessionlist_param_t *sessionlist, 
-				 session_param_t **foundsession, 
+OPJ_BOOL search_session_and_channel( char cid[],
+				 sessionlist_param_t *sessionlist,
+				 session_param_t **foundsession,
 				 channel_param_t **foundchannel);
 
 /**

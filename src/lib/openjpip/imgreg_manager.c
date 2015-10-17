@@ -43,7 +43,7 @@
 #define logstream stderr
 #endif /*SERVER*/
 
-imgreg_param_t map_viewin2imgreg( const int fx,    const int fy, 
+imgreg_param_t map_viewin2imgreg( const int fx,    const int fy,
 				  const int rx,    const int ry,
 				  const int rw,    const int rh,
 				  const int XOsiz, const int YOsiz,
@@ -61,7 +61,7 @@ imgreg_param_t map_viewin2imgreg( const int fx,    const int fy,
   imgreg.level = 0;
   xmax = Xsiz;
   ymax = Ysiz;
-  
+
   find_level( numOfreslev, &imgreg.level, &imgreg.fx, &imgreg.fy, &imgreg.xosiz, &imgreg.yosiz, &xmax, &ymax);
 
   if( rx == -1 ||  ry == -1){
@@ -80,25 +80,25 @@ imgreg_param_t map_viewin2imgreg( const int fx,    const int fy,
   else{
     px = (int)ceil((double)((rx+rw)*imgreg.fx)/(double)fx);
     py = (int)ceil((double)((ry+rh)*imgreg.fy)/(double)fy);
-    
+
     if( imgreg.fx < px)
       px = imgreg.fx;
     if( imgreg.fy < py)
       py = imgreg.fy;
-    
+
     imgreg.sx = px - imgreg.ox;
     imgreg.sy = py - imgreg.oy;
   }
 
   if( fx != imgreg.fx || fy != imgreg.fy)
     fprintf( FCGI_stdout, "JPIP-fsiz: %d,%d\r\n", imgreg.fx, imgreg.fy);
-  
+
   if( rw != imgreg.sx || rh != imgreg.sy)
     fprintf( FCGI_stdout, "JPIP-rsiz: %d,%d\r\n", imgreg.sx, imgreg.sy);
-  
+
   if( rx != imgreg.ox || ry != imgreg.oy)
     fprintf( FCGI_stdout, "JPIP-roff: %d,%d\r\n", imgreg.ox, imgreg.oy);
- 
+
   return imgreg;
 }
 
@@ -118,7 +118,7 @@ void find_level( int maxlev, int *lev, int *fx, int *fy, int *xmin, int *ymin, i
     *ymin = (int)ceil((double)*ymin/(double)2.0);
     *xmax = (int)ceil((double)*xmax/(double)2.0);
     *ymax = (int)ceil((double)*ymax/(double)2.0);
-    
+
     (*lev) ++;
     find_level ( maxlev, lev, fx, fy, xmin, ymin, xmax, ymax);
   } else {
@@ -136,7 +136,7 @@ int comp_decomplev( int fw, int fh, int Xsiz, int Ysiz)
   xmin = ymin = 0;
   xmax = Xsiz;
   ymax = Ysiz;
-  
+
   find_level( 1000, &level, &fw, &fh, &xmin, &ymin, &xmax, &ymax);
 
   assert( level >= 0 );

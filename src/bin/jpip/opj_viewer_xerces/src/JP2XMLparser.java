@@ -42,7 +42,7 @@ import java.lang.Integer;
 public class JP2XMLparser
 {
     Document document;
-  
+
     public static class ROIparams{
 	public String name = null;
 	public int x = 0;
@@ -69,18 +69,18 @@ public class JP2XMLparser
 	    e.printStackTrace();
 	}
     }
-  
+
     public ROIparams [] getROIparams()
     {
 	ROIparams roi[];
 	NodeList elements = document.getElementsByTagName("roi");
 	int elementCount = elements.getLength();
-    
+
 	roi = new ROIparams [elementCount];
 
 	for( int i = 0; i < elementCount; i++) {
 	    Element element = (Element)elements.item(i);
-      
+
 	    roi[i] = new ROIparams();
 	    roi[i].name = element.getAttribute( "name");
 	    roi[i].x = Integer.parseInt( element.getAttribute( "x")) ;
@@ -96,12 +96,12 @@ public class JP2XMLparser
 	IRTparams irt = new IRTparams();
 	NodeList elements = document.getElementsByTagName("irt");
 	int elementCount = elements.getLength();
-	
+
 	Element element = (Element)elements.item(0);
 	irt.refimg = element.getAttribute( "refimg");
 	for( int i=1; i<=9; i++)
 	    irt.mat[i-1] = Double.parseDouble( element.getAttribute("m" + i));
-	
+
 	return irt;
     }
 }

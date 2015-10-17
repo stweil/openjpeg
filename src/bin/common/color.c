@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * All rights reserved.
@@ -120,7 +120,7 @@ static void sycc444_to_rgb(opj_image_t *img)
 }/* sycc444_to_rgb() */
 
 static void sycc422_to_rgb(opj_image_t *img)
-{	
+{
 	int *d0, *d1, *d2, *r, *g, *b;
 	const int *y, *cb, *cr;
 	unsigned int maxw, maxh, max;
@@ -333,7 +333,7 @@ void color_apply_icc_profile(opj_image_t *image)
 	int prec, i, max, max_w, max_h;
 	OPJ_COLOR_SPACE oldspace;
 
-	in_prof = 
+	in_prof =
 	 cmsOpenProfileFromMem(image->icc_profile_buf, image->icc_profile_len);
 #ifdef DEBUG_PROFILE
   FILE *icm = fopen("debug.icm","wb");
@@ -347,7 +347,7 @@ void color_apply_icc_profile(opj_image_t *image)
 	out_space = cmsGetColorSpace(in_prof);
 	intent = cmsGetHeaderRenderingIntent(in_prof);
 
-	
+
 	max_w = (int)image->comps[0].w;
   max_h = (int)image->comps[0].h;
 	prec = (int)image->comps[0].prec;
@@ -566,21 +566,21 @@ void color_cielab_to_rgb(opj_image_t *image)
 {
 	int *row;
 	int enumcs, numcomps;
-	
+
 	image->color_space = OPJ_CLRSPC_SRGB;
-	
+
 	numcomps = (int)image->numcomps;
-	
+
 	if(numcomps != 3)
 	{
 		fprintf(stderr,"%s:%d:\n\tnumcomps %d not handled. Quitting.\n",
 						__FILE__,__LINE__,numcomps);
 		return;
 	}
-	
+
 	row = (int*)image->icc_profile_buf;
 	enumcs = row[0];
-	
+
 	if(enumcs == 14) /* CIELab */
 	{
 		int *L, *a, *b, *red, *green, *blue;
@@ -593,12 +593,12 @@ void color_cielab_to_rgb(opj_image_t *image)
 		cmsHTRANSFORM transform;
 		cmsUInt16Number RGB[3];
 		cmsCIELab Lab;
-		
+
 		in = cmsCreateLab4Profile(NULL);
 		out = cmsCreate_sRGBProfile();
-		
+
 		transform = cmsCreateTransform(in, TYPE_Lab_DBL, out, TYPE_RGB_16, INTENT_PERCEPTUAL, 0);
-		
+
 #ifdef OPJ_HAVE_LIBLCMS2
 		cmsCloseProfile(in);
 		cmsCloseProfile(out);
@@ -614,9 +614,9 @@ void color_cielab_to_rgb(opj_image_t *image)
 		prec0 = (double)image->comps[0].prec;
 		prec1 = (double)image->comps[1].prec;
 		prec2 = (double)image->comps[2].prec;
-		
+
 		default_type = (unsigned int)row[1];
-		
+
 		if(default_type == 0x44454600)/* DEF : default */
 		{
 			rl = 100; ra = 170; rb = 200;
@@ -629,34 +629,34 @@ void color_cielab_to_rgb(opj_image_t *image)
 			rl = row[2]; ra = row[4]; rb = row[6];
 			ol = row[3]; oa = row[5]; ob = row[7];
 		}
-		
+
 		L = src0 = image->comps[0].data;
 		a = src1 = image->comps[1].data;
 		b = src2 = image->comps[2].data;
-		
+
 		max = image->comps[0].w * image->comps[0].h;
-		
+
 		red = dst0 = (int*)malloc(max * sizeof(int));
 		green = dst1 = (int*)malloc(max * sizeof(int));
 		blue = dst2 = (int*)malloc(max * sizeof(int));
-		
+
 		minL = -(rl * ol)/(pow(2, prec0)-1);
 		maxL = minL + rl;
-		
+
 		mina = -(ra * oa)/(pow(2, prec1)-1);
 		maxa = mina + ra;
-		
+
 		minb = -(rb * ob)/(pow(2, prec2)-1);
 		maxb = minb + rb;
-		
+
 		for(i = 0; i < max; ++i)
 		{
 			Lab.L = minL + (double)(*L) * (maxL - minL)/(pow(2, prec0)-1); ++L;
 			Lab.a = mina + (double)(*a) * (maxa - mina)/(pow(2, prec1)-1); ++a;
 			Lab.b = minb + (double)(*b) * (maxb - minb)/(pow(2, prec2)-1); ++b;
-		
+
 			cmsDoTransform(transform, &Lab, RGB, 1);
-		
+
 			*red++ = RGB[0];
 			*green++ = RGB[1];
 			*blue++ = RGB[2];
@@ -669,15 +669,15 @@ void color_cielab_to_rgb(opj_image_t *image)
 		free(src0); image->comps[0].data = dst0;
 		free(src1); image->comps[1].data = dst1;
 		free(src2); image->comps[2].data = dst2;
-		
+
 		image->color_space = OPJ_CLRSPC_SRGB;
 		image->comps[0].prec = 16;
 		image->comps[1].prec = 16;
 		image->comps[2].prec = 16;
-		
+
 		return;
 	}
-	
+
 	fprintf(stderr,"%s:%d:\n\tenumCS %d not handled. Ignoring.\n", __FILE__,__LINE__, enumcs);
 }/* color_apply_conversion() */
 
@@ -695,7 +695,7 @@ void color_cmyk_to_rgb(opj_image_t *image)
 	if(image->numcomps < 4) return;
 
 	max = w * h;
-	
+
 	sC = 1.0F / (float)((1 << image->comps[0].prec) - 1);
 	sM = 1.0F / (float)((1 << image->comps[1].prec) - 1);
 	sY = 1.0F / (float)((1 << image->comps[2].prec) - 1);
@@ -708,7 +708,7 @@ void color_cmyk_to_rgb(opj_image_t *image)
 		M = (float)(image->comps[1].data[i]) * sM;
 		Y = (float)(image->comps[2].data[i]) * sY;
 		K = (float)(image->comps[3].data[i]) * sK;
-		
+
 		/* Invert all CMYK values */
 		C = 1.0F - C;
 		M = 1.0F - M;
@@ -727,7 +727,7 @@ void color_cmyk_to_rgb(opj_image_t *image)
 	image->comps[2].prec = 8;
 	image->numcomps -= 1;
 	image->color_space = OPJ_CLRSPC_SRGB;
-	
+
 	for (i = 3; i < image->numcomps; ++i) {
 		memcpy(&(image->comps[i]), &(image->comps[i+1]), sizeof(image->comps[i]));
 	}
@@ -743,43 +743,43 @@ void color_esycc_to_rgb(opj_image_t *image)
 	unsigned int w, h, max, i;
 	int flip_value = (1 << (image->comps[0].prec-1));
 	int max_value = (1 << image->comps[0].prec) - 1;
-	
+
 	if(image->numcomps < 3) return;
-	
+
 	w = image->comps[0].w;
 	h = image->comps[0].h;
-	
+
 	sign1 = (int)image->comps[1].sgnd;
 	sign2 = (int)image->comps[2].sgnd;
-	
+
 	max = w * h;
-	
+
 	for(i = 0; i < max; ++i)
 	{
-		
+
 		y = image->comps[0].data[i]; cb = image->comps[1].data[i]; cr = image->comps[2].data[i];
-		
+
 		if( !sign1) cb -= flip_value;
 		if( !sign2) cr -= flip_value;
-		
+
 		val = (int)
 		((float)y - (float)0.0000368 * (float)cb
 		 + (float)1.40199 * (float)cr + (float)0.5);
-		
+
 		if(val > max_value) val = max_value; else if(val < 0) val = 0;
 		image->comps[0].data[i] = val;
-		
+
 		val = (int)
 		((float)1.0003 * (float)y - (float)0.344125 * (float)cb
 		 - (float)0.7141128 * (float)cr + (float)0.5);
-		
+
 		if(val > max_value) val = max_value; else if(val < 0) val = 0;
 		image->comps[1].data[i] = val;
-		
+
 		val = (int)
 		((float)0.999823 * (float)y + (float)1.77204 * (float)cb
 		 - (float)0.000008 *(float)cr + (float)0.5);
-		
+
 		if(val > max_value) val = max_value; else if(val < 0) val = 0;
 		image->comps[2].data[i] = val;
 	}

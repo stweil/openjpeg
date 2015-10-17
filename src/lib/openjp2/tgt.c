@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,10 +8,10 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
- * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR 
+ * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -39,7 +39,7 @@
 
 #include "opj_includes.h"
 
-/* 
+/*
 ==========================================================
    Tag-tree coder interface
 ==========================================================
@@ -171,7 +171,7 @@ opj_tgt_tree_t *opj_tgt_init(opj_tgt_tree_t * p_tree,OPJ_UINT32 p_num_leafs_h, O
                         return 00;
                 }
                 l_node_size = p_tree->numnodes * (OPJ_UINT32)sizeof(opj_tgt_node_t);
-                
+
                 if (l_node_size > p_tree->nodes_size) {
                         opj_tgt_node_t* new_nodes = (opj_tgt_node_t*) opj_realloc(p_tree->nodes, l_node_size);
                         if (! new_nodes) {
@@ -269,7 +269,7 @@ void opj_tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, OPJ_UINT32 leafno, OPJ
                 *stkptr++ = node;
                 node = node->parent;
         }
-        
+
         low = 0;
         for (;;) {
                 if (low > node->low) {
@@ -277,7 +277,7 @@ void opj_tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, OPJ_UINT32 leafno, OPJ
                 } else {
                         low = node->low;
                 }
-                
+
                 while (low < threshold) {
                         if (low >= node->value) {
                                 if (!node->known) {
@@ -289,7 +289,7 @@ void opj_tgt_encode(opj_bio_t *bio, opj_tgt_tree_t *tree, OPJ_UINT32 leafno, OPJ
                         opj_bio_write(bio, 0, 1);
                         ++low;
                 }
-                
+
                 node->low = low;
                 if (stkptr == stk)
                         break;
@@ -309,7 +309,7 @@ OPJ_UINT32 opj_tgt_decode(opj_bio_t *bio, opj_tgt_tree_t *tree, OPJ_UINT32 leafn
                 *stkptr++ = node;
                 node = node->parent;
         }
-        
+
         low = 0;
         for (;;) {
                 if (low > node->low) {
@@ -330,6 +330,6 @@ OPJ_UINT32 opj_tgt_decode(opj_bio_t *bio, opj_tgt_tree_t *tree, OPJ_UINT32 leafn
                 }
                 node = *--stkptr;
         }
-        
+
         return (node->value < threshold) ? 1 : 0;
 }

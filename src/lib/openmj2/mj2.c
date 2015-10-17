@@ -1,12 +1,12 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
  * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2014, Professor Benoit Macq
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@
 /*@{*/
 
 /*
-* 
+*
 * Read box headers
 *
 */
@@ -57,7 +57,7 @@ int mj2_read_boxhdr(mj2_box_t * box, opj_cio_t *cio)
       return 1;
     };
     box->length = cio_read(cio, 4);
-    if (box->length == 0) 
+    if (box->length == 0)
       box->length = cio_numbytesleft(cio) + 12;
   }
   else if (box->length == 0) {
@@ -67,12 +67,12 @@ int mj2_read_boxhdr(mj2_box_t * box, opj_cio_t *cio)
 }
 
 /*
-* 
-* Initialisation of a Standard Movie, given a simple movie structure defined by the user 
+*
+* Initialisation of a Standard Movie, given a simple movie structure defined by the user
 * The movie will have one sample per chunk
-* 
+*
 * Arguments: opj_mj2_t * movie
-* Several variables of "movie" must be defined in order to enable a correct execution of 
+* Several variables of "movie" must be defined in order to enable a correct execution of
 * this function:
 *   - The number of tracks of each type (movie->num_vtk, movie->num_stk, movie->num_htk)
 *   - The memory for each must be allocated (movie->tk)
@@ -89,7 +89,7 @@ int OPJ_CALLCONV mj2_init_stdmovie(opj_mj2_t * movie)
   int i, w, h, prec;
   unsigned int j;
   time_t ltime;
-	
+
   movie->brand = MJ2_MJ2;
   movie->minversion = 0;
   movie->num_cl = 2;
@@ -100,7 +100,7 @@ int OPJ_CALLCONV mj2_init_stdmovie(opj_mj2_t * movie)
   time(&ltime);			/* Time since 1/1/70 */
   movie->creation_time = (unsigned int) ltime + 2082844800;	/* Seconds between 1/1/04 and 1/1/70 */
   movie->timescale = 1000;
-	
+
   movie->rate = 1 << 16;		/* Rate to play presentation  (default = 0x00010000)          */
   movie->volume = 1 << 8;		/* Movie volume (default = 0x0100)                            */
   movie->trans_matrix[0] = 0x00010000;	/* Transformation matrix for video                            */
@@ -117,54 +117,54 @@ int OPJ_CALLCONV mj2_init_stdmovie(opj_mj2_t * movie)
   tk0 = &movie->tk[0];
   w = tk0->w; h = tk0->h; prec = tk0->depth;
 
-	for (i = 0; i < movie->num_htk + movie->num_stk + movie->num_vtk; i++) 
+	for (i = 0; i < movie->num_htk + movie->num_stk + movie->num_vtk; i++)
    {
     mj2_tk_t *tk = &movie->tk[i];
 
     movie->next_tk_id++;
     tk->jp2_struct.comps = NULL;
     tk->jp2_struct.cl = NULL;
-  
+
     if (tk->track_type == 0) /* no sound or hint track */
    {
     if (tk->num_samples == 0)
 				return 1;
-			
+
     tk->w = w; tk->h = h; tk->depth = prec;
       tk->Dim[0] = 0;
       tk->Dim[1] = 0;
-			
+
       tk->timescale = 1000;	/* Timescale = 1 ms                                          */
-			
+
       tk->chunk[0].num_samples = 1;
       tk->chunk[0].sample_descr_idx = 1;
-			
+
       tk->same_sample_size = 0;
-			
+
       tk->num_samplestochunk = 1;	/* One sample per chunk  */
 		tk->sampletochunk = (mj2_sampletochunk_t*) opj_malloc(tk->num_samplestochunk * sizeof(mj2_sampletochunk_t));
       tk->sampletochunk[0].first_chunk = 1;
       tk->sampletochunk[0].samples_per_chunk = 1;
       tk->sampletochunk[0].sample_descr_idx = 1;
-      
-      if (tk->sample_rate == 0) 
+
+      if (tk->sample_rate == 0)
   {
 	opj_event_msg(tk->cinfo, EVT_ERROR,
 	"Error while initializing MJ2 movie: Sample rate of track"
 	" %d must be different from zero\n", tk->track_ID);
 	return 1;
   }
-			
-      for (j = 0; j < tk->num_samples; j++) 
+
+      for (j = 0; j < tk->num_samples; j++)
   {
 	tk->sample[j].sample_delta = tk->timescale / tk->sample_rate;
   }
-			
+
       tk->num_tts = 1;
 		tk->tts = (mj2_tts_t*) opj_malloc(tk->num_tts * sizeof(mj2_tts_t));
       tk->tts[0].sample_count = tk->num_samples;
       tk->tts[0].sample_delta = tk->timescale / tk->sample_rate;
-			
+
       tk->horizresolution = 0x00480000;	/* Horizontal resolution (typically 72)                       */
       tk->vertresolution = 0x00480000;	/* Vertical resolution (typically 72)                         */
       tk->compressorname[0] = 0x0f4d6f74;	/* Compressor Name[]: Motion JPEG2000                         */
@@ -246,7 +246,7 @@ void mj2_tts_decompact(mj2_tk_t * tk)
 void mj2_stsc_decompact(mj2_tk_t * tk)
 {
   unsigned int i, j, k, sampleno = 0;
-  
+
   if (tk->num_samplestochunk == 1) {
     tk->num_chunks =
       (unsigned int) ceil((double) tk->num_samples /
@@ -255,7 +255,7 @@ void mj2_stsc_decompact(mj2_tk_t * tk)
     for (k = 0; k < tk->num_chunks; k++) {
       tk->chunk[k].num_samples = tk->sampletochunk[0].samples_per_chunk;
     }
-    
+
   } else {
     tk->chunk = (mj2_chunk_t*) opj_malloc(tk->num_samples * sizeof(mj2_chunk_t));
     tk->num_chunks = 0;
@@ -276,7 +276,7 @@ void mj2_stsc_decompact(mj2_tk_t * tk)
     tk->chunk = (mj2_chunk_t*)
 	 opj_realloc(tk->chunk, tk->num_chunks * sizeof(mj2_chunk_t));
   }
-  
+
 }
 
 
@@ -288,7 +288,7 @@ void mj2_stco_decompact(mj2_tk_t * tk)
 {
   unsigned int i, j, k = 0;
   unsigned int intra_chunk_offset;
-	
+
   for (i = 0; i < tk->num_chunks; i++) {
     intra_chunk_offset = 0;
     for (j = 0; j < tk->chunk[i].num_samples; j++) {
@@ -310,10 +310,10 @@ void OPJ_CALLCONV mj2_write_jp(opj_cio_t *cio)
   mj2_box_t box;
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
-	
+
   cio_write(cio, MJ2_JP, 4);		/* JP */
   cio_write(cio, 0x0d0a870a, 4);	/* 0x0d0a870a required in a JP box */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);
@@ -329,7 +329,7 @@ void OPJ_CALLCONV mj2_write_jp(opj_cio_t *cio)
 int mj2_read_jp(opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_JP != box.type) {	/* Check Marker */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected JP Marker\n");
@@ -344,7 +344,7 @@ int mj2_read_jp(opj_cio_t *cio)
     return 1;
   }
   return 0;
-	
+
 }
 
 /*
@@ -359,14 +359,14 @@ void OPJ_CALLCONV mj2_write_ftyp(opj_mj2_t * movie, opj_cio_t *cio)
   mj2_box_t box;
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
-	
+
   cio_write(cio, MJ2_FTYP, 4);	/* FTYP       */
   cio_write(cio, movie->brand, 4);	/* BR         */
   cio_write(cio, movie->minversion, 4);	/* MinV       */
-	
+
   for (i = 0; i < movie->num_cl; i++)
     cio_write(cio, movie->cl[i], 4);	/* CL         */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* Length     */
@@ -383,13 +383,13 @@ int mj2_read_ftyp(opj_mj2_t * movie, opj_cio_t *cio)
 {
   int i;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);	/* Box Size */
   if (MJ2_FTYP != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected FTYP Marker\n");
     return 1;
   }
-	
+
   movie->brand = cio_read(cio, 4);	/* BR              */
   movie->minversion = cio_read(cio, 4);	/* MinV            */
   movie->num_cl = (box.length - 16) / 4;
@@ -397,7 +397,7 @@ int mj2_read_ftyp(opj_mj2_t * movie, opj_cio_t *cio)
 
   for (i = movie->num_cl - 1; i > -1; i--)
     movie->cl[i] = cio_read(cio, 4);	/* CLi */
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with FTYP Box\n");
     return 1;
@@ -416,19 +416,19 @@ void mj2_write_stco(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
   unsigned int i;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STCO, 4);	/* STCO       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->num_chunks, 4);	/* Entry Count */
-	
+
   for (i = 0; i < tk->num_chunks; i++) {
     cio_write(cio, tk->chunk[i].offset, 4);	/* Entry offset */
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -445,36 +445,36 @@ int mj2_read_stco(mj2_tk_t * tk, opj_cio_t *cio)
 {
   unsigned int i;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);	/* Box Size */
   if (MJ2_STCO != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STCO Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in STCO box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in STCO box. Expected flag 0\n");
     return 1;
   }
-	
-	
+
+
   if (cio_read(cio, 4) != tk->num_chunks) {
-    opj_event_msg(cio->cinfo, EVT_ERROR, 
+    opj_event_msg(cio->cinfo, EVT_ERROR,
 			"Error in STCO box: expecting same amount of entry-count as chunks \n");
   } else {
     for (i = 0; i < tk->num_chunks; i++) {
       tk->chunk[i].offset = cio_read(cio, 4);	/* Entry offset */
     }
   }
-	
+
   mj2_stco_decompact(tk);
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STCO Box size\n");
     return 1;
@@ -492,29 +492,29 @@ void mj2_write_stsz(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
   unsigned int i;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STSZ, 4);	/* STSZ       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   if (tk->same_sample_size == 1) {	/* If they all have the same size */
     cio_write(cio, tk->sample[0].sample_size, 4);	/* Size */
-		
+
     cio_write(cio, 1, 4);		/* Entry count = 1 */
   }
-	
+
   else {
     cio_write(cio, 0, 4);		/* Sample Size = 0 becase they all have different sizes */
-		
+
     cio_write(cio, tk->num_samples, 4);	/* Sample Count */
-		
+
     for (i = 0; i < tk->num_samples; i++) {
       cio_write(cio, tk->sample[i].sample_size, 4);
     }
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -532,26 +532,26 @@ int mj2_read_stsz(mj2_tk_t * tk, opj_cio_t *cio)
   int sample_size;
   unsigned int i;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);	/* Box Size */
   if (MJ2_STSZ != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STSZ Marker\n");
     return 1;
   }
-	
-	
+
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in STSZ box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in STSZ box. Expected flag 0\n");
     return 1;
   }
-	
+
   sample_size = cio_read(cio, 4);
-	
+
   if (sample_size != 0) {	/* Samples do have the same size */
     tk->same_sample_size = 1;
     for (i = 0; i < tk->num_samples; i++) {
@@ -568,14 +568,14 @@ int mj2_read_stsz(mj2_tk_t * tk, opj_cio_t *cio)
     for (i = 0; i < tk->num_samples; i++) {
       tk->sample[i].sample_size = cio_read(cio, 4);	/* Sample Size */
     }
-		
+
     if (cio_tell(cio) - box.init_pos != box.length) {
       opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STSZ Box size\n");
       return 1;
     }
   }
   return 0;
-	
+
 }
 
 /*
@@ -588,22 +588,22 @@ void mj2_write_stsc(mj2_tk_t * tk, opj_cio_t *cio)
 {
   unsigned int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STSC, 4);	/* STSC       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->num_samplestochunk, 4);	/* Entry Count */
-	
+
   for (i = 0; i < tk->num_samplestochunk; i++) {
     cio_write(cio, tk->sampletochunk[i].first_chunk, 4);	/* First Chunk */
     cio_write(cio, tk->sampletochunk[i].samples_per_chunk, 4);	/* Samples per chunk */
     cio_write(cio, tk->sampletochunk[i].sample_descr_idx, 4);	/* Samples description index */
   }
-	
-	
+
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -620,24 +620,24 @@ int mj2_read_stsc(mj2_tk_t * tk, opj_cio_t *cio)
 {
   unsigned int i;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);	/* Box Size */
   if (MJ2_STSC != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STSC Marker\n");
     return 1;
   }
-	
-	
+
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in STSC box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in STSC box. Expected flag 0\n");
     return 1;
   }
-	
+
   tk->num_samplestochunk = cio_read(cio, 4);
 
   tk->sampletochunk = (mj2_sampletochunk_t*) opj_malloc(tk->num_samplestochunk * sizeof(mj2_sampletochunk_t));
@@ -647,10 +647,10 @@ int mj2_read_stsc(mj2_tk_t * tk, opj_cio_t *cio)
     tk->sampletochunk[i].samples_per_chunk = cio_read(cio, 4);
     tk->sampletochunk[i].sample_descr_idx = cio_read(cio, 4);
   }
-	
+
   mj2_stsc_decompact(tk);	/* decompact sample to chunk box */
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STSC Box size\n");
     return 1;
@@ -666,22 +666,22 @@ int mj2_read_stsc(mj2_tk_t * tk, opj_cio_t *cio)
 */
 void mj2_write_stts(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STTS, 4);	/* STTS       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->num_tts, 4);	/* entry_count */
   for (i = 0; i < tk->num_tts; i++) {
     cio_write(cio, tk->tts[i].sample_count, 4);	/* Sample-count */
     cio_write(cio, tk->tts[i].sample_delta, 4);	/* Sample-Delta */
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -691,32 +691,32 @@ void mj2_write_stts(mj2_tk_t * tk, opj_cio_t *cio)
 /*
 * Read the STTS box
 *
-* 
+*
 *
 */
 int mj2_read_stts(mj2_tk_t * tk, opj_cio_t *cio)
 {
   int i;
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_STTS != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STTS Marker\n");
     return 1;
   }
-	
-	
+
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in STTS box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in STTS box. Expected flag 0\n");
     return 1;
   }
-	
+
   tk->num_tts = cio_read(cio, 4);
 
   tk->tts = (mj2_tts_t*) opj_malloc(tk->num_tts * sizeof(mj2_tts_t));
@@ -725,9 +725,9 @@ int mj2_read_stts(mj2_tk_t * tk, opj_cio_t *cio)
     tk->tts[i].sample_count = cio_read(cio, 4);
     tk->tts[i].sample_delta = cio_read(cio, 4);
   }
-	
+
   mj2_tts_decompact(tk);
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STTS Box size\n");
     return 1;
@@ -743,17 +743,17 @@ int mj2_read_stts(mj2_tk_t * tk, opj_cio_t *cio)
 */
 void mj2_write_fiel(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_FIEL, 4);	/* STTS       */
-	
+
   cio_write(cio, tk->fieldcount, 1);	/* Field count */
   cio_write(cio, tk->fieldorder, 1);	/* Field order */
-	
-	
+
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -768,19 +768,19 @@ void mj2_write_fiel(mj2_tk_t * tk, opj_cio_t *cio)
 */
 int mj2_read_fiel(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_FIEL != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected FIEL Marker\n");
     return 1;
   }
-	
-	
+
+
   tk->fieldcount = cio_read(cio, 1);
   tk->fieldorder = cio_read(cio, 1);
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with FIEL Box size\n");
     return 1;
@@ -797,15 +797,15 @@ int mj2_read_fiel(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_orfo(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_ORFO, 4);
-	
+
   cio_write(cio, tk->or_fieldcount, 1);	/* Original Field count */
   cio_write(cio, tk->or_fieldorder, 1);	/* Original Field order */
-	
-	
+
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -820,19 +820,19 @@ void mj2_write_orfo(mj2_tk_t * tk, opj_cio_t *cio)
 */
 int mj2_read_orfo(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_ORFO != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected ORFO Marker\n");
     return 1;
   }
-	
-	
+
+
   tk->or_fieldcount = cio_read(cio, 1);
   tk->or_fieldorder = cio_read(cio, 1);
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with ORFO Box size\n");
     return 1;
@@ -848,20 +848,20 @@ int mj2_read_orfo(mj2_tk_t * tk, opj_cio_t *cio)
 */
 void mj2_write_jp2p(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_JP2P, 4);
-	
+
   cio_write(cio, 0, 4);		/* Version 0, flags =0 */
-	
+
   for (i = 0; i < tk->num_br; i++) {
     cio_write(cio, tk->br[i], 4);
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -877,33 +877,33 @@ void mj2_write_jp2p(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_jp2p(mj2_tk_t * tk, opj_cio_t *cio)
 {
   int i;
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_JP2P != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected JP2P Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in JP2P box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in JP2P box. Expected flag 0\n");
     return 1;
   }
-	
-	
+
+
   tk->num_br = (box.length - 12) / 4;
   tk->br = (unsigned int*) opj_malloc(tk->num_br * sizeof(unsigned int));
 
   for (i = 0; i < tk->num_br; i++) {
     tk->br[i] = cio_read(cio, 4);
   }
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with JP2P Box size\n");
     return 1;
@@ -919,18 +919,18 @@ int mj2_read_jp2p(mj2_tk_t * tk, opj_cio_t *cio)
 */
 void mj2_write_jp2x(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_JP2X, 4);
-	
+
   for (i = 0; i < tk->num_jp2x; i++) {
     cio_write(cio, tk->jp2xdata[i], 1);
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -946,23 +946,23 @@ void mj2_write_jp2x(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_jp2x(mj2_tk_t * tk, opj_cio_t *cio)
 {
   unsigned int i;
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_JP2X != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected JP2X Marker\n");
     return 1;
   }
-	
-	
+
+
   tk->num_jp2x = (box.length - 8);
   tk->jp2xdata = (unsigned char*) opj_malloc(tk->num_jp2x * sizeof(unsigned char));
 
   for (i = 0; i < tk->num_jp2x; i++) {
     tk->jp2xdata[i] = cio_read(cio, 1);
   }
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with JP2X Box size\n");
     return 1;
@@ -978,18 +978,18 @@ int mj2_read_jp2x(mj2_tk_t * tk, opj_cio_t *cio)
 */
 void mj2_write_jsub(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_JSUB, 4);
-	
+
   cio_write(cio, tk->hsub, 1);
   cio_write(cio, tk->vsub, 1);
   cio_write(cio, tk->hoff, 1);
   cio_write(cio, tk->voff, 1);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1005,18 +1005,18 @@ void mj2_write_jsub(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_jsub(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_JSUB != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected JSUB Marker\n");
     return 1;
   }
-	
+
   tk->hsub = cio_read(cio, 1);
   tk->vsub = cio_read(cio, 1);
   tk->hoff = cio_read(cio, 1);;
   tk->voff = cio_read(cio, 1);
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with JSUB Box size\n");
     return 1;
@@ -1033,33 +1033,33 @@ int mj2_read_jsub(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_smj2(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MJ2, 4);	/* MJ2       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, 1, 4);
-	
+
   cio_write(cio, 0, 2);		/* Pre-defined */
-	
+
   cio_write(cio, 0, 2);		/* Reserved */
-	
+
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
-	
+
   cio_write(cio, tk->w, 2);		/* Width  */
   cio_write(cio, tk->h, 2);		/* Height */
-	
+
   cio_write(cio, tk->horizresolution, 4);	/* Horizontal resolution */
   cio_write(cio, tk->vertresolution, 4);	/* Vertical resolution   */
-	
+
   cio_write(cio, 0, 4);		/* Reserved */
-	
+
   cio_write(cio, 1, 2);		/* Pre-defined = 1 */
-	
+
   cio_write(cio, tk->compressorname[0], 4);	/* Compressor Name */
   cio_write(cio, tk->compressorname[1], 4);
   cio_write(cio, tk->compressorname[2], 4);
@@ -1068,23 +1068,23 @@ void mj2_write_smj2(mj2_tk_t * tk, opj_cio_t *cio)
   cio_write(cio, tk->compressorname[5], 4);
   cio_write(cio, tk->compressorname[6], 4);
   cio_write(cio, tk->compressorname[7], 4);
-	
+
   cio_write(cio, tk->depth, 2);	/* Depth */
-	
+
   cio_write(cio, 0xffff, 2);		/* Pre-defined = -1 */
-	
+
   jp2_write_jp2h(&tk->jp2_struct, cio);
-	
+
   mj2_write_fiel(tk, cio);
-	
+
   if (tk->num_br != 0)
     mj2_write_jp2p(tk, cio);
   if (tk->num_jp2x != 0)
     mj2_write_jp2x(tk, cio);
-	
+
   mj2_write_jsub(tk, cio);
   mj2_write_orfo(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1106,42 +1106,42 @@ int mj2_read_smj2(opj_image_t * img, mj2_tk_t * tk, opj_cio_t *cio)
   opj_bool ok;
 
   mj2_read_boxhdr(&box, cio);
-	
+
   if (MJ2_MJ2 != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error in SMJ2 box: Expected MJ2 Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in MJP2 box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in MJP2 box. Expected flag 0\n");
     return 1;
   }
-	
+
   cio_skip(cio,4);
-	
+
   cio_skip(cio,2);			/* Pre-defined */
-	
+
   cio_skip(cio,2);			/* Reserved */
-	
+
   cio_skip(cio,4);			/* Pre-defined */
   cio_skip(cio,4);			/* Pre-defined */
   cio_skip(cio,4);			/* Pre-defined */
-	
+
   tk->w = cio_read(cio, 2);		/* Width  */
   tk->h = cio_read(cio, 2);		/* Height */
-	
+
   tk->horizresolution = cio_read(cio, 4);	/* Horizontal resolution */
   tk->vertresolution = cio_read(cio, 4);	/* Vertical resolution   */
-	
+
   cio_skip(cio,4);			/* Reserved */
-	
+
   cio_skip(cio,2);			/* Pre-defined = 1 */
-	
+
   tk->compressorname[0] = cio_read(cio, 4);	/* Compressor Name */
   tk->compressorname[1] = cio_read(cio, 4);
   tk->compressorname[2] = cio_read(cio, 4);
@@ -1150,16 +1150,16 @@ int mj2_read_smj2(opj_image_t * img, mj2_tk_t * tk, opj_cio_t *cio)
   tk->compressorname[5] = cio_read(cio, 4);
   tk->compressorname[6] = cio_read(cio, 4);
   tk->compressorname[7] = cio_read(cio, 4);
-	
+
   tk->depth = cio_read(cio, 2);	/* Depth */
-	
+
   /* Init std value */
   tk->num_jp2x = 0;
   tk->fieldcount = 1;
   tk->fieldorder = 0;
   tk->or_fieldcount = 1;
   tk->or_fieldorder = 0;
-	
+
   cio_skip(cio,2);			/* Pre-defined = -1 */
   memset(&color, 0, sizeof(opj_jp2_color_t));
   tk->jp2_struct.cinfo = tk->cinfo;
@@ -1179,7 +1179,7 @@ int mj2_read_smj2(opj_image_t * img, mj2_tk_t * tk, opj_cio_t *cio)
 
   tk->num_br = 0;
   tk->num_jp2x = 0;
-	
+
   for (i = 0; cio_tell(cio) - box.init_pos < box.length; i++) {
     mj2_read_boxhdr(&box2, cio);
     cio_seek(cio, box2.init_pos);
@@ -1188,32 +1188,32 @@ int mj2_read_smj2(opj_image_t * img, mj2_tk_t * tk, opj_cio_t *cio)
       if (mj2_read_fiel(tk, cio))
 				return 1;
       break;
-			
+
     case MJ2_JP2P:
       if (mj2_read_jp2p(tk, cio))
 				return 1;
       break;
-			
+
     case MJ2_JP2X:
       if (mj2_read_jp2x(tk, cio))
 				return 1;
       break;
-			
+
     case MJ2_JSUB:
       if (mj2_read_jsub(tk, cio))
 				return 1;
       break;
-			
+
     case MJ2_ORFO:
       if (mj2_read_orfo(tk, cio))
 				return 1;
       break;
-			
+
     default:
       opj_event_msg(cio->cinfo, EVT_ERROR, "Error with MJP2 Box size\n");
       return 1;
       break;
-			
+
     }
   }
   return 0;
@@ -1229,15 +1229,15 @@ int mj2_read_smj2(opj_image_t * img, mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_stsd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STSD, 4);	/* STSD       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, 1, 4);		/* entry_count = 1 (considering same JP2 headerboxes) */
-	
+
   if (tk->track_type == 0) {
     mj2_write_smj2(tk, cio);
   } else if (tk->track_type == 1) {
@@ -1246,8 +1246,8 @@ void mj2_write_stsd(mj2_tk_t * tk, opj_cio_t *cio)
   if (tk->track_type == 2) {
     /* Not implemented*/
   }
-	
-	
+
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1264,28 +1264,28 @@ int mj2_read_stsd(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 {
   int i;
   int entry_count, len_2skip;
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
-	
+
   if (MJ2_STSD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STSD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in STSD box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in STSD box. Expected flag 0\n");
     return 1;
   }
-	
+
   entry_count = cio_read(cio, 4);
-	
+
   if (tk->track_type == 0) {
     for (i = 0; i < entry_count; i++) {
       if (mj2_read_smj2(img, tk, cio))
@@ -1298,8 +1298,8 @@ int mj2_read_stsd(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
     len_2skip = cio_read(cio, 4);	/* Not implemented -> skipping box*/
     cio_skip(cio,len_2skip - 4);
   }
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STSD Box size\n");
     return 1;
@@ -1316,17 +1316,17 @@ int mj2_read_stsd(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 void mj2_write_stbl(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_STBL, 4);	/* STBL       */
-	
+
   mj2_write_stsd(tk, cio);
   mj2_write_stts(tk, cio);
   mj2_write_stsc(tk, cio);
   mj2_write_stsz(tk, cio);
   mj2_write_stco(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1342,13 +1342,13 @@ void mj2_write_stbl(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_stbl(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_STBL != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected STBL Marker\n");
     return 1;
   }
-	
+
   if (mj2_read_stsd(tk, img, cio))
     return 1;
   if (mj2_read_stts(tk, cio))
@@ -1359,7 +1359,7 @@ int mj2_read_stbl(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
     return 1;
   if (mj2_read_stco(tk, cio))
     return 1;
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with STBL Box size\n");
     return 1;
@@ -1376,11 +1376,11 @@ int mj2_read_stbl(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 void mj2_write_url(mj2_tk_t * tk, int url_num, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_URL, 4);	/* URL       */
-	
+
   if (url_num == 0)
     cio_write(cio, 1, 4);		/* Version = 0, flags = 1 because stored in same file */
   else {
@@ -1390,7 +1390,7 @@ void mj2_write_url(mj2_tk_t * tk, int url_num, opj_cio_t *cio)
     cio_write(cio, tk->url[url_num - 1].location[2], 4);
     cio_write(cio, tk->url[url_num - 1].location[3], 4);
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1406,18 +1406,18 @@ void mj2_write_url(mj2_tk_t * tk, int url_num, opj_cio_t *cio)
 int mj2_read_url(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_URL != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected URL Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in URL box\n");
     return 1;
   }
-	
+
   if (1 != cio_read(cio, 3)) {	/* If flags = 1 --> media data in file */
     tk->url[urn_num].location[0] = cio_read(cio, 4);
     tk->url[urn_num].location[1] = cio_read(cio, 4);
@@ -1426,8 +1426,8 @@ int mj2_read_url(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
   } else {
     tk->num_url--;
   }
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with URL Box size\n");
     return 1;
@@ -1444,13 +1444,13 @@ int mj2_read_url(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
 void mj2_write_urn(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_URN, 4);	/* URN       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags =  0 */
-	
+
   cio_write(cio, tk->urn[urn_num].name[0], 4);
   cio_write(cio, tk->urn[urn_num].name[1], 4);
   cio_write(cio, tk->urn[urn_num].name[2], 4);
@@ -1459,7 +1459,7 @@ void mj2_write_urn(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
   cio_write(cio, tk->urn[urn_num].location[1], 4);
   cio_write(cio, tk->urn[urn_num].location[2], 4);
   cio_write(cio, tk->urn[urn_num].location[3], 4);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1474,20 +1474,20 @@ void mj2_write_urn(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
 */
 int mj2_read_urn(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
 {
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_URN != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected URN Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in URN box\n");
     return 1;
   }
-	
+
   if (1 != cio_read(cio, 3)) {	/* If flags = 1 --> media data in file */
     tk->urn[urn_num].name[0] = cio_read(cio, 4);
     tk->urn[urn_num].name[1] = cio_read(cio, 4);
@@ -1498,8 +1498,8 @@ int mj2_read_urn(mj2_tk_t * tk, int urn_num, opj_cio_t *cio)
     tk->urn[urn_num].location[2] = cio_read(cio, 4);
     tk->urn[urn_num].location[3] = cio_read(cio, 4);
   }
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with URN Box size\n");
     return 1;
@@ -1518,26 +1518,26 @@ void mj2_write_dref(mj2_tk_t * tk, opj_cio_t *cio)
 {
   int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_DREF, 4);	/* DREF       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   if (tk->num_url + tk->num_urn == 0) {	/* Media data in same file */
     cio_write(cio, 1, 4);		/* entry_count = 1 */
     mj2_write_url(tk, 0, cio);
   } else {
     cio_write(cio, tk->num_url + tk->num_urn, 4);	/* entry_count */
-		
+
     for (i = 0; i < tk->num_url; i++)
       mj2_write_url(tk, i + 1, cio);
-		
+
     for (i = 0; i < tk->num_urn; i++)
       mj2_write_urn(tk, i, cio);
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1552,31 +1552,31 @@ void mj2_write_dref(mj2_tk_t * tk, opj_cio_t *cio)
 */
 int mj2_read_dref(mj2_tk_t * tk, opj_cio_t *cio)
 {
-	
+
   int i;
   int entry_count, marker;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_DREF != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected DREF Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in DREF box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in DREF box. Expected flag 0\n");
     return 1;
   }
-	
+
   entry_count = cio_read(cio, 4);
   tk->num_url = 0;
   tk->num_urn = 0;
-	
+
   for (i = 0; i < entry_count; i++) {
     cio_skip(cio,4);
     marker = cio_read(cio, 4);
@@ -1594,10 +1594,10 @@ int mj2_read_dref(mj2_tk_t * tk, opj_cio_t *cio)
       opj_event_msg(cio->cinfo, EVT_ERROR, "Error with in DREF box. Expected URN or URL box\n");
       return 1;
     }
-		
+
   }
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with DREF Box size\n");
     return 1;
@@ -1614,13 +1614,13 @@ int mj2_read_dref(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_dinf(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_DINF, 4);	/* DINF       */
-	
+
   mj2_write_dref(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1636,16 +1636,16 @@ void mj2_write_dinf(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_dinf(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_DINF != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected DINF Marker\n");
     return 1;
   }
-	
+
   if (mj2_read_dref(tk, cio))
     return 1;
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with DINF Box size\n");
     return 1;
@@ -1662,18 +1662,18 @@ int mj2_read_dinf(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_vmhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_VMHD, 4);	/* VMHD       */
-	
+
   cio_write(cio, 1, 4);		/* Version = 0, flags = 1 */
-	
+
   cio_write(cio, tk->graphicsmode, 2);
   cio_write(cio, tk->opcolor[0], 2);
   cio_write(cio, tk->opcolor[1], 2);
   cio_write(cio, tk->opcolor[2], 2);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1689,29 +1689,29 @@ void mj2_write_vmhd(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_vmhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_VMHD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected VMHD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in VMHD box\n");
     return 1;
   }
-	
+
   if (1 != cio_read(cio, 3)) {	/* Flags = 1  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in VMHD box. Expected flag 1\n");
     return 1;
   }
-	
+
   tk->track_type = 0;
   tk->graphicsmode = cio_read(cio, 2);
   tk->opcolor[0] = cio_read(cio, 2);
   tk->opcolor[1] = cio_read(cio, 2);
   tk->opcolor[2] = cio_read(cio, 2);
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with VMHD Box size\n");
     return 1;
@@ -1728,17 +1728,17 @@ int mj2_read_vmhd(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_smhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_SMHD, 4);	/* SMHD       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->balance, 2);
-	
+
   cio_write(cio, 0, 2);		/* Reserved */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1754,26 +1754,26 @@ void mj2_write_smhd(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_smhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_SMHD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected SMHD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in SMHD box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in SMHD box. Expected flag 0\n");
     return 1;
   }
-	
+
   tk->track_type = 1;
   tk->balance = cio_read(cio, 2);
-	
+
   /* Init variables to zero to avoid problems when freeeing memory
   The values will possibly be overidded when decoding the track structure */
   tk->num_br = 0;
@@ -1783,9 +1783,9 @@ int mj2_read_smhd(mj2_tk_t * tk, opj_cio_t *cio)
   tk->num_tts = 0;
   tk->num_samplestochunk = 0;
   tk->num_samples = 0;
-	
+
   cio_skip(cio,2);			/* Reserved */
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with SMHD Box size\n");
     return 1;
@@ -1802,19 +1802,19 @@ int mj2_read_smhd(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_hmhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_HMHD, 4);	/* HMHD       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->maxPDUsize, 2);
   cio_write(cio, tk->avgPDUsize, 2);
   cio_write(cio, tk->maxbitrate, 4);
   cio_write(cio, tk->avgbitrate, 4);
   cio_write(cio, tk->slidingavgbitrate, 4);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1830,30 +1830,30 @@ void mj2_write_hmhd(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_hmhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_HMHD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected HMHD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in HMHD box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in HMHD box. Expected flag 0\n");
     return 1;
   }
-	
+
   tk->track_type = 2;
   tk->maxPDUsize = cio_read(cio, 2);
   tk->avgPDUsize = cio_read(cio, 2);
   tk->maxbitrate = cio_read(cio, 4);
   tk->avgbitrate = cio_read(cio, 4);
   tk->slidingavgbitrate = cio_read(cio, 4);
-	
+
   /* Init variables to zero to avoid problems when freeeing memory
   The values will possibly be overidded when decoding the track structure */
   tk->num_br = 0;
@@ -1863,8 +1863,8 @@ int mj2_read_hmhd(mj2_tk_t * tk, opj_cio_t *cio)
   tk->num_tts = 0;
   tk->num_samplestochunk = 0;
   tk->num_samples = 0;
-	
-	
+
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with HMHD Box size\n");
     return 1;
@@ -1881,11 +1881,11 @@ int mj2_read_hmhd(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_minf(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MINF, 4);	/* MINF       */
-	
+
   if (tk->track_type == 0) {
     mj2_write_vmhd(tk, cio);
   } else if (tk->track_type == 1) {
@@ -1893,10 +1893,10 @@ void mj2_write_minf(mj2_tk_t * tk, opj_cio_t *cio)
   } else if (tk->track_type == 2) {
     mj2_write_hmhd(tk, cio);
   }
-	
+
   mj2_write_dinf(tk, cio);
   mj2_write_stbl(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -1911,20 +1911,20 @@ void mj2_write_minf(mj2_tk_t * tk, opj_cio_t *cio)
 */
 int mj2_read_minf(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 {
-	
+
   unsigned int box_type;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_MINF != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected MINF Marker\n");
     return 1;
   }
-	
+
   cio_skip(cio,4);
   box_type = cio_read(cio, 4);
   cio_skip(cio,-8);
-	
+
   if (box_type == MJ2_VMHD) {
     if (mj2_read_vmhd(tk, cio))
       return 1;
@@ -1938,13 +1938,13 @@ int mj2_read_minf(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error in MINF box expected vmhd, smhd or hmhd\n");
     return 1;
   }
-	
+
   if (mj2_read_dinf(tk, cio))
     return 1;
-	
+
   if (mj2_read_stbl(tk, img, cio))
     return 1;
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with MINF Box size\n");
     return 1;
@@ -1961,25 +1961,25 @@ int mj2_read_minf(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 void mj2_write_hdlr(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_HDLR, 4);	/* HDLR       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, 0, 4);		/* Predefine */
-	
+
   tk->name = 0;			/* The track name is immediately determined by the track type */
-	
+
   if (tk->track_type == 0) {
     tk->handler_type = 0x76696465;	/* Handler type: vide */
     cio_write(cio, tk->handler_type, 4);
-		
+
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);		/* Reserved */
-		
+
     cio_write(cio, 0x76696465, 4);
     cio_write(cio, 0x6F206d65, 4);
     cio_write(cio, 0x64696120, 4);
@@ -1988,25 +1988,25 @@ void mj2_write_hdlr(mj2_tk_t * tk, opj_cio_t *cio)
   } else if (tk->track_type == 1) {
     tk->handler_type = 0x736F756E;	/* Handler type: soun */
     cio_write(cio, tk->handler_type, 4);
-		
+
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);		/* Reserved */
-		
+
     cio_write(cio, 0x536F756E, 4);
     cio_write(cio, 0x6400, 2);	/* String: Sound */
   } else if (tk->track_type == 2) {
     tk->handler_type = 0x68696E74;	/* Handler type: hint */
     cio_write(cio, tk->handler_type, 4);
-		
+
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);
     cio_write(cio, 0, 4);		/* Reserved */
-		
+
     cio_write(cio, 0x48696E74, 4);
     cio_write(cio, 0, 2);		/* String: Hint */
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2023,36 +2023,36 @@ int mj2_read_hdlr(mj2_tk_t * tk, opj_cio_t *cio)
 {
   int i;
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_HDLR != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected HDLR Marker\n");
     return 1;
   }
-	
-	
+
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in HDLR box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0  */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in HDLR box. Expected flag 0\n");
     return 1;
   }
-	
+
   cio_skip(cio,4);			/* Reserved */
-	
+
   tk->handler_type = cio_read(cio, 4);
   cio_skip(cio,12);			/* Reserved */
-	
+
   tk->name_size = box.length - 32;
 
   tk->name = (char*) opj_malloc(tk->name_size * sizeof(char));
   for (i = 0; i < tk->name_size; i++) {
     tk->name[i] = cio_read(cio, 1);	/* Name */
   }
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with HDLR Box size\n");
     return 1;
@@ -2072,33 +2072,33 @@ void mj2_write_mdhd(mj2_tk_t * tk, opj_cio_t *cio)
   unsigned int i;
   time_t ltime;
   unsigned int modification_time;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MDHD, 4);	/* MDHD       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   cio_write(cio, tk->creation_time, 4);	/* Creation Time */
-	
+
   time(&ltime);			/* Time since 1/1/70 */
   modification_time = (unsigned int)ltime + 2082844800;	/* Seoonds between 1/1/04 and 1/1/70 */
-	
+
   cio_write(cio, modification_time, 4);	/* Modification Time */
-	
+
   cio_write(cio, tk->timescale, 4);	/* Timescale */
-	
+
   tk->duration = 0;
-	
+
   for (i = 0; i < tk->num_samples; i++)
     tk->duration += tk->sample[i].sample_delta;
-	
+
   cio_write(cio, tk->duration, 4);	/* Duration */
-	
+
   cio_write(cio, tk->language, 2);	/* Language */
-	
+
   cio_write(cio, 0, 2);		/* Predefined */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2114,36 +2114,36 @@ void mj2_write_mdhd(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_mdhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (!(MJ2_MHDR == box.type || MJ2_MDHD == box.type)) {	/* Kakadu writes MHDR instead of MDHD*/
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected MDHD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in MDHD box\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 3)) {	/* Flags = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with flag in MDHD box. Expected flag 0\n");
     return 1;
   }
-	
-	
+
+
   tk->creation_time = cio_read(cio, 4);	/* Creation Time */
-	
+
   tk->modification_time = cio_read(cio, 4);	/* Modification Time */
-	
+
   tk->timescale = cio_read(cio, 4);	/* Timescale */
-	
+
   tk->duration = cio_read(cio, 4);	/* Duration */
-	
+
   tk->language = cio_read(cio, 2);	/* Language */
-	
+
   cio_skip(cio,2);			/* Predefined */
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with MDHD Box size\n");
     return 1;
@@ -2160,15 +2160,15 @@ int mj2_read_mdhd(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_mdia(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MDIA, 4);	/* MDIA       */
-	
+
   mj2_write_mdhd(tk, cio);
   mj2_write_hdlr(tk, cio);
   mj2_write_minf(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2184,20 +2184,20 @@ void mj2_write_mdia(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_mdia(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_MDIA != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected MDIA Marker\n");
     return 1;
   }
-	
+
   if (mj2_read_mdhd(tk, cio))
     return 1;
   if (mj2_read_hdlr(tk, cio))
     return 1;
   if (mj2_read_minf(tk, img, cio))
     return 1;
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with MDIA Box size\n");
     return 1;
@@ -2216,43 +2216,43 @@ void mj2_write_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
   mj2_box_t box;
   unsigned int i;
   time_t ltime;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
-	
+
   cio_write(cio, MJ2_TKHD, 4);	/* TKHD       */
-	
+
   cio_write(cio, 3, 4);		/* Version=0, flags=3 */
-	
+
   time(&ltime);			/* Time since 1/1/70 */
   tk->modification_time = (unsigned int)ltime + 2082844800;	/* Seoonds between 1/1/04 and 1/1/70 */
-	
+
   cio_write(cio, tk->creation_time, 4);	/* Creation Time */
-	
+
   cio_write(cio, tk->modification_time, 4);	/* Modification Time */
-	
+
   cio_write(cio, tk->track_ID, 4);	/* Track ID */
-	
+
   cio_write(cio, 0, 4);		/* Reserved */
-	
+
   tk->duration = 0;
-	
+
   for (i = 0; i < tk->num_samples; i++)
     tk->duration += tk->sample[i].sample_delta;
-	
+
   cio_write(cio, tk->duration, 4);	/* Duration */
-	
+
   cio_write(cio, 0, 4);		/* Reserved */
   cio_write(cio, 0, 4);		/* Reserved */
-	
+
   cio_write(cio, tk->layer, 2);	/* Layer    */
-	
+
   cio_write(cio, 0, 2);		/* Predefined */
-	
+
   cio_write(cio, tk->volume, 2);	/* Volume       */
-	
+
   cio_write(cio, 0, 2);		/* Reserved */
-	
+
   cio_write(cio, tk->trans_matrix[0], 4);	/* Transformation matrix for track */
   cio_write(cio, tk->trans_matrix[1], 4);
   cio_write(cio, tk->trans_matrix[2], 4);
@@ -2262,11 +2262,11 @@ void mj2_write_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
   cio_write(cio, tk->trans_matrix[6], 4);
   cio_write(cio, tk->trans_matrix[7], 4);
   cio_write(cio, tk->trans_matrix[8], 4);
-	
+
   cio_write(cio, tk->visual_w, 4);	/* Video Visual Width  */
-	
+
   cio_write(cio, tk->visual_h, 4);	/* Video Visual Height */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2282,49 +2282,49 @@ void mj2_write_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
 {
   int flag;
-	
+
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
-	
+
   if (MJ2_TKHD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected TKHD Marker\n");
     return 1;
   }
-	
+
   if (0 != cio_read(cio, 1)) {	/* Version = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in TKHD box\n");
     return 1;
   }
-	
+
   flag = cio_read(cio, 3);
-	
+
   if (!(flag == 1 || flag == 2 || flag == 3 || flag == 4)) {	/* Flags = 1,2,3 or 4 */
     opj_event_msg(cio->cinfo, EVT_ERROR,
 			"Error with flag in TKHD box: Expected flag 1,2,3 or 4\n");
     return 1;
   }
-	
+
   tk->creation_time = cio_read(cio, 4);	/* Creation Time */
-	
+
   tk->modification_time = cio_read(cio, 4);	/* Modification Time */
-	
+
   tk->track_ID = cio_read(cio, 4);	/* Track ID */
-	
+
   cio_skip(cio,4);			/* Reserved */
-	
+
   tk->duration = cio_read(cio, 4);	/* Duration */
-	
+
   cio_skip(cio,8);			/* Reserved */
-	
+
   tk->layer = cio_read(cio, 2);	/* Layer    */
-	
+
   cio_read(cio, 2);			/* Predefined */
-	
+
   tk->volume = cio_read(cio, 2);	/* Volume       */
-	
+
   cio_skip(cio,2);			/* Reserved */
-	
+
   tk->trans_matrix[0] = cio_read(cio, 4);	/* Transformation matrix for track */
   tk->trans_matrix[1] = cio_read(cio, 4);
   tk->trans_matrix[2] = cio_read(cio, 4);
@@ -2334,11 +2334,11 @@ int mj2_read_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
   tk->trans_matrix[6] = cio_read(cio, 4);
   tk->trans_matrix[7] = cio_read(cio, 4);
   tk->trans_matrix[8] = cio_read(cio, 4);
-	
+
   tk->visual_w = cio_read(cio, 4);	/* Video Visual Width  */
-	
+
   tk->visual_h = cio_read(cio, 4);	/* Video Visual Height */
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with TKHD Box size\n");
     return 1;
@@ -2355,15 +2355,15 @@ int mj2_read_tkhd(mj2_tk_t * tk, opj_cio_t *cio)
 void mj2_write_trak(mj2_tk_t * tk, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
-	
+
   cio_write(cio, MJ2_TRAK, 4);	/* TRAK       */
-	
+
   mj2_write_tkhd(tk, cio);
   mj2_write_mdia(tk, cio);
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2379,7 +2379,7 @@ void mj2_write_trak(mj2_tk_t * tk, opj_cio_t *cio)
 int mj2_read_trak(mj2_tk_t * tk, opj_image_t * img, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_TRAK != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected TRAK Marker\n");
@@ -2409,42 +2409,42 @@ void mj2_write_mvhd(opj_mj2_t * movie, opj_cio_t *cio)
   unsigned j;
   time_t ltime;
   int max_tk_num = 0;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MVHD, 4);	/* MVHD       */
-	
+
   cio_write(cio, 0, 4);		/* Version = 0, flags = 0 */
-	
+
   time(&ltime);			/* Time since 1/1/70 */
   movie->modification_time = (unsigned int)ltime + 2082844800;	/* Seoonds between 1/1/04 and 1/1/70 */
-	
+
   cio_write(cio, movie->creation_time, 4);	/* Creation Time */
-	
+
   cio_write(cio, movie->modification_time, 4);	/* Modification Time */
-	
+
   cio_write(cio, movie->timescale, 4);	/* Timescale */
-	
+
   movie->duration = 0;
-	
+
   for (i = 0; i < (movie->num_stk + movie->num_htk + movie->num_vtk); i++) {
     mj2_tk_t *tk = &movie->tk[i];
-		
+
     for (j = 0; j < tk->num_samples; j++) {
       movie->duration += tk->sample[j].sample_delta;
     }
   }
-	
+
   cio_write(cio, movie->duration, 4);
-	
+
   cio_write(cio, movie->rate, 4);	/* Rate to play presentation    */
-	
+
   cio_write(cio, movie->volume, 2);	/* Volume       */
-	
+
   cio_write(cio, 0, 2);		/* Reserved */
   cio_write(cio, 0, 4);		/* Reserved */
   cio_write(cio, 0, 4);		/* Reserved */
-	
+
   cio_write(cio, movie->trans_matrix[0], 4);	/* Transformation matrix for video */
   cio_write(cio, movie->trans_matrix[1], 4);
   cio_write(cio, movie->trans_matrix[2], 4);
@@ -2454,24 +2454,24 @@ void mj2_write_mvhd(opj_mj2_t * movie, opj_cio_t *cio)
   cio_write(cio, movie->trans_matrix[6], 4);
   cio_write(cio, movie->trans_matrix[7], 4);
   cio_write(cio, movie->trans_matrix[8], 4);
-	
+
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
   cio_write(cio, 0, 4);		/* Pre-defined */
-	
-	
+
+
   for (i = 0; i < movie->num_htk + movie->num_stk + movie->num_vtk; i++) {
     if (max_tk_num < movie->tk[i].track_ID)
       max_tk_num = movie->tk[i].track_ID;
   }
-	
+
   movie->next_tk_id = max_tk_num + 1;
-	
+
   cio_write(cio, movie->next_tk_id, 4);	/* ID of Next track to be added */
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
@@ -2487,32 +2487,32 @@ void mj2_write_mvhd(opj_mj2_t * movie, opj_cio_t *cio)
 int mj2_read_mvhd(opj_mj2_t * movie, opj_cio_t *cio)
 {
   mj2_box_t box;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_MVHD != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected MVHD Marker\n");
     return 1;
   }
-	
-	
+
+
   if (0 != cio_read(cio, 4)) {	/* Version = 0, flags = 0 */
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Only Version 0 handled in MVHD box\n");
   }
-	
+
   movie->creation_time = cio_read(cio, 4);	/* Creation Time */
-	
+
   movie->modification_time = cio_read(cio, 4);	/* Modification Time */
-	
+
   movie->timescale = cio_read(cio, 4);	/* Timescale */
-	
+
   movie->duration = cio_read(cio, 4);	/* Duration */
-	
+
   movie->rate = cio_read(cio, 4);		/* Rate to play presentation    */
-	
+
   movie->volume = cio_read(cio, 2);		/* Volume       */
-	
+
   cio_skip(cio,10);				/* Reserved */
-	
+
   movie->trans_matrix[0] = cio_read(cio, 4);	/* Transformation matrix for video */
   movie->trans_matrix[1] = cio_read(cio, 4);
   movie->trans_matrix[2] = cio_read(cio, 4);
@@ -2522,11 +2522,11 @@ int mj2_read_mvhd(opj_mj2_t * movie, opj_cio_t *cio)
   movie->trans_matrix[6] = cio_read(cio, 4);
   movie->trans_matrix[7] = cio_read(cio, 4);
   movie->trans_matrix[8] = cio_read(cio, 4);
-	
+
   cio_skip(cio,24);			/* Pre-defined */
-	
+
   movie->next_tk_id = cio_read(cio, 4);	/* ID of Next track to be added */
-	
+
   if (cio_tell(cio) - box.init_pos != box.length) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error with MVHD Box Size\n");
     return 1;
@@ -2545,21 +2545,21 @@ void OPJ_CALLCONV mj2_write_moov(opj_mj2_t * movie, opj_cio_t *cio)
 {
   int i;
   mj2_box_t box;
-	
+
   box.init_pos = cio_tell(cio);
   cio_skip(cio,4);
   cio_write(cio, MJ2_MOOV, 4);	/* MOOV       */
-	
+
   mj2_write_mvhd(movie, cio);
-	
+
   for (i = 0; i < (movie->num_stk + movie->num_htk + movie->num_vtk); i++) {
     mj2_write_trak(&movie->tk[i], cio);
   }
-	
+
   box.length = cio_tell(cio) - box.init_pos;
   cio_seek(cio, box.init_pos);
   cio_write(cio, box.length, 4);	/* L          */
-  cio_seek(cio, box.init_pos + box.length);	
+  cio_seek(cio, box.init_pos + box.length);
 }
 
 /*
@@ -2573,13 +2573,13 @@ int mj2_read_moov(opj_mj2_t * movie, opj_image_t * img, opj_cio_t *cio)
   unsigned int i;
   mj2_box_t box;
   mj2_box_t box2;
-	
+
   mj2_read_boxhdr(&box, cio);
   if (MJ2_MOOV != box.type) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "Error: Expected MOOV Marker\n");
     return 1;
   }
-	
+
   if (mj2_read_mvhd(movie, cio))
     return 1;
 
@@ -2593,7 +2593,7 @@ int mj2_read_moov(opj_mj2_t * movie, opj_image_t * img, opj_cio_t *cio)
       cio_seek(cio, box2.init_pos);
       if (mj2_read_trak(tk, img, cio))
 				return 1;
-			
+
       if (tk->track_type == 0) {
 				movie->num_vtk++;
       } else if (tk->track_type == 1) {
@@ -2620,37 +2620,37 @@ int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *movie) {
   int fsresult;
   int foffset;
 	opj_cio_t *cio;
-	
-	/* open a byte stream for reading */	
-	src = (unsigned char*) opj_malloc(300 * sizeof(unsigned char));	
+
+	/* open a byte stream for reading */
+	src = (unsigned char*) opj_malloc(300 * sizeof(unsigned char));
 
 	/* Assuming that jp and ftyp markers size do
      not exceed 300 bytes */
-  fread(src,300,1, file);  
-  
+  fread(src,300,1, file);
+
   cio = opj_cio_open((opj_common_ptr)movie->cinfo, src, 300);
-  
+
   if (mj2_read_jp(cio))
     return 1;
   if (mj2_read_ftyp(movie, cio))
     return 1;
-	
+
   fsresult = fseek(file,cio_tell(cio),SEEK_SET);
   if( fsresult ) {
     opj_event_msg(cio->cinfo, EVT_ERROR, "End of file reached while trying to read data after FTYP box\n" );
     return 1;
   }
-	
+
   foffset = cio_tell(cio);
-  
+
   box.type = 0;
-  
+
   fread(src,30,1,file);
   cio = opj_cio_open((opj_common_ptr)movie->cinfo, src, 300);
   mj2_read_boxhdr(&box, cio);
-  
+
   while(box.type != MJ2_MOOV) {
-    
+
     switch(box.type)
     {
     case MJ2_MDAT:
@@ -2661,7 +2661,7 @@ int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *movie) {
       }
       foffset += box.length;
       break;
-      
+
     case MJ2_MOOF:
       fsresult = fseek(file,foffset+box.length,SEEK_SET);
       if( fsresult ) {
@@ -2669,7 +2669,7 @@ int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *movie) {
 				return 1;
       }
       foffset += box.length;
-      break;      
+      break;
     case MJ2_FREE:
       fsresult = fseek(file,foffset+box.length,SEEK_SET);
       if( fsresult ) {
@@ -2677,7 +2677,7 @@ int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *movie) {
 				return 1;
       }
       foffset += box.length;
-      break;      
+      break;
     case MJ2_SKIP:
       fsresult = fseek(file,foffset+box.length,SEEK_SET);
       if( fsresult ) {
@@ -2685,36 +2685,36 @@ int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *movie) {
 				return 1;
       }
       foffset += box.length;
-      break;      
+      break;
     default:
       opj_event_msg(cio->cinfo, EVT_ERROR, "Unknown box in MJ2 stream\n");
       fsresult = fseek(file,foffset+box.length,SEEK_SET);
       if( fsresult ) {
-				opj_event_msg(cio->cinfo, EVT_ERROR, "End of file reached while trying to read end of unknown box\n"); 
+				opj_event_msg(cio->cinfo, EVT_ERROR, "End of file reached while trying to read end of unknown box\n");
 				return 1;
-      }      
+      }
       foffset += box.length;
       break;
     }
     fsresult = fread(src,8,1,file);
     if (fsresult != 1) {
-      opj_event_msg(cio->cinfo, EVT_ERROR, "MOOV box not found in file\n"); 
+      opj_event_msg(cio->cinfo, EVT_ERROR, "MOOV box not found in file\n");
       return 1;
     }
-		cio = opj_cio_open((opj_common_ptr)movie->cinfo, src, 8);    		
+		cio = opj_cio_open((opj_common_ptr)movie->cinfo, src, 8);
     mj2_read_boxhdr(&box, cio);
-  }	
+  }
 
   fseek(file,foffset,SEEK_SET);
   src = (unsigned char*)opj_realloc(src,box.length);
   fsresult = fread(src,box.length,1,file);
   if (fsresult != 1) {
-    opj_event_msg(cio->cinfo, EVT_ERROR, "End of file reached while trying to read MOOV box\n"); 
+    opj_event_msg(cio->cinfo, EVT_ERROR, "End of file reached while trying to read MOOV box\n");
     return 1;
   }
-	
+
 	cio = opj_cio_open((opj_common_ptr)movie->cinfo, src, box.length);
-  
+
   if (mj2_read_moov(movie, &img, cio))
     return 1;
 
@@ -2731,7 +2731,7 @@ opj_dinfo_t* OPJ_CALLCONV mj2_create_decompress() {
 	opj_dinfo_t *dinfo = (opj_dinfo_t*) opj_calloc(1, sizeof(opj_dinfo_t));
 	if(!dinfo) return NULL;
 
-	dinfo->is_decompressor = OPJ_TRUE;	
+	dinfo->is_decompressor = OPJ_TRUE;
 
 	mj2 = (opj_mj2_t*) opj_calloc(1, sizeof(opj_mj2_t));
 	dinfo->mj2_handle = mj2;
@@ -2747,10 +2747,10 @@ opj_dinfo_t* OPJ_CALLCONV mj2_create_decompress() {
 void OPJ_CALLCONV mj2_setup_decoder(opj_mj2_t *movie, mj2_dparameters_t *mj2_parameters) {
 	movie->num_vtk=0;
   movie->num_stk=0;
-  movie->num_htk=0;	
+  movie->num_htk=0;
 
 	/* setup the J2K decoder parameters */
-	j2k_setup_decoder((opj_j2k_t*)movie->cinfo->j2k_handle, 
+	j2k_setup_decoder((opj_j2k_t*)movie->cinfo->j2k_handle,
 		&mj2_parameters->j2k_parameters);
 
 }
@@ -2760,12 +2760,12 @@ void OPJ_CALLCONV mj2_destroy_decompress(opj_mj2_t *movie) {
 		int i;
 		mj2_tk_t *tk=NULL;
 
-		if (movie->cinfo->j2k_handle) 
+		if (movie->cinfo->j2k_handle)
 			j2k_destroy_compress(movie->j2k);
-		
+
 		if (movie->num_cl != 0)
 			opj_free(movie->cl);
-		
+
 		for (i = 0; i < movie->num_vtk + movie->num_stk + movie->num_htk; i++) {
 			tk = &movie->tk[i];
 			if (tk->name_size != 0)
@@ -2777,7 +2777,7 @@ void OPJ_CALLCONV mj2_destroy_decompress(opj_mj2_t *movie) {
 					opj_free(tk->jp2_struct.cl);
 				if (tk->num_jp2x != 0)
 					opj_free(tk->jp2xdata);
-				
+
 			}
 			if (tk->num_url != 0)
 				opj_free(tk->url);
@@ -2794,9 +2794,9 @@ void OPJ_CALLCONV mj2_destroy_decompress(opj_mj2_t *movie) {
 			if (tk->num_samples != 0)
 				opj_free(tk->sample);
 		}
-		
+
 		opj_free(movie->tk);
-	}	
+	}
 	opj_free(movie);
 }
 
@@ -2824,7 +2824,7 @@ opj_cinfo_t* OPJ_CALLCONV mj2_create_compress() {
 void OPJ_CALLCONV mj2_setup_encoder(opj_mj2_t *movie, mj2_cparameters_t *parameters) {
 	if(movie && parameters) {
 		opj_jp2_t *jp2_struct;
-			
+
 		movie->num_htk = 0;	  /* No hint tracks*/
 		movie->num_stk = 0;	  /* No sound tracks*/
 		movie->num_vtk = 1;	  /* One video track*/
@@ -2847,7 +2847,7 @@ void OPJ_CALLCONV mj2_setup_encoder(opj_mj2_t *movie, mj2_cparameters_t *paramet
 		movie->tk[0].CbCr_subsampling_dy = parameters->CbCr_subsampling_dy;
 		movie->tk[0].sample_rate = parameters->frame_rate;
 		movie->tk[0].name_size = 0;
-		movie->tk[0].chunk = (mj2_chunk_t*) opj_malloc(sizeof(mj2_chunk_t));  
+		movie->tk[0].chunk = (mj2_chunk_t*) opj_malloc(sizeof(mj2_chunk_t));
 		movie->tk[0].sample = (mj2_sample_t*) opj_malloc(sizeof(mj2_sample_t));
 		movie->tk[0].depth = parameters->prec;
 
@@ -2855,18 +2855,18 @@ void OPJ_CALLCONV mj2_setup_encoder(opj_mj2_t *movie, mj2_cparameters_t *paramet
 		jp2_struct->numcomps = parameters->numcomps;	/* NC */
 		jp2_struct->comps = (opj_jp2_comps_t*) opj_malloc(jp2_struct->numcomps * sizeof(opj_jp2_comps_t));
 		jp2_struct->precedence = 0;   /* PRECEDENCE*/
-		jp2_struct->approx = 0;   /* APPROX*/		
+		jp2_struct->approx = 0;   /* APPROX*/
 		jp2_struct->brand = JP2_JP2;	/* BR         */
 		jp2_struct->minversion = 0;	/* MinV       */
 		jp2_struct->numcl = 1;
 		jp2_struct->cl = (unsigned int*) opj_malloc(jp2_struct->numcl * sizeof(unsigned int));
-		jp2_struct->cl[0] = JP2_JP2;	/* CL0 : JP2  */		
+		jp2_struct->cl[0] = JP2_JP2;	/* CL0 : JP2  */
 		jp2_struct->C = 7;      /* C : Always 7*/
 		jp2_struct->UnkC = 0;      /* UnkC, colorspace specified in colr box*/
-		jp2_struct->IPR = 0;      /* IPR, no intellectual property*/						
+		jp2_struct->IPR = 0;      /* IPR, no intellectual property*/
 		jp2_struct->w = parameters->w;
 		jp2_struct->h = parameters->h;
-		jp2_struct->bpc = 7;  
+		jp2_struct->bpc = 7;
 		jp2_struct->meth = parameters->meth;
 		jp2_struct->enumcs = parameters->enumcs;
   }
@@ -2880,10 +2880,10 @@ void OPJ_CALLCONV mj2_destroy_compress(opj_mj2_t *movie) {
 		if (movie->cinfo->j2k_handle) {
 			j2k_destroy_compress(movie->j2k);
 		}
-		
+
 		if (movie->num_cl != 0)
 			opj_free(movie->cl);
-		
+
 		for (i = 0; i < movie->num_vtk + movie->num_stk + movie->num_htk; i++) {
 			tk = &movie->tk[i];
 			if (tk->name_size != 0)
@@ -2895,7 +2895,7 @@ void OPJ_CALLCONV mj2_destroy_compress(opj_mj2_t *movie) {
 					opj_free(tk->jp2_struct.cl);
 				if (tk->num_jp2x != 0)
 					opj_free(tk->jp2xdata);
-				
+
 			}
 			if (tk->num_url != 0)
 				opj_free(tk->url);
@@ -2912,9 +2912,9 @@ void OPJ_CALLCONV mj2_destroy_compress(opj_mj2_t *movie) {
 			if (tk->num_samples != 0)
 				opj_free(tk->sample);
 		}
-		
+
 		opj_free(movie->tk);
-	}	
+	}
 	opj_free(movie);
 }
 

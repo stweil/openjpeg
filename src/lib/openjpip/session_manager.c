@@ -49,7 +49,7 @@ sessionlist_param_t * gene_sessionlist(void)
   sessionlist_param_t *sessionlist;
 
   sessionlist = (sessionlist_param_t *)opj_malloc( sizeof(sessionlist_param_t));
-  
+
   sessionlist->first = NULL;
   sessionlist->last  = NULL;
 
@@ -59,46 +59,46 @@ sessionlist_param_t * gene_sessionlist(void)
 session_param_t * gene_session( sessionlist_param_t *sessionlist)
 {
   session_param_t *session;
-  
+
   session = (session_param_t *)opj_malloc( sizeof(session_param_t));
 
   session->channellist = gene_channellist();
   session->cachemodellist = gene_cachemodellist();
 
   session->next = NULL;
-  
+
   if( sessionlist->first) /* there are one or more entries */
     sessionlist->last->next = session;
   else                   /* first entry */
     sessionlist->first = session;
   sessionlist->last = session;
-  
+
   return session;
 }
 
-OPJ_BOOL search_session_and_channel( char cid[], 
-				 sessionlist_param_t *sessionlist, 
-				 session_param_t **foundsession, 
+OPJ_BOOL search_session_and_channel( char cid[],
+				 sessionlist_param_t *sessionlist,
+				 session_param_t **foundsession,
 				 channel_param_t **foundchannel)
 {
   *foundsession = sessionlist->first;
-  
+
   while( *foundsession != NULL){
 
     *foundchannel = (*foundsession)->channellist->first;
-    
+
     while( *foundchannel != NULL){
-      
+
       if( strcmp( cid, (*foundchannel)->cid) == 0)
 	return OPJ_TRUE;
-      
+
       *foundchannel = (*foundchannel)->next;
     }
     *foundsession = (*foundsession)->next;
   }
-  
+
   fprintf( FCGI_stdout, "Status: 503\r\n");
-  fprintf( FCGI_stdout, "Reason: Channel %s not found\r\n", cid); 
+  fprintf( FCGI_stdout, "Reason: Channel %s not found\r\n", cid);
 
   return OPJ_FALSE;
 }
@@ -137,7 +137,7 @@ OPJ_BOOL delete_session( session_param_t **session, sessionlist_param_t *session
     if( *session == sessionlist->last)
       sessionlist->last = ptr;
   }
-  
+
   delete_channellist( &((*session)->channellist));
   delete_cachemodellist( &((*session)->cachemodellist));
 
@@ -150,7 +150,7 @@ OPJ_BOOL delete_session( session_param_t **session, sessionlist_param_t *session
 }
 
 void delete_sessionlist( sessionlist_param_t **sessionlist)
-{  
+{
   session_param_t *sessionPtr, *sessionNext;
 
   sessionPtr = (*sessionlist)->first;

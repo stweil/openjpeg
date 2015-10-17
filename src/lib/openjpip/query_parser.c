@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2014, Professor Benoit Macq
- * Copyright (c) 2010-2011, Kaori Hagihara 
+ * Copyright (c) 2010-2011, Kaori Hagihara
  * Copyright (c) 2011,      Lucian Corlaciu, GSoC
  * All rights reserved.
  *
@@ -92,32 +92,32 @@ query_param_t * parse_query( const char *query_string)
   char fieldname[MAX_LENOFFIELDNAME], fieldval[MAX_LENOFFIELDVAL];
 
   query_param = get_initquery();
-  
+
   pquery = query_string;
 
   while( pquery!=NULL) {
-    
+
     pquery = get_fieldparam( pquery, fieldname, fieldval);
 
     if( fieldname[0] != '\0'){
       if( strcasecmp( fieldname, "target") == 0)
 	query_param->target = strdup( fieldval);
-      
+
       else if( strcasecmp( fieldname, "tid") == 0)
 	query_param->tid = strdup( fieldval);
 
       else if( strcasecmp( fieldname, "fsiz") == 0)
 	sscanf( fieldval, "%d,%d", &query_param->fx, &query_param->fy);
-      
+
       else if( strcasecmp( fieldname, "roff") == 0)
 	sscanf( fieldval, "%d,%d", &query_param->rx, &query_param->ry);
 
       else if( strcasecmp( fieldname, "rsiz") == 0)
 	sscanf( fieldval, "%d,%d", &query_param->rw, &query_param->rh);
-      
+
       else if( strcasecmp( fieldname, "layers") == 0)
 	sscanf( fieldval, "%d", &query_param->layers);
-      
+
       else if( strcasecmp( fieldname, "cid") == 0)
 	query_param->cid = strdup( fieldval);
 
@@ -127,16 +127,16 @@ query_param_t * parse_query( const char *query_string)
 	else if( strncasecmp( fieldval, "http", 4) == 0)
 	  query_param->cnew = http;
       }
-      
+
       else if( strcasecmp( fieldname, "cclose") == 0)
 	parse_cclose( fieldval, query_param);
-      
+
       else if( strcasecmp( fieldname, "metareq") == 0)
 	parse_metareq( fieldval, query_param);
-      
+
       else if( strcasecmp( fieldname, "comps") == 0)
 	parse_comps( fieldval, query_param);
-      
+
       else if( strcasecmp( fieldname, "type") == 0){
 	if( strncasecmp( fieldval, "jpp-stream", 10) == 0)
 	  query_param->return_type = JPPstream;
@@ -171,7 +171,7 @@ query_param_t * get_initquery(void)
   query->rh = -1;
   query->layers = -1;
   query->lastcomp = -1;
-  query->comps = NULL;  
+  query->comps = NULL;
   query->cid = NULL;
   query->cnew = non;
   query->cclose = NULL;
@@ -228,18 +228,18 @@ void print_queryparam( query_param_t query_param)
   char *cclose;
 
   fprintf( logstream, "query parameters:\n");
-  
+
   if( query_param.target)
     fprintf( logstream, "\t target: %s\n", query_param.target);
-  
+
   if( query_param.tid)
     fprintf( logstream, "\t tid: %s\n", query_param.tid);
-  
+
   fprintf( logstream, "\t fx,fy: %d, %d\n", query_param.fx, query_param.fy);
   fprintf( logstream, "\t rx,ry: %d, %d \t rw,rh: %d, %d\n", query_param.rx, query_param.ry, query_param.rw, query_param.rh);
   fprintf( logstream, "\t layers: %d\n", query_param.layers);
   fprintf( logstream, "\t components: ");
-  
+
   if( query_param.lastcomp == -1)
     fprintf( logstream, "ALL\n");
   else{
@@ -249,13 +249,13 @@ void print_queryparam( query_param_t query_param)
     fprintf( logstream, "\n");
   }
   fprintf( logstream, "\t cnew: %d\n", query_param.cnew);
-  
+
   if( query_param.cid)
     fprintf( logstream, "\t cid: %s\n", query_param.cid);
-  
+
   if( query_param.cclose){
     fprintf( logstream, "\t cclose: ");
-    
+
     for( i=0, cclose=query_param.cclose; i<query_param.numOfcclose; i++){
       fprintf( logstream, "%s ", cclose);
       cclose += (strlen(cclose)+1);
@@ -267,7 +267,7 @@ void print_queryparam( query_param_t query_param)
   for( i=0; query_param.box_type[i][0]!=0 && i<MAX_NUMOFBOX; i++){
     fprintf( logstream, "\t\t box_type: %.4s limit: %d w:%d s:%d g:%d a:%d priority:%d\n", query_param.box_type[i], query_param.limit[i], query_param.w[i], query_param.s[i], query_param.g[i], query_param.a[i], query_param.priority[i]);
   }
-  
+
   fprintf( logstream, "\t root-bin:  %d\n", query_param.root_bin);
   fprintf( logstream, "\t max-depth: %d\n", query_param.max_depth);
   fprintf( logstream, "\t metadata-only: %d\n", query_param.metadata_only);
@@ -279,16 +279,16 @@ void parse_cclose( char *src, query_param_t *query_param)
 {
   size_t i;
   size_t len;
-  
+
   len = strlen( src);
   query_param->cclose = strdup( src);
-  
+
   for( i=0; i<len; i++)
     if( query_param->cclose[i] == ','){
       query_param->cclose[i] = '\0';
       query_param->numOfcclose ++;
     }
-  
+
   query_param->numOfcclose ++;
 }
 
@@ -299,7 +299,7 @@ void parse_metareq( char *field, query_param_t *query_param)
   char req_box_prop[20];
   char *ptr, *src;
   int numofboxreq = 0;
-  
+
   memset( req_box_prop, 0, 20);
 
   /* req-box-prop*/
@@ -324,7 +324,7 @@ void parse_metareq( char *field, query_param_t *query_param)
 
   if(( ptr = strchr( field, 'R')))
     sscanf( ptr+1, "%d", &(query_param->root_bin));
-  
+
   if(( ptr = strchr( field, 'D')))
     sscanf( ptr+1, "%d", &(query_param->max_depth));
 
@@ -335,12 +335,12 @@ void parse_metareq( char *field, query_param_t *query_param)
 void parse_req_box_prop( char *req_box_prop, int idx, query_param_t *query_param)
 {
   char *ptr;
-  
+
   if( *req_box_prop == '*')
     query_param->box_type[idx][0]='*';
   else
     strncpy( query_param->box_type[idx], req_box_prop, 4);
-  
+
   if(( ptr = strchr( req_box_prop, ':'))){
     if( *(ptr+1)=='r')
       query_param->limit[idx] = -1;
@@ -368,8 +368,8 @@ void parse_req_box_prop( char *req_box_prop, int idx, query_param_t *query_param
 
   if((ptr = strchr( req_box_prop, '!')))
     query_param->priority[idx] = OPJ_TRUE;
-  
-  idx++;   
+
+  idx++;
 }
 
 void parse_comps( char *field, query_param_t *query_param)
@@ -397,13 +397,13 @@ void parse_comps( char *field, query_param_t *query_param)
       sscanf( field, "%d", &stop);
       start = stop;
     }
-  
+
   query_param->lastcomp = stop > aux ? stop : aux;
   query_param->comps = (OPJ_BOOL *)opj_calloc( 1, (OPJ_SIZE_T)(query_param->lastcomp+1)*sizeof(OPJ_BOOL));
 
   for( i=start; i<=stop; i++)
     query_param->comps[i]=OPJ_TRUE;
-  
+
   if(aux!=-1)
     query_param->comps[aux] = OPJ_TRUE;
 }
@@ -412,18 +412,18 @@ void delete_query( query_param_t **query)
 {
   if( (*query)->target)
     opj_free( (*query)->target);
-  
+
   if( (*query)->tid)
     opj_free( (*query)->tid);
-  
+
   if( (*query)->comps)
     opj_free((*query)->comps);
-  
+
   if( (*query)->cid)
     opj_free( (*query)->cid);
 
   if( (*query)->cclose)
     opj_free( (*query)->cclose);
-  
+
   opj_free( *query);
 }

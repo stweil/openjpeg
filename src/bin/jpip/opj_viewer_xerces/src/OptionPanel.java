@@ -41,7 +41,7 @@ public class OptionPanel extends JPanel implements ActionListener
     private JP2XMLparser xmlparser;
     private JFrame regimwindow;
     private RegimViewer regimgviewer;
-    
+
     public OptionPanel( ImageManager manager, ImageViewer imgviewer)
     {
 	this.setLayout(new BoxLayout( this, BoxLayout.Y_AXIS));
@@ -51,7 +51,7 @@ public class OptionPanel extends JPanel implements ActionListener
 
 	roibutton.setAlignmentX( Component.CENTER_ALIGNMENT);
 	imregbutton.setAlignmentX( Component.CENTER_ALIGNMENT);
-	
+
 	add( roibutton);
 	add( imregbutton);
 	roibutton.addActionListener(this);
@@ -79,7 +79,7 @@ public class OptionPanel extends JPanel implements ActionListener
 	    if( xmlparser != null){
 		if( regimwindow == null){
 		    JP2XMLparser.IRTparams irt = xmlparser.getIRTparams();
-		    
+
 		    regimgviewer = new RegimViewer( irt.refimg, irt.mat);
 		    regimgviewer.setOpaque(false);
 

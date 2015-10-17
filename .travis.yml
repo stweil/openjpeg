@@ -40,7 +40,7 @@ matrix:
             - gcc-mingw-w64-base
             - binutils-mingw-w64-i686
             - gcc-mingw-w64-i686
-            - gcc-mingw-w64      
+            - gcc-mingw-w64
     - os: linux
       compiler: gcc-4.8
       env: OPJ_CI_ABI_CHECK=1

@@ -1,12 +1,12 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
  * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2014, Professor Benoit Macq
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@
 
 /**
 Write a structured index to a file
-@param cstr_info Codestream information 
+@param cstr_info Codestream information
 @param index Index filename
 @return Returns 0 if successful, returns 1 otherwise
 */
@@ -60,7 +60,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 #endif /* USE_JPWL */
 /* <<UniPG */
 
-	if (!cstr_info)		
+	if (!cstr_info)
 		return 1;
 
 	stream = fopen(index, "w");
@@ -68,15 +68,15 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 		fprintf(stderr, "failed to open index file [%s] for writing\n", index);
 		return 1;
 	}
-	
+
 	if (cstr_info->tile[0].distotile)
 		disto_on = 1;
-	else 
+	else
 		disto_on = 0;
 
 	if (cstr_info->tile[0].numpix)
 		numpix_on = 1;
-	else 
+	else
 		numpix_on = 0;
 
 	fprintf(stream, "%d %d\n", cstr_info->image_w, cstr_info->image_h);
@@ -88,7 +88,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 	fprintf(stream, "%d\n", cstr_info->numdecompos[0]); /* based on component 0 */
 
 	for (resno = cstr_info->numdecompos[0]; resno >= 0; resno--) {
-		fprintf(stream, "[%d,%d] ", 
+		fprintf(stream, "[%d,%d] ",
 			(1 << cstr_info->tile[0].pdx[resno]), (1 << cstr_info->tile[0].pdx[resno]));	/* based on tile 0 and component 0 */
 	}
 
@@ -98,7 +98,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 /* <<UniPG */
 	fprintf(stream, "%d\n", cstr_info->main_head_end);
 	fprintf(stream, "%d\n", cstr_info->codestream_size);
-	
+
 	fprintf(stream, "\nINFO ON TILES\n");
 	fprintf(stream, "tileno start_pos  end_hd  end_tile   nbparts");
 	if (disto_on)
@@ -110,7 +110,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 	fprintf(stream, "\n");
 
 	for (tileno = 0; tileno < cstr_info->tw * cstr_info->th; tileno++) {
-		fprintf(stream, "%4d %9d %9d %9d %9d", 
+		fprintf(stream, "%4d %9d %9d %9d %9d",
 			cstr_info->tile[tileno].tileno,
 			cstr_info->tile[tileno].start_pos,
 			cstr_info->tile[tileno].end_header,
@@ -124,7 +124,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 			fprintf(stream," %9e", cstr_info->tile[tileno].distotile / cstr_info->tile[tileno].numpix);
 		fprintf(stream, "\n");
 	}
-		
+
 	for (tileno = 0; tileno < cstr_info->tw * cstr_info->th; tileno++) {
 		OPJ_OFF_T start_pos, end_ph_pos, end_pos;
 		double disto = 0;
@@ -134,9 +134,9 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 		for (compno = 0; compno < cstr_info->numcomps; compno++) {
 			if (max_numdecompos < cstr_info->numdecompos[compno])
 				max_numdecompos = cstr_info->numdecompos[compno];
-		}	
+		}
 
-		fprintf(stream, "\nTILE %d DETAILS\n", tileno);	
+		fprintf(stream, "\nTILE %d DETAILS\n", tileno);
 		fprintf(stream, "part_nb tileno  start_pack num_packs  start_pos end_tph_pos   end_pos\n");
 		for (tilepartno = 0; tilepartno < cstr_info->tile[tileno].num_tps; tilepartno++)
 			fprintf(stream, "%4d %9d   %9d %9d  %9d %11d %9d\n",
@@ -179,7 +179,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 			}
 		} /* LRCP */
 
-		else if (cstr_info->prog == OPJ_RLCP) {	/* RLCP */			
+		else if (cstr_info->prog == OPJ_RLCP) {	/* RLCP */
 			fprintf(stream, "RLCP\npack_nb tileno resno layno compno precno start_pos end_ph_pos end_pos\n");
 			if (disto_on)
 				fprintf(stream, " disto");
@@ -188,7 +188,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 			for (resno = 0; resno < max_numdecompos + 1; resno++) {
 				for (layno = 0; layno < cstr_info->numlayers; layno++) {
 					for (compno = 0; compno < cstr_info->numcomps; compno++) {
-						int prec_max; 
+						int prec_max;
 						if (resno > cstr_info->numdecompos[compno])
 							break;
 						prec_max = cstr_info->tile[tileno].pw[resno] * cstr_info->tile[tileno].ph[resno];
@@ -212,20 +212,20 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 
 		else if (cstr_info->prog == OPJ_RPCL) {	/* RPCL */
 
-			fprintf(stream, "RPCL\npack_nb tileno resno precno compno layno start_pos end_ph_pos end_pos"); 
+			fprintf(stream, "RPCL\npack_nb tileno resno precno compno layno start_pos end_ph_pos end_pos");
 			if (disto_on)
 				fprintf(stream, " disto");
 			fprintf(stream,"\n");
 
 			for (resno = 0; resno < max_numdecompos + 1; resno++) {
 				int numprec = cstr_info->tile[tileno].pw[resno] * cstr_info->tile[tileno].ph[resno];
-				for (precno = 0; precno < numprec; precno++) {								
+				for (precno = 0; precno < numprec; precno++) {
 					/* I suppose components have same XRsiz, YRsiz */
 					int x0 = cstr_info->tile_Ox + tileno - (int)floor((float)tileno/(float)cstr_info->tw ) * cstr_info->tw * cstr_info->tile_x;
 					int y0 = cstr_info->tile_Ox + (int)floor( (float)tileno/(float)cstr_info->tw ) * cstr_info->tile_y;
 					int x1 = x0 + cstr_info->tile_x;
 					int y1 = y0 + cstr_info->tile_y;
-					for (compno = 0; compno < cstr_info->numcomps; compno++) {					
+					for (compno = 0; compno < cstr_info->numcomps; compno++) {
 						int pcnx = cstr_info->tile[tileno].pw[resno];
 						int pcx = (int) pow( 2, cstr_info->tile[tileno].pdx[resno] + cstr_info->numdecompos[compno] - resno );
 						int pcy = (int) pow( 2, cstr_info->tile[tileno].pdy[resno] + cstr_info->numdecompos[compno] - resno );
@@ -233,9 +233,9 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 						int precno_y = (int) floor( (float)precno/(float)pcnx );
 						if (resno > cstr_info->numdecompos[compno])
 							break;
-						for(y = y0; y < y1; y++) {							
+						for(y = y0; y < y1; y++) {
 							if (precno_y*pcy == y ) {
-								for (x = x0; x < x1; x++) {									
+								for (x = x0; x < x1; x++) {
 									if (precno_x*pcx == x ) {
 										for (layno = 0; layno < cstr_info->numlayers; layno++) {
 											start_pos = cstr_info->tile[tileno].packet[pack_nb].start_pos;
@@ -243,16 +243,16 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 											end_pos = cstr_info->tile[tileno].packet[pack_nb].end_pos;
 											disto = cstr_info->tile[tileno].packet[pack_nb].disto;
 											fprintf(stream, "%4d %6d %5d %6d %6d %7d %9" PRId64 "   %9" PRId64 " %7" PRId64,
-												pack_nb, tileno, resno, precno, compno, layno, start_pos, end_ph_pos, end_pos); 
+												pack_nb, tileno, resno, precno, compno, layno, start_pos, end_ph_pos, end_pos);
 											if (disto_on)
 												fprintf(stream, " %8e", disto);
 											fprintf(stream, "\n");
 											total_disto += disto;
-											pack_nb++; 
+											pack_nb++;
 										}
 									}
 								}/* x = x0..x1 */
-							} 
+							}
 						}  /* y = y0..y1 */
 					} /* precno */
 				} /* compno */
@@ -274,7 +274,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 					max_numprec = numprec;
 			}
 
-			fprintf(stream, "PCRL\npack_nb tileno precno compno resno layno start_pos end_ph_pos end_pos"); 
+			fprintf(stream, "PCRL\npack_nb tileno precno compno resno layno start_pos end_ph_pos end_pos");
 			if (disto_on)
 				fprintf(stream, " disto");
 			fprintf(stream,"\n");
@@ -290,9 +290,9 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 						int precno_y = (int) floor( (float)precno/(float)pcnx );
 						if (precno >= numprec)
 							continue;
-						for(y = y0; y < y1; y++) {							
+						for(y = y0; y < y1; y++) {
 							if (precno_y*pcy == y ) {
-								for (x = x0; x < x1; x++) {									
+								for (x = x0; x < x1; x++) {
 									if (precno_x*pcx == x ) {
 										for (layno = 0; layno < cstr_info->numlayers; layno++) {
 											start_pos = cstr_info->tile[tileno].packet[pack_nb].start_pos;
@@ -300,16 +300,16 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 											end_pos = cstr_info->tile[tileno].packet[pack_nb].end_pos;
 											disto = cstr_info->tile[tileno].packet[pack_nb].disto;
 											fprintf(stream, "%4d %6d %6d %6d %5d %7d %9" PRId64 "   %9" PRId64 " %7" PRId64,
-												pack_nb, tileno, precno, compno, resno, layno, start_pos, end_ph_pos, end_pos); 
+												pack_nb, tileno, precno, compno, resno, layno, start_pos, end_ph_pos, end_pos);
 											if (disto_on)
 												fprintf(stream, " %8e", disto);
 											fprintf(stream, "\n");
 											total_disto += disto;
-											pack_nb++; 
+											pack_nb++;
 										}
 									}
 								}/* x = x0..x1 */
-							} 
+							}
 						}  /* y = y0..y1 */
 					} /* resno */
 				} /* compno */
@@ -325,7 +325,7 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 					max_numprec = numprec;
 			}
 
-			fprintf(stream, "CPRL\npack_nb tileno compno precno resno layno start_pos end_ph_pos end_pos"); 
+			fprintf(stream, "CPRL\npack_nb tileno compno precno resno layno start_pos end_ph_pos end_pos");
 			if (disto_on)
 				fprintf(stream, " disto");
 			fprintf(stream,"\n");
@@ -358,12 +358,12 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 											end_pos = cstr_info->tile[tileno].packet[pack_nb].end_pos;
 											disto = cstr_info->tile[tileno].packet[pack_nb].disto;
 											fprintf(stream, "%4d %6d %6d %6d %5d %7d %9" PRId64 "   %9" PRId64 " %7" PRId64,
-												pack_nb, tileno, compno, precno, resno, layno, start_pos, end_ph_pos, end_pos); 
+												pack_nb, tileno, compno, precno, resno, layno, start_pos, end_ph_pos, end_pos);
 											if (disto_on)
 												fprintf(stream, " %8e", disto);
 											fprintf(stream, "\n");
 											total_disto += disto;
-											pack_nb++; 
+											pack_nb++;
 										}
 									}
 								}/* x = x0..x1 */
@@ -372,11 +372,11 @@ int write_index_file(opj_codestream_info_t *cstr_info, char *index) {
 					} /* resno */
 				} /* precno */
 			} /* compno */
-		} /* CPRL */   
+		} /* CPRL */
 	} /* tileno */
-	
+
 	if (disto_on) {
-		fprintf(stream, "%8e\n", cstr_info->D_max); /* SE max */	
+		fprintf(stream, "%8e\n", cstr_info->D_max); /* SE max */
 		fprintf(stream, "%.8e\n", total_disto);	/* SE totale */
 	}
 /* UniPG>> */

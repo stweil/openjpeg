@@ -39,7 +39,7 @@ ihdrbox_param_t * gene_ihdrbox( metadatalist_param_t *metadatalist, Byte_t *jpip
   metadata_param_t *meta;
   box_param_t *jp2h, *ihdr;
   int bpc_val;
-  
+
   jp2h = NULL;
   meta = metadatalist->first;
   while( meta){
@@ -54,16 +54,16 @@ ihdrbox_param_t * gene_ihdrbox( metadatalist_param_t *metadatalist, Byte_t *jpip
     fprintf( stderr, "jp2h box not found\n");
     return NULL;
   }
-  
+
   ihdr = gene_boxbyTypeinStream( jpipstream, get_DBoxoff( jp2h), get_DBoxlen( jp2h), "ihdr");
 
   if( !ihdr){
     fprintf( stderr, "ihdr box not found\n");
     return NULL;
   }
-  
+
   ihdrbox = (ihdrbox_param_t *)malloc( sizeof(ihdrbox_param_t));
-  
+
   ihdrbox->height = big4( jpipstream+get_DBoxoff(ihdr));
   ihdrbox->width  = big4( jpipstream+get_DBoxoff(ihdr)+4);
   ihdrbox->nc     = big2( jpipstream+get_DBoxoff(ihdr)+8);

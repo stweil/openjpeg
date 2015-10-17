@@ -36,7 +36,7 @@ class ResizeListener implements ComponentListener
 {
     private ImageViewer iv;
     private Dimension largest;
-    
+
     public ResizeListener( ImageViewer _iv)
     {
 	iv = _iv;
@@ -54,7 +54,7 @@ class ResizeListener implements ComponentListener
 	    iv.enlarge();
 	}
     }
-    
+
     private void update_largest( Dimension cursize)
     {
 	if( largest.getWidth() < cursize.getWidth())

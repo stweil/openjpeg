@@ -50,7 +50,7 @@ channellist_param_t * gene_channellist(void)
   channellist_param_t *channellist;
 
   channellist = (channellist_param_t *)opj_malloc( sizeof(channellist_param_t));
-  
+
   channellist->first = NULL;
   channellist->last  = NULL;
 
@@ -61,10 +61,10 @@ channel_param_t * gene_channel( query_param_t query_param, auxtrans_param_t auxt
 {
   channel_param_t *channel;
   const char transport[4][10] = { "non", "http", "http-tcp", "http-udp"};
-  
+
   if( !cachemodel){
-    fprintf( FCGI_stdout, "Status: 404\r\n"); 
-    fprintf( FCGI_stdout, "Reason: cnew cancelled\r\n"); 
+    fprintf( FCGI_stdout, "Status: 404\r\n");
+    fprintf( FCGI_stdout, "Reason: cnew cancelled\r\n");
     return NULL;
   }
 
@@ -73,13 +73,13 @@ channel_param_t * gene_channel( query_param_t query_param, auxtrans_param_t auxt
 
   /* set channel ID and get present time */
   snprintf( channel->cid, MAX_LENOFCID, "%x%x", (unsigned int)time( &channel->start_tm), (unsigned int)rand());
-  
+
   channel->aux = query_param.cnew;
-  
+
   /* only tcp implemented for now */
   if( channel->aux == udp)
     channel->aux = tcp;
-  
+
   channel->next=NULL;
 
   set_channel_variable_param( query_param, channel);
@@ -89,10 +89,10 @@ channel_param_t * gene_channel( query_param_t query_param, auxtrans_param_t auxt
   else
     channellist->first = channel;
   channellist->last = channel;
-  
+
   fprintf( FCGI_stdout, "JPIP-cnew: cid=%s", channel->cid);
   fprintf( FCGI_stdout, ",transport=%s", transport[channel->aux]);
-  
+
   if( channel->aux == tcp || channel->aux == udp)
     fprintf( FCGI_stdout, ",auxport=%d", channel->aux==tcp ? auxtrans.tcpauxport : auxtrans.udpauxport);
 
@@ -121,9 +121,9 @@ void delete_channel( channel_param_t **channel, channellist_param_t *channellist
     while( ptr->next != *channel){
       ptr=ptr->next;
     }
-    
+
     ptr->next = (*channel)->next;
-    
+
     if( *channel == channellist->last)
       channellist->last = ptr;
   }
@@ -136,7 +136,7 @@ void delete_channel( channel_param_t **channel, channellist_param_t *channellist
 void delete_channellist( channellist_param_t **channellist)
 {
   channel_param_t *channelPtr, *channelNext;
-    
+
   channelPtr = (*channellist)->first;
   while( channelPtr != NULL){
     channelNext=channelPtr->next;
@@ -165,16 +165,16 @@ channel_param_t * search_channel( const char cid[], channellist_param_t *channel
   channel_param_t *foundchannel;
 
   foundchannel = channellist->first;
-  
+
   while( foundchannel != NULL){
-    
+
     if( strcmp( cid, foundchannel->cid) == 0)
       return foundchannel;
-      
+
     foundchannel = foundchannel->next;
   }
   fprintf( FCGI_stdout, "Status: 503\r\n");
-  fprintf( FCGI_stdout, "Reason: Channel %s not found in this session\r\n", cid); 
+  fprintf( FCGI_stdout, "Reason: Channel %s not found in this session\r\n", cid);
 
   return NULL;
 }

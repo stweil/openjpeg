@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -49,7 +49,7 @@
  *  the major bottleneck in the former version.
  *
  *  I have also removed the "Add Patrick" part because it is not longer
- *  needed.  
+ *  needed.
  *
  *  6/6/2005
  *  -Ive (aka Reiner Wahler)
@@ -229,7 +229,7 @@ static opj_atk_t atk_info_wt[] = {
 	{7, 1, J3D_ATK_WS, J3D_ATK_IRR, 0, J3D_ATK_WS, 1, 2, {0}, {0}, {0}, {1,1}, {-0.5, 0.25}},	/* WT 5-3 IRR*/
 	{8, 0, J3D_ATK_WS, J3D_ATK_REV, 0, J3D_ATK_WS, 0, 2, {0}, {4,4}, {8,8}, {2,2}, {{-9,1},{5,-1}}}		/* WT 13-7 REV*/
 };
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
@@ -237,25 +237,25 @@ static opj_atk_t atk_info_wt[] = {
 
 /* <summary>			                 */
 /* Forward lazy transform (horizontal).  */
-/* </summary>                            */ 
+/* </summary>                            */
 static void dwt_deinterleave_h(int *a, int *b, int dn, int sn, int cas) {
 	int i;
     for (i=0; i<sn; i++) b[i]=a[2*i+cas];
     for (i=0; i<dn; i++) b[sn+i]=a[(2*i+1-cas)];
 }
 
-/* <summary>                             */  
+/* <summary>                             */
 /* Forward lazy transform (vertical).    */
-/* </summary>                            */ 
+/* </summary>                            */
 static void dwt_deinterleave_v(int *a, int *b, int dn, int sn, int x, int cas) {
     int i;
     for (i=0; i<sn; i++) b[i*x]=a[2*i+cas];
     for (i=0; i<dn; i++) b[(sn+i)*x]=a[(2*i+1-cas)];
 }
 
-/* <summary>                             */  
+/* <summary>                             */
 /* Forward lazy transform (axial).       */
-/* </summary>                            */ 
+/* </summary>                            */
 static void dwt_deinterleave_z(int *a, int *b, int dn, int sn, int xy, int cas) {
     int i;
     for (i=0; i<sn; i++) b[i*xy]=a[2*i+cas];
@@ -272,8 +272,8 @@ static void dwt_interleave_h(int *a, int *b, int dn, int sn, int cas) {
     ai = a;
     bi = b + cas;
     for (i = 0; i < sn; i++) {
-      *bi = *ai;  
-	  bi += 2;  
+      *bi = *ai;
+	  bi += 2;
 	  ai++;
     }
     ai = a + sn;
@@ -285,9 +285,9 @@ static void dwt_interleave_h(int *a, int *b, int dn, int sn, int cas) {
     }
 }
 
-/* <summary>                             */  
+/* <summary>                             */
 /* Inverse lazy transform (vertical).    */
-/* </summary>                            */ 
+/* </summary>                            */
 static void dwt_interleave_v(int *a, int *b, int dn, int sn, int x, int cas) {
     int i;
     int *ai = NULL;
@@ -303,7 +303,7 @@ static void dwt_interleave_v(int *a, int *b, int dn, int sn, int x, int cas) {
     bi = b + 1 - cas;
     for (i = 0; i < dn; i++) {
       *bi = *ai;
-	  bi += 2;  
+	  bi += 2;
 	  ai += x;
     }
 }
@@ -318,8 +318,8 @@ static void dwt_interleave_z(int *a, int *b, int dn, int sn, int xy, int cas) {
     ai = a;
     bi = b + cas;
     for (i = 0; i < sn; i++) {
-      *bi = *ai;  
-	  bi += 2;  
+      *bi = *ai;
+	  bi += 2;
 	  ai += xy;
     }
     ai = a + (sn * xy);
@@ -410,7 +410,7 @@ static void dwt_encode_97(int *a, int dn, int sn, int cas) {
 }
 /* <summary>                            */
 /* Inverse 5-3 or 9-7 wavelet transform in 1-D. */
-/* </summary>                           */ 
+/* </summary>                           */
 static void dwt_decode_53(int *a, int dn, int sn, int cas) {
 	int i;
 	if (!cas) {
@@ -493,11 +493,11 @@ static double dwt_calc_wtnorms(int orient, int level[3], int dwtid[3], opj_wtfil
 	double	Lx = 0, Ly= 0, Hx= 0, Hy= 0, Lz= 0, Hz= 0;
 	double *nLPSx, *nHPSx,*nLPSy, *nHPSy,*nLPSz, *nHPSz;
 	int levelx, levely, levelz;
-	    
+
 	levelx = (orient == 0) ? level[0]-1 : level[0];
 	levely = (orient == 0) ? level[1]-1 : level[1];
 	levelz = (orient == 0) ? level[2]-1 : level[2];
-	
+
 	/*X axis*/
 	lenLPS = wtfiltX->lenLPS;
 	lenHPS = wtfiltX->lenHPS;
@@ -526,7 +526,7 @@ static double dwt_calc_wtnorms(int orient, int level[3], int dwtid[3], opj_wtfil
 	Hx = sqrt(Hx);
 	free(nLPSx);
 	free(nHPSx);
-	
+
 	/*Y axis*/
 	if (dwtid[0] != dwtid[1] || level[0] != level[1]){
 		lenLPS = wtfiltY->lenLPS;
@@ -556,12 +556,12 @@ static double dwt_calc_wtnorms(int orient, int level[3], int dwtid[3], opj_wtfil
 		Hy = sqrt(Hy);
 		free(nLPSy);
 		free(nHPSy);
-	} else { 
+	} else {
 		Ly = Lx;
 		Hy = Hx;
 	}
 	/*Z axis*/
-	if (levelz >= 0) { 
+	if (levelz >= 0) {
 		lenLPS = wtfiltZ->lenLPS;
 		lenHPS = wtfiltZ->lenHPS;
 		for (i = 0; i < levelz; i++) {
@@ -593,7 +593,7 @@ static double dwt_calc_wtnorms(int orient, int level[3], int dwtid[3], opj_wtfil
 		Lz = 1.0; Hz = 1.0;
 	}
 	switch (orient) {
-		case 0: 
+		case 0:
 			return Lx * Ly * Lz;
 		case 1:
 			return Lx * Hy * Lz;
@@ -605,14 +605,14 @@ static double dwt_calc_wtnorms(int orient, int level[3], int dwtid[3], opj_wtfil
 			return Lx * Ly * Hz;
 		case 5:
 			return Lx * Hy * Hz;
-		case 6: 
+		case 6:
 			return Hx * Ly * Hz;
 		case 7:
 			return Hx * Hy * Hz;
 		default:
 			return -1;
 	}
-	
+
 }
 static void dwt_getwtfilters(opj_wtfilt_t *wtfilt, int dwtid) {
 	if (dwtid == 0) { /*DWT 9-7 */
@@ -627,15 +627,15 @@ static void dwt_getwtfilters(opj_wtfilt_t *wtfilt, int dwtid) {
 			wtfilt->LPS[5] = -0.057543526228;	wtfilt->HPS[5] = -0.266864118443;
 			wtfilt->LPS[6] = -0.091271763114;	wtfilt->HPS[6] = -0.078223266529;
 												wtfilt->HPS[7] = 0.016864118443;
-												wtfilt->HPS[8] = 0.026748757411;			
+												wtfilt->HPS[8] = 0.026748757411;
 	} else if (dwtid == 1) { /*DWT 5-3 */
 			wtfilt->lenLPS = 3;		wtfilt->lenHPS = 5;
 			wtfilt->LPS = (double *)opj_malloc(wtfilt->lenLPS * sizeof(double));
 			wtfilt->HPS = (double *)opj_malloc(wtfilt->lenHPS * sizeof(double));
-			wtfilt->LPS[0] = 0.5;	wtfilt->HPS[0] = -0.125; 
-			wtfilt->LPS[1] = 1;		wtfilt->HPS[1] = -0.25; 
+			wtfilt->LPS[0] = 0.5;	wtfilt->HPS[0] = -0.125;
+			wtfilt->LPS[1] = 1;		wtfilt->HPS[1] = -0.25;
 			wtfilt->LPS[2] = 0.5;	wtfilt->HPS[2] = 0.75;
-									wtfilt->HPS[3] = -0.25; 
+									wtfilt->HPS[3] = -0.25;
 									wtfilt->HPS[4] = -0.125;
 	} else {
 		fprintf(stdout,"[ERROR] Sorry, this wavelet hasn't been implemented so far ... Try another one :-)\n");
@@ -644,7 +644,7 @@ static void dwt_getwtfilters(opj_wtfilt_t *wtfilt, int dwtid) {
 }
 /* <summary>                            */
 /* Encoding of quantization stepsize for each subband. */
-/* </summary>                           */ 
+/* </summary>                           */
 static void dwt_encode_stepsize(int stepsize, int numbps, opj_stepsize_t *bandno_stepsize) {
 	int p, n;
 	p = int_floorlog2(stepsize) - 13;
@@ -655,7 +655,7 @@ static void dwt_encode_stepsize(int stepsize, int numbps, opj_stepsize_t *bandno
 	/*else --> bandno_stepsize = (1<<(numbps - expn)) + (1<<(numbps - expn - 11)) * Ub*/
 }
 
-/* 
+/*
 ==========================================================
    DWT interface
 ==========================================================
@@ -672,7 +672,7 @@ void dwt_encode(opj_tcd_tilecomp_t * tilec, int dwtid[3]) {
 	int *aj = NULL;
 	int *bj = NULL;
 	int *cj = NULL;
-	
+
 	/*ops = 0;*/
 
 	memset(flagnorm,0,8000*sizeof(int));
@@ -699,27 +699,27 @@ void dwt_encode(opj_tcd_tilecomp_t * tilec, int dwtid[3]) {
 		int cas_row;	/* 0 = non inversion on vertical filtering 1 = inversion between low-pass and high-pass filtering   */
 		int cas_axl;	/* 0 = non inversion on axial filtering 1 = inversion between low-pass and high-pass filtering   */
 		int dn, sn;
-		
+
 		rw = tilec->resolutions[level - x].x1 - tilec->resolutions[level - x].x0;
 		rh = tilec->resolutions[level - y].y1 - tilec->resolutions[level - y].y0;
 		rd = tilec->resolutions[level - z].z1 - tilec->resolutions[level - z].z0;
 		rw1= tilec->resolutions[level - x - 1].x1 - tilec->resolutions[level - x - 1].x0;
 		rh1= tilec->resolutions[level - y - 1].y1 - tilec->resolutions[level - y - 1].y0;
 		rd1= tilec->resolutions[level - z - 1].z1 - tilec->resolutions[level - z - 1].z0;
-		
+
 		cas_col = tilec->resolutions[level - x].x0 % 2; /* 0 = non inversion on horizontal filtering 1 = inversion between low-pass and high-pass filtering */
 		cas_row = tilec->resolutions[level - y].y0 % 2; /* 0 = non inversion on vertical filtering 1 = inversion between low-pass and high-pass filtering   */
 		cas_axl = tilec->resolutions[level - z].z0 % 2;
-	
+
 		/*fprintf(stdout," x %d y %d z %d \n",x,y,z);
 		fprintf(stdout," levelx %d levely %d levelz %d \n",levelx,levely,levelz);
 		fprintf(stdout," z1 %d z0 %d\n",tilec->resolutions[level - z].z1,tilec->resolutions[level - z].z0);
 		fprintf(stdout," rw %d rh %d rd %d \n rw1 %d rh1 %d rd1 %d \n",rw,rh,rd,rw1,rh1,rd1);*/
 
 		for (i = 0; i < rd; i++) {
-			
+
 			cj = a + (i * wh);
-			
+
 			/*Horizontal*/
 			sn = rw1;
 			dn = rw - rw1;
@@ -738,7 +738,7 @@ void dwt_encode(opj_tcd_tilecomp_t * tilec, int dwtid[3]) {
 					dwt_encode_53(bj, dn, sn, cas_row);
 					dwt_deinterleave_h(bj, aj, dn, sn, cas_row);
 				}
-			} 
+			}
 			opj_free(bj);
 
 			/*Vertical*/
@@ -759,7 +759,7 @@ void dwt_encode(opj_tcd_tilecomp_t * tilec, int dwtid[3]) {
 					dwt_encode_53(bj, dn, sn, cas_col);
 					dwt_deinterleave_v(bj, aj, dn, sn, w, cas_col);
 				}
-			} 
+			}
 			opj_free(bj);
 		}
 
@@ -782,7 +782,7 @@ void dwt_encode(opj_tcd_tilecomp_t * tilec, int dwtid[3]) {
 					dwt_encode_53(bj, dn, sn, cas_axl);
 					dwt_deinterleave_z(bj, aj, dn, sn, wh, cas_axl);
 				}
-			} 
+			}
 			opj_free(bj);
 		}
 	}
@@ -803,7 +803,7 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 	int *aj = NULL;
 	int *bj = NULL;
 	int *cj = NULL;
-	
+
 	a = tilec->data;
 
 	w = tilec->x1-tilec->x0;
@@ -815,7 +815,7 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 	levelz = tilec->numresolution[2]-1;
 	level = int_max(levelx,int_max(levely,levelz));
 	diff = tilec->numresolution[0] - tilec->numresolution[2];
-		
+
 /* General lifting framework -- DCCS-LIWT */
 	for (x = level - 1, y = level - 1, z = level - 1; (x >= stops[0]) && (y >= stops[1]); x--, y--, z--) {
 		int rw;			/* width of the resolution level computed                                                           */
@@ -828,18 +828,18 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 		int cas_row;	/* 0 = non inversion on vertical filtering 1 = inversion between low-pass and high-pass filtering   */
 		int cas_axl;	/* 0 = non inversion on axial filtering 1 = inversion between low-pass and high-pass filtering   */
 		int dn, sn;
-		
+
 		rw = tilec->resolutions[level - x].x1 - tilec->resolutions[level - x].x0;
 		rh = tilec->resolutions[level - y].y1 - tilec->resolutions[level - y].y0;
 		rd = tilec->resolutions[level - z].z1 - tilec->resolutions[level - z].z0;
 		rw1= tilec->resolutions[level - x - 1].x1 - tilec->resolutions[level - x - 1].x0;
 		rh1= tilec->resolutions[level - y - 1].y1 - tilec->resolutions[level - y - 1].y0;
 		rd1= tilec->resolutions[level - z - 1].z1 - tilec->resolutions[level - z - 1].z0;
-		
+
 		cas_col = tilec->resolutions[level - x].x0 % 2; /* 0 = non inversion on horizontal filtering 1 = inversion between low-pass and high-pass filtering */
 		cas_row = tilec->resolutions[level - y].y0 % 2; /* 0 = non inversion on vertical filtering 1 = inversion between low-pass and high-pass filtering   */
 		cas_axl = tilec->resolutions[level - z].z0 % 2;
-	
+
 		/*fprintf(stdout," x %d y %d z %d \n",x,y,z);
 		fprintf(stdout," levelx %d levely %d levelz %d \n",levelx,levely,levelz);
 		fprintf(stdout," dwtid[0] %d [1] %d [2] %d \n",dwtid[0],dwtid[1],dwtid[2]);
@@ -865,14 +865,14 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 					dwt_decode_53(bj, dn, sn, cas_axl);
 					for (k = 0; k < rd; k++)  aj[k * wh] = bj[k];
 				}
-			} 
+			}
 			opj_free(bj);
 		}
 
 		for (i = 0; i < rd; i++) {
 			/*Fetch corresponding slice for doing DWT-2D*/
  			cj = tilec->data + (i * wh);
-			
+
 			/*Vertical*/
 			sn = rh1;
 			dn = rh - rh1;
@@ -891,7 +891,7 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 					dwt_decode_53(bj, dn, sn, cas_col);
 					for (k = 0; k < rh; k++)  aj[k * w] = bj[k];
 				}
-			} 
+			}
 			opj_free(bj);
 
 			/*Horizontal*/
@@ -912,11 +912,11 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 					dwt_decode_53(bj, dn, sn, cas_row);
 					for (k = 0; k < rw; k++)  aj[k] = bj[k];
 				}
-			} 
+			}
 			opj_free(bj);
-			
+
 		}
-	
+
 	}
 
 }
@@ -926,14 +926,14 @@ void dwt_decode(opj_tcd_tilecomp_t * tilec, int stops[3], int dwtid[3]) {
 /* Get gain of wavelet transform. */
 /* </summary>                         */
 int dwt_getgain(int orient, int reversible) {
-	if (reversible == 1) { 
+	if (reversible == 1) {
 		if (orient == 0)
 			return 0;
 		else if (orient == 1 || orient == 2 || orient == 4 )
 			return 1;
 		else if (orient == 3 || orient == 5 || orient == 6 )
 			return 2;
-		else 
+		else
 			return 3;
 	}
 	/*else if (reversible == 0){*/
@@ -970,24 +970,24 @@ double dwt_getnorm(int orient, int level[3], int dwtid[3]) {
 		opj_free(wtfiltx->HPS);	opj_free(wtfilty->HPS);	opj_free(wtfiltz->HPS);
 		opj_free(wtfiltx);		opj_free(wtfilty);		opj_free(wtfiltz);
 		/*fprintf(stdout,"[INFO] Dwtid: %d %d %d Level: %d %d %d Orient %d Norm: %f \n",dwtid[0],dwtid[1],dwtid[2],level[0],level[1],level[2],orient,norm);*/
-	} 
+	}
 	return norm;
 }
 /* <summary>								*/
 /* Calculate explicit stepsizes for DWT.	*/
 /* </summary>								*/
-void dwt_calc_explicit_stepsizes(opj_tccp_t * tccp, int prec) { 
+void dwt_calc_explicit_stepsizes(opj_tccp_t * tccp, int prec) {
 	int totnumbands, bandno, diff;
-	
-	assert(tccp->numresolution[0] >= tccp->numresolution[2]);	
+
+	assert(tccp->numresolution[0] >= tccp->numresolution[2]);
 	diff = tccp->numresolution[0] - tccp->numresolution[2];		/*if RESx=RESy != RESz */
 	totnumbands = (7 * tccp->numresolution[0] - 6) - 4 * diff; /* 3-D */
-		
+
 	for (bandno = 0; bandno < totnumbands; bandno++) {
 		double stepsize;
 		int resno, level[3], orient, gain;
 
-		/* Bandno:	0 - LLL 	1 - LHL 
+		/* Bandno:	0 - LLL 	1 - LHL
 					2 - HLL		3 - HHL
 					4 - LLH		5 - LHH
 					6 - HLH		7 - HHH	*/
@@ -997,15 +997,15 @@ void dwt_calc_explicit_stepsizes(opj_tccp_t * tccp, int prec) {
 		level[0] = tccp->numresolution[0] - 1 - resno;
 		level[1] = tccp->numresolution[1] - 1 - resno;
 		level[2] = tccp->numresolution[2] - 1 - resno;
-	
-		/* Gain:	0 - LLL 	1 - LHL 
+
+		/* Gain:	0 - LLL 	1 - LHL
 					1 - HLL		2 - HHL
 					1 - LLH		2 - LHH
 					2 - HLH		3 - HHH		*/
-		gain = (tccp->reversible == 0) ? 0 : ( (orient == 0) ? 0 : 
-				( ((orient == 1) || (orient == 2) || (orient == 4)) ? 1 : 
+		gain = (tccp->reversible == 0) ? 0 : ( (orient == 0) ? 0 :
+				( ((orient == 1) || (orient == 2) || (orient == 4)) ? 1 :
 						(((orient == 3) || (orient == 5) || (orient == 6)) ? 2 : 3)) );
-				
+
 		if (tccp->qntsty == J3D_CCP_QNTSTY_NOQNT) {
 			stepsize = 1.0;
 		} else {

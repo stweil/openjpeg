@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,10 +8,10 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
- * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR 
+ * Copyright (c) 2008, 2011-2012, Centre National d'Etudes Spatiales (CNES), FR
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -85,7 +85,7 @@ void opj_mct_encode(
 	assert( ((size_t)c0 & 0xf) == 0 );
 	assert( ((size_t)c1 & 0xf) == 0 );
 	assert( ((size_t)c2 & 0xf) == 0 );
-	
+
 	for(i = 0; i < (len & ~3U); i += 4) {
 		__m128i y, u, v;
 		__m128i r = _mm_load_si128((const __m128i *)&(c0[i]));
@@ -101,7 +101,7 @@ void opj_mct_encode(
 		_mm_store_si128((__m128i *)&(c1[i]), u);
 		_mm_store_si128((__m128i *)&(c2[i]), v);
 	}
-	
+
 	for(; i < len; ++i) {
 		OPJ_INT32 r = c0[i];
 		OPJ_INT32 g = c1[i];
@@ -123,7 +123,7 @@ void opj_mct_encode(
 {
 	OPJ_SIZE_T i;
 	const OPJ_SIZE_T len = n;
-	
+
 	for(i = 0; i < len; ++i) {
 		OPJ_INT32 r = c0[i];
 		OPJ_INT32 g = c1[i];
@@ -150,7 +150,7 @@ void opj_mct_decode(
 {
 	OPJ_SIZE_T i;
 	const OPJ_SIZE_T len = n;
-	
+
 	for(i = 0; i < (len & ~3U); i += 4) {
 		__m128i r, g, b;
 		__m128i y = _mm_load_si128((const __m128i *)&(c0[i]));
@@ -179,8 +179,8 @@ void opj_mct_decode(
 #else
 void opj_mct_decode(
 		OPJ_INT32* restrict c0,
-		OPJ_INT32* restrict c1, 
-		OPJ_INT32* restrict c2, 
+		OPJ_INT32* restrict c1,
+		OPJ_INT32* restrict c2,
 		OPJ_UINT32 n)
 {
 	OPJ_UINT32 i;
@@ -217,7 +217,7 @@ void opj_mct_encode_real(
 {
 	OPJ_SIZE_T i;
 	const OPJ_SIZE_T len = n;
-	
+
 	const __m128i ry = _mm_set1_epi32(2449);
 	const __m128i gy = _mm_set1_epi32(4809);
 	const __m128i by = _mm_set1_epi32(934);
@@ -228,14 +228,14 @@ void opj_mct_encode_real(
 	const __m128i gv = _mm_set1_epi32(3430);
 	const __m128i bv = _mm_set1_epi32(666);
 	const __m128i mulround = _mm_shuffle_epi32(_mm_cvtsi32_si128(4096), _MM_SHUFFLE(1, 0, 1, 0));
-	
+
 	for(i = 0; i < (len & ~3U); i += 4) {
 		__m128i lo, hi;
 		__m128i y, u, v;
 		__m128i r = _mm_load_si128((const __m128i *)&(c0[i]));
 		__m128i g = _mm_load_si128((const __m128i *)&(c1[i]));
 		__m128i b = _mm_load_si128((const __m128i *)&(c2[i]));
-		
+
 		lo = r;
 		hi = _mm_shuffle_epi32(r, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, ry);
@@ -245,7 +245,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		y = _mm_blend_epi16(lo, hi, 0xCC);
-		
+
 		lo = g;
 		hi = _mm_shuffle_epi32(g, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, gy);
@@ -255,7 +255,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		y = _mm_add_epi32(y, _mm_blend_epi16(lo, hi, 0xCC));
-		
+
 		lo = b;
 		hi = _mm_shuffle_epi32(b, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, by);
@@ -266,7 +266,7 @@ void opj_mct_encode_real(
 		hi = _mm_slli_epi64(hi, 32-13);
 		y = _mm_add_epi32(y, _mm_blend_epi16(lo, hi, 0xCC));
 		_mm_store_si128((__m128i *)&(c0[i]), y);
-		
+
 		/*lo = b;
 		hi = _mm_shuffle_epi32(b, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, mulround);
@@ -280,7 +280,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		u = _mm_blend_epi16(lo, hi, 0xCC);
-		
+
 		lo = r;
 		hi = _mm_shuffle_epi32(r, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, ru);
@@ -290,7 +290,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		u = _mm_sub_epi32(u, _mm_blend_epi16(lo, hi, 0xCC));
-		
+
 		lo = g;
 		hi = _mm_shuffle_epi32(g, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, gu);
@@ -301,7 +301,7 @@ void opj_mct_encode_real(
 		hi = _mm_slli_epi64(hi, 32-13);
 		u = _mm_sub_epi32(u, _mm_blend_epi16(lo, hi, 0xCC));
 		_mm_store_si128((__m128i *)&(c1[i]), u);
-		
+
 		/*lo = r;
 		hi = _mm_shuffle_epi32(r, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, mulround);
@@ -315,7 +315,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		v = _mm_blend_epi16(lo, hi, 0xCC);
-		
+
 		lo = g;
 		hi = _mm_shuffle_epi32(g, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, gv);
@@ -325,7 +325,7 @@ void opj_mct_encode_real(
 		lo = _mm_srli_epi64(lo, 13);
 		hi = _mm_slli_epi64(hi, 32-13);
 		v = _mm_sub_epi32(v, _mm_blend_epi16(lo, hi, 0xCC));
-		
+
 		lo = b;
 		hi = _mm_shuffle_epi32(b, _MM_SHUFFLE(3, 3, 1, 1));
 		lo = _mm_mul_epi32(lo, bv);

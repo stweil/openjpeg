@@ -1,18 +1,18 @@
-# This file list all the input commands of the tests run by the ctest command which 
+# This file list all the input commands of the tests run by the ctest command which
 # are not related to the conformance files.
 #
 # For each line of this file (except line which begin with #) an opj_compress test or a
 # opj_decompress is run and its related tests.
-#   + For encoder related tests = dump, compare dump to base, decode the encoded file with 
-#     reference and compare the decoded file with the baseline decoded previously with 
+#   + For encoder related tests = dump, compare dump to base, decode the encoded file with
+#     reference and compare the decoded file with the baseline decoded previously with
 #     ref decoder.
-#   + For decoder related tests = dump, compare dump to base, (TODO: compare outpout decoding 
+#   + For decoder related tests = dump, compare dump to base, (TODO: compare outpout decoding
 #     image to base)
 #
-# Line begin with ! should failed (should be used for bad jpeg2000 file which should be 
+# Line begin with ! should failed (should be used for bad jpeg2000 file which should be
 # gracefully rejected). Please add a short resume about why this file should be rejected.
 #
-# You can use @INPUT_NR_PATH@ and @TEMP_PATH@ cmake variable which refers to OPJ_DATA_ROOT 
+# You can use @INPUT_NR_PATH@ and @TEMP_PATH@ cmake variable which refers to OPJ_DATA_ROOT
 # repository. However you can use relative path or absolute path.
 
 # ENCODER TEST SUITE
@@ -74,7 +74,7 @@ opj_compress -i @INPUT_NR_PATH@/issue203-33x33-bgrx16.bmp -o @TEMP_PATH@/issue20
 opj_compress -i @INPUT_NR_PATH@/issue203-127x64-bgr16.bmp -o @TEMP_PATH@/issue203-127x64-bgr16.bmp.jp2
 opj_compress -i @INPUT_NR_PATH@/issue203-127x64-bgrx.bmp -o @TEMP_PATH@/issue203-127x64-bgrx.bmp.jp2
 
-# issue 322 limited tif support 
+# issue 322 limited tif support
 opj_compress -i @INPUT_NR_PATH@/flower-minisblack-01.tif -o @TEMP_PATH@/flower-minisblack-01.tif.jp2
 opj_compress -i @INPUT_NR_PATH@/flower-minisblack-02.tif -o @TEMP_PATH@/flower-minisblack-02.tif.jp2
 opj_compress -i @INPUT_NR_PATH@/flower-minisblack-04.tif -o @TEMP_PATH@/flower-minisblack-04.tif.jp2
@@ -171,7 +171,7 @@ opj_decompress -i  @INPUT_NR_PATH@/test_lossless.j2k -o @TEMP_PATH@/test_lossles
 opj_decompress -i  @INPUT_NR_PATH@/text_GBR.jp2 -o @TEMP_PATH@/text_GBR.jp2.pgx
 # pacs.ge file should throw an error but finally it seems work with v2
 opj_decompress -i  @INPUT_NR_PATH@/pacs.ge.j2k -o @TEMP_PATH@/pacs.ge.j2k.pgx
-# related to issue 135 
+# related to issue 135
 opj_decompress -i  @INPUT_NR_PATH@/kodak_2layers_lrcp.j2c -o @TEMP_PATH@/kodak_2layers_lrcp.j2c.pgx
 opj_decompress -i  @INPUT_NR_PATH@/kodak_2layers_lrcp.j2c -o @TEMP_PATH@/kodak_2layers_lrcp-l2.j2c.pgx -l 2
 # related to issue 104 and 110
@@ -188,9 +188,9 @@ opj_decompress -i  @INPUT_NR_PATH@/mem-b2b86b74-2753.jp2 -o @TEMP_PATH@/mem-b2b8
 !opj_decompress -i  @INPUT_NR_PATH@/gdal_fuzzer_check_number_of_tiles.jp2 -o @TEMP_PATH@/gdal_fuzzer_check_number_of_tiles.pgx
 # issue 194 raised by the gdal fuzzer test (should nicely failed)
 ! opj_decompress -i  @INPUT_NR_PATH@/gdal_fuzzer_check_comp_dx_dy.jp2 -o @TEMP_PATH@/gdal_fuzzer_check_comp_dx_dy.pgx
-# issue 202 
+# issue 202
 opj_decompress -i  @INPUT_NR_PATH@/file409752.jp2 -o @TEMP_PATH@/file409752.jp2.pgx
-# issue 188 
+# issue 188
 opj_decompress -i  @INPUT_NR_PATH@/issue188_beach_64bitsbox.jp2 -o @TEMP_PATH@/issue188_beach_64bitsbox.jp2.pgx
 # issue 206
 opj_decompress -i  @INPUT_NR_PATH@/issue206_image-000.jp2 -o @TEMP_PATH@/issue206_image-000.jp2.pgx
@@ -332,7 +332,7 @@ opj_decompress -i @INPUT_NR_PATH@/issue495.jp2 -o @TEMP_PATH@/issue495.jp2.pgx
 
 
 # decode with specific area
-# prec=12; nb_c=1 
+# prec=12; nb_c=1
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04.j2k.png -d 0,0,1024,1024
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_1.j2k.png -d 512,640,640,768
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_2.j2k.png -d 896,896,1024,1024
@@ -348,12 +348,12 @@ opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_14.j2k.png -d
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_15.j2k.png -d 260,520,360,660 -r 2
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_16.j2k.png -d 360,520,400,600 -r 2
 
-opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_17_t63.j2k.png -t 63 
+opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_17_t63.j2k.png -t 63
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_17_t63_r2.j2k.png -t 63 -r 2
-opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_18.t12.j2k.png -t 12 
+opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_18.t12.j2k.png -t 12
 opj_decompress -i @INPUT_CONF_PATH@/p1_04.j2k -o @TEMP_PATH@/p1_04_19_t12_r1.j2k.png -t 12 -r 1
 
-# prec=8; nb_c=3 
+# prec=8; nb_c=3
 opj_decompress -i @INPUT_CONF_PATH@/p1_06.j2k -o @TEMP_PATH@/p1_06.j2k.png -d 0,0,12,12
 opj_decompress -i @INPUT_CONF_PATH@/p1_06.j2k -o @TEMP_PATH@/p1_06_1.j2k.png -d 1,8,8,11
 opj_decompress -i @INPUT_CONF_PATH@/p1_06.j2k -o @TEMP_PATH@/p1_06_2.j2k.png -d 9,9,12,12
@@ -406,7 +406,7 @@ opj_decompress -i @INPUT_CONF_PATH@/p0_04.j2k -o @TEMP_PATH@/p0_04_6_5.j2k.png -
 #opj_decompress -i @INPUT_CONF_PATH@/p1_01.j2k -o @TEMP_PATH@/p1_01_5.j2k.png -d 150,20,200,50
 
 # issue 322 limited tif support
-# GRAYSCALE 
+# GRAYSCALE
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_tif-1.tif -p 1S
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_tif-2.tif -p 2S
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_tif-4.tif -p 4S
@@ -451,7 +451,7 @@ opj_decompress -i @INPUT_NR_PATH@/basn6a08.jp2 -o @TEMP_PATH@/basn6a08_tif-16.ti
 opj_decompress -i @INPUT_NR_PATH@/issue235.jp2 -o @TEMP_PATH@/issue235.jp2.pgx
 
 # issue 264, add checks for png
-# GRAYSCALE 
+# GRAYSCALE
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_png-1.png -p 1S
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_png-2.png -p 2S
 opj_decompress -i @INPUT_CONF_PATH@/a1_mono.j2c -o @TEMP_PATH@/a1_mono_png-4.png -p 4S

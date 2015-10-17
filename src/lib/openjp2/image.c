@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -212,17 +212,17 @@ opj_image_t* OPJ_CALLCONV opj_image_tile_create(OPJ_UINT32 numcmpts, opj_image_c
 	image = (opj_image_t*) opj_calloc(1,sizeof(opj_image_t));
 	if (image)
 	{
-		
+
 		image->color_space = clrspc;
 		image->numcomps = numcmpts;
-		
+
 		/* allocate memory for the per-component information */
 		image->comps = (opj_image_comp_t*)opj_calloc(image->numcomps, sizeof(opj_image_comp_t));
 		if (!image->comps) {
 			opj_image_destroy(image);
 			return 00;
 		}
-		
+
 		/* create the individual image components */
 		for(compno = 0; compno < numcmpts; compno++) {
 			opj_image_comp_t *comp = &image->comps[compno];

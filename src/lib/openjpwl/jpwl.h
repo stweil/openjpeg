@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -90,13 +90,13 @@ typedef struct jpwl_epb_ms {
 	/** two bytes for the length of EPB MS, exluding the marker itself (11 to 65535 bytes) */
 	unsigned short int Lepb;
 	/** single byte for the style */
-	unsigned char Depb; 
+	unsigned char Depb;
 	/** four bytes, from 0 to 2^31-1 */
 	unsigned long int LDPepb;
 	/** four bytes, next error management method */
 	unsigned long int Pepb;
 	/** EPB data, variable size */
-	unsigned char *data;   
+	unsigned char *data;
 	/*@}*/
 }	jpwl_epb_ms_t;
 
@@ -115,15 +115,15 @@ typedef struct jpwl_epc_ms {
 	/**@name Marker segment fields */
 	/*@{*/
 	/** two bytes for the length of EPC MS, exluding the marker itself (9 to 65535 bytes) */
-	unsigned short int Lepc;   
+	unsigned short int Lepc;
 	/** two bytes, CRC for the EPC, excluding Pcrc itself */
-	unsigned short int Pcrc;   
+	unsigned short int Pcrc;
 	/** four bytes, the codestream length from SOC to EOC */
-	unsigned long int DL;     
+	unsigned long int DL;
 	/** one byte, signals JPWL techniques adoption */
-	unsigned char Pepc;	
+	unsigned char Pepc;
 	/** EPC data, variable length */
-	unsigned char *data;	
+	unsigned char *data;
 	/*@}*/
 }	jpwl_epc_ms_t;
 
@@ -144,13 +144,13 @@ typedef struct jpwl_esd_ms {
 	/**@name Marker segment fields */
 	/*@{*/
 	/** two bytes for the length of ESD MS, exluding the marker itself (4 to 65535 bytes) */
-	unsigned short int Lesd;   
+	unsigned short int Lesd;
 	/** two bytes, component of error sensitivity */
 	unsigned short int Cesd;
 	/** one byte, signals JPWL techniques adoption */
-	unsigned char Pesd;	
+	unsigned char Pesd;
 	/** ESD data, variable length */
-	unsigned char *data;	
+	unsigned char *data;
 	/*@}*/
 	/**@name Fields set by esd_create (only internal use) */
 	/*@{*/
@@ -172,9 +172,9 @@ typedef struct jpwl_red_ms {
 	/** two bytes for the length of RED MS, exluding the marker itself (3 to 65535 bytes) */
 	unsigned short int Lred;
 	/** one byte, signals JPWL techniques adoption */
-	unsigned char Pred;	
+	unsigned char Pred;
 	/** RED data, variable length */
-	unsigned char *data;	
+	unsigned char *data;
 }	jpwl_red_ms_t;
 
 /**
@@ -194,7 +194,7 @@ typedef struct jpwl_marker {
 		/** pointer to RED marker */
 		jpwl_red_ms_t *redmark;
 	} m;
-	/** position where the marker should go, in the pre-JPWL codestream */ 
+	/** position where the marker should go, in the pre-JPWL codestream */
 	unsigned long int pos;
 	/** same as before, only written as a double, so we can sort it better */
 	double dpos;
@@ -327,13 +327,13 @@ int jpwl_esds_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 				  int comps, unsigned char addrm, unsigned char ad_size,
 				  unsigned char senst, unsigned char se_size,
 				  double place_pos, int tileno);
-	
+
 /** updates the information structure by modifying the positions and lengths
 @param j2k J2K compressor handle
 @param jwmarker pointer to JPWL markers list
 @param jwmarker_num number of JPWL markers
 @return returns true in case of success
-*/			  
+*/
 opj_bool jpwl_update_info(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int jwmarker_num);
 
 

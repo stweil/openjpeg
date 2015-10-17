@@ -35,7 +35,7 @@ extern "C" {
 
 /**
 Write a structured index to a file
-@param cstr_info Codestream information 
+@param cstr_info Codestream information
 @param index Index filename
 @return Returns 0 if successful, returns 1 otherwise
 */

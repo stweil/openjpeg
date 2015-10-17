@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -143,7 +143,7 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 
 	opj_tcd_tilecomp_t *tilec = &tile->comps[compno];
 	opj_tcd_resolution_t *res = &tilec->resolutions[resno];
-	
+
 	opj_bio_t *bio = NULL;	/* BIO component */
 
 	/* <SOP 0xff91> */
@@ -158,9 +158,9 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 		memcpy(c, sop, 6);
 		opj_free(sop);
 		c += 6;
-	} 
+	}
 	/* </SOP> */
-	
+
 	if (!layno) {
 		for (bandno = 0; bandno < res->numbands; bandno++) {
 			opj_tcd_band_t *band = &res->bands[bandno];
@@ -174,11 +174,11 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 			}
 		}
 	}
-		
+
 	bio = bio_create();
 	bio_init_enc(bio, c, len);
 	bio_write(bio, 1, 1);		/* Empty header bit */
-	
+
 	/* Writing Packet header */
 	for (bandno = 0; bandno < res->numbands; bandno++) {
 		opj_tcd_band_t *band = &res->bands[bandno];
@@ -214,7 +214,7 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 			}
 			/* number of coding passes included */
 			t2_putnumpasses(bio, layer->numpasses);
-			
+
 			/* computation of the increase of the length indicator and insertion in the header     */
 			for (passno = cblk->numpasses; passno < cblk->numpasses + layer->numpasses; passno++) {
 				opj_tcd_pass_t *pass = &cblk->passes[passno];
@@ -245,16 +245,16 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 
 		}
 	}
-	
-	
+
+
 	if (bio_flush(bio)) {
 		return -999;		/* modified to eliminate longjmp !! */
 	}
-	
+
 	c += bio_numbytes(bio);
 
 	bio_destroy(bio);
-	
+
 	/* <EPH 0xff92> */
 	if (tcp->csty & J3D_CP_CSTY_EPH) {
 		eph = (unsigned char *) opj_malloc(2 * sizeof(unsigned char));
@@ -265,9 +265,9 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 		c += 2;
 	}
 	/* </EPH> */
-	
+
 	/* Writing the packet body */
-	
+
 	for (bandno = 0; bandno < res->numbands; bandno++) {
 		opj_tcd_band_t *band = &res->bands[bandno];
 		opj_tcd_precinct_t *prc = &band->precincts[precno];
@@ -280,7 +280,7 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 			if (c + layer->len > dest + len) {
 				return -999;
 			}
-			
+
 			memcpy(c, layer->data, layer->len);
 			cblk->numpasses += layer->numpasses;
 			c += layer->len;
@@ -296,7 +296,7 @@ static int t2_encode_packet(opj_tcd_tile_t * tile, opj_tcp_t * tcp, opj_pi_itera
 			/* </ADD> */
 		}
 	}
-	
+
 	return (c - dest);
 }
 
@@ -330,17 +330,17 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 
 	opj_tcd_tilecomp_t *tilec = &tile->comps[compno];
 	opj_tcd_resolution_t *res = &tilec->resolutions[resno];
-	
+
 	unsigned char *hd = NULL;
 	int present;
-	
+
 	opj_bio_t *bio = NULL;	/* BIO component */
-	
+
 	if (layno == 0) {
 		for (bandno = 0; bandno < res->numbands; bandno++) {
 			opj_tcd_band_t *band = &res->bands[bandno];
 			opj_tcd_precinct_t *prc = &band->precincts[precno];
-			
+
 			if ((band->x1-band->x0 == 0)||(band->y1-band->y0 == 0)||(band->z1-band->z0 == 0)) continue;
 
 			tgt_reset(prc->incltree);
@@ -351,28 +351,28 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 			}
 		}
 	}
-	
+
 	/* SOP markers */
-	
+
 	if (tcp->csty & J3D_CP_CSTY_SOP) {
 		if ((*c) != 0xff || (*(c + 1) != 0x91)) {
 			opj_event_msg(t2->cinfo, EVT_WARNING, "Expected SOP marker\n");
 		} else {
 			c += 6;
 		}
-		
+
 		/** TODO : check the Nsop value */
 	}
-	
-	/* 
+
+	/*
 	When the marker PPT/PPM is used the packet header are store in PPT/PPM marker
 	This part deal with this caracteristic
 	step 1: Read packet header in the saved structure
-	step 2: Return to codestream for decoding 
+	step 2: Return to codestream for decoding
 	*/
 
 	bio = bio_create();
-	
+
 	if (cp->ppm == 1) {		/* PPM */
 		hd = cp->ppm_data;
 		bio_init_dec(bio, hd, cp->ppm_len);
@@ -383,16 +383,16 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 		hd = c;
 		bio_init_dec(bio, hd, src+len-hd);
 	}
-	
+
 	present = bio_read(bio, 1);
-	
+
 	if (!present) {
 		bio_inalign(bio);
 		hd += bio_numbytes(bio);
 		bio_destroy(bio);
-		
+
 		/* EPH markers */
-		
+
 		if (tcp->csty & J3D_CP_CSTY_EPH) {
 			if ((*hd) != 0xff || (*(hd + 1) != 0x92)) {
 				printf("Error : expected EPH marker\n");
@@ -400,7 +400,7 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 				hd += 2;
 			}
 		}
-		
+
 		if (cp->ppm == 1) {		/* PPM case */
 			cp->ppm_len += cp->ppm_data-hd;
 			cp->ppm_data = hd;
@@ -411,16 +411,16 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 			tcp->ppt_data = hd;
 			return (c - src);
 		}
-		
+
 		return (hd - src);
 	}
-	
+
 	for (bandno = 0; bandno < res->numbands; bandno++) {
 		opj_tcd_band_t *band = &res->bands[bandno];
 		opj_tcd_precinct_t *prc = &band->precincts[precno];
-		
+
 		if ((band->x1-band->x0 == 0)||(band->y1-band->y0 == 0)||(band->z1-band->z0 == 0)) continue;
-		
+
 		for (cblkno = 0; cblkno < prc->cblkno[0] * prc->cblkno[1] * prc->cblkno[2]; cblkno++) {
 			int included, increment, n;
 			opj_tcd_cblk_t *cblk = &prc->cblks[cblkno];
@@ -460,7 +460,7 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 				}
 			}
 			n = cblk->numnewpasses;
-			
+
 			do {
 				seg->numnewpasses = int_min(seg->maxpasses - seg->numpasses, n);
 				seg->newlen = bio_read(bio, cblk->numlenbits + int_floorlog2(seg->numnewpasses));
@@ -471,15 +471,15 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 			} while (n > 0);
 		}
 	}
-	
+
 	if (bio_inalign(bio)) {
 		bio_destroy(bio);
 		return -999;
 	}
-	
+
 	hd += bio_numbytes(bio);
 	bio_destroy(bio);
-	
+
 	/* EPH markers */
 	if (tcp->csty & J3D_CP_CSTY_EPH) {
 		if ((*hd) != 0xff || (*(hd + 1) != 0x92)) {
@@ -489,7 +489,7 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 			hd += 2;
 		}
 	}
-	
+
 	if (cp->ppm==1) {
 		cp->ppm_len+=cp->ppm_data-hd;
 		cp->ppm_data = hd;
@@ -499,12 +499,12 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 	} else {
 		c=hd;
 	}
-	
+
 	for (bandno = 0; bandno < res->numbands; bandno++) {
 		opj_tcd_band_t *band = &res->bands[bandno];
 		opj_tcd_precinct_t *prc = &band->precincts[precno];
-		
-		if ((band->x1-band->x0 == 0)||(band->y1-band->y0 == 0)||(band->z1-band->z0 == 0)) continue;		
+
+		if ((band->x1-band->x0 == 0)||(band->y1-band->y0 == 0)||(band->z1-band->z0 == 0)) continue;
 
 		for (cblkno = 0; cblkno < prc->cblkno[0] * prc->cblkno[1] * prc->cblkno[2]; cblkno++) {
 			opj_tcd_cblk_t *cblk = &prc->cblks[cblkno];
@@ -522,12 +522,12 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 					cblk->numsegs++;
 				}
 			}
-			
+
 			do {
 				if (c + seg->newlen > src + len) {
 					return -999;
 				}
-				
+
 				memcpy(cblk->data + cblk->len, c, seg->newlen);
 				if (seg->numpasses == 0) {
 					seg->data = cblk->data + cblk->len;
@@ -544,7 +544,7 @@ int t2_decode_packet(opj_t2_t* t2, unsigned char *src, int len, opj_tcd_tile_t *
 			} while (cblk->numnewpasses > 0);
 		}
 	}
-	
+
 	return (c - src);
 }
 
@@ -558,18 +558,18 @@ int t2_encode_packets(opj_t2_t* t2, int tileno, opj_tcd_tile_t *tile, int maxlay
 
 	opj_volume_t *volume = t2->volume;
 	opj_cp_t *cp = t2->cp;
-	
+
 	/* create a packet iterator */
 	pi = pi_create(volume, cp, tileno);
 	if(!pi) {
 		fprintf(stdout,"[ERROR] Failed to create a pi structure\n");
 		return -999;
 	}
-	
+
 	if(volume_info) {
 		volume_info->num = 0;
 	}
-	
+
 	for (pino = 0; pino <= cp->tcps[tileno].numpocs; pino++) {
 		while (pi_next(&pi[pino])) {
 			if (pi[pino].layno < maxlayers) {
@@ -580,7 +580,7 @@ int t2_encode_packets(opj_t2_t* t2, int tileno, opj_tcd_tile_t *tile, int maxlay
 				} else {
 					c += e;
 				}
-				
+
 				/* INDEX >> */
 				if(volume_info && volume_info->index_on) {
 					if(volume_info->index_write) {
@@ -603,7 +603,7 @@ int t2_encode_packets(opj_t2_t* t2, int tileno, opj_tcd_tile_t *tile, int maxlay
 
 	/* don't forget to release pi */
 	pi_destroy(pi, cp, tileno);
-	
+
 	if (e == -999) {
 		return e;
 	}
@@ -619,14 +619,14 @@ int t2_decode_packets(opj_t2_t *t2, unsigned char *src, int len, int tileno, opj
 
 	opj_volume_t *volume = t2->volume;
 	opj_cp_t *cp = t2->cp;
-	
+
 	/* create a packet iterator */
 	pi = pi_create(volume, cp, tileno);
 	if(!pi) {
 		/* TODO: throw an error */
 		return -999;
 	}
-	
+
 	for (pino = 0; pino <= cp->tcps[tileno].numpocs; pino++) {
 		while (pi_next(&pi[pino])) {
 			if ((cp->layer==0) || (cp->layer>=((pi[pino].layno)+1))) {
@@ -634,13 +634,13 @@ int t2_decode_packets(opj_t2_t *t2, unsigned char *src, int len, int tileno, opj
 			} else {
 				e = 0;
 			}
-			
+
 			/* progression in resolution */
 			for (i = 0; i < 3; i++){
                 volume->comps[pi[pino].compno].resno_decoded[i] = (e > 0) ? int_max(pi[pino].resno, volume->comps[pi[pino].compno].resno_decoded[i]) : volume->comps[pi[pino].compno].resno_decoded[i];
 			}
 			n++;
-			
+
 			if (e == -999) {		/* ADD */
 				break;
 			} else {
@@ -652,11 +652,11 @@ int t2_decode_packets(opj_t2_t *t2, unsigned char *src, int len, int tileno, opj
 
 	/* don't forget to release pi */
 	pi_destroy(pi, cp, tileno);
-	
+
 	if (e == -999) {
 		return e;
 	}
-	
+
     return (c - src);
 }
 

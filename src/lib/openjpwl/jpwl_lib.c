@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -46,7 +46,7 @@
 #define MAX_V2 131040.0
 
 /** conversion between a double precision floating point
-number and the corresponding pseudo-floating point used 
+number and the corresponding pseudo-floating point used
 to represent sensitivity values
 @param V the double precision value
 @param bytes the number of bytes of the representation
@@ -54,9 +54,9 @@ to represent sensitivity values
 */
 unsigned short int jpwl_double_to_pfp(double V, int bytes);
 
-/** conversion between a pseudo-floating point used 
+/** conversion between a pseudo-floating point used
 to represent sensitivity values and the corresponding
-double precision floating point number  
+double precision floating point number
 @param em the pseudo-floating point value (cast accordingly)
 @param bytes the number of bytes of the representation
 @return the double precision value
@@ -86,12 +86,12 @@ int jpwl_epbs_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 	jpwl_epb_ms_t *epb_mark = NULL;
 
 	int k_pre, k_post, n_pre, n_post;
-	
+
 	unsigned long int L1, L2, dL4, max_postlen, epbs_len = 0;
 
 	/* We find RS(n,k) for EPB parms and pre-data, if any */
 	if (insideMH && (*idx == 0)) {
-		/* First EPB in MH */ 
+		/* First EPB in MH */
 		k_pre = 64;
 		n_pre = 160;
 	} else if (!insideMH && (*idx == 0)) {
@@ -153,7 +153,7 @@ int jpwl_epbs_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 		/* the max post length can be as large as the LDPepb field can host */
 		if (hprot == 0)
 			max_postlen = INT_MAX;
-		
+
 		/* length to use */
 		dL4 = min(max_postlen, post_len);
 
@@ -167,7 +167,7 @@ int jpwl_epbs_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 			0, /* pre-data: nothing for now */
 			dL4 /* post-data: the stub computed previously */
 			))) {
-			
+
 			/* Add this marker to the 'insertanda' list */
 			if (*jwmarker_num < JPWL_MAX_NO_MARKERS) {
 				jwmarker[*jwmarker_num].id = J2K_MS_EPB; /* its type */
@@ -193,7 +193,7 @@ int jpwl_epbs_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 
 		} else {
 			/* ooops, problems */
-			opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create TPH EPB for UEP in tile %d\n", tileno);				
+			opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create TPH EPB for UEP in tile %d\n", tileno);
 		};
 	}
 
@@ -220,7 +220,7 @@ jpwl_epb_ms_t *jpwl_epb_create(opj_j2k_t *j2k, opj_bool latest, opj_bool packed,
 
 	/* We set RS(n,k) for EPB parms and pre-data, if any */
 	if (insideMH && (idx == 0)) {
-		/* First EPB in MH */ 
+		/* First EPB in MH */
 		epb->k_pre = 64;
 		epb->n_pre = 160;
 	} else if (!insideMH && (idx == 0)) {
@@ -265,15 +265,15 @@ jpwl_epb_ms_t *jpwl_epb_create(opj_j2k_t *j2k, opj_bool latest, opj_bool packed,
 		epb->Pepb = (unsigned long int) 0x00000000;
 		epb->n_post = epb->n_pre;
 		epb->k_post = epb->k_pre;
-	
+
 	} else if (hprot == 0) {
 		/* Placeholder EPB: only protects its parameters, no protection method */
 		epb->Pepb = (unsigned long int) 0xFFFFFFFF;
 		epb->n_post = 1;
 		epb->k_post = 1;
-	
+
 	} else {
-		opj_event_msg(j2k->cinfo, EVT_ERROR, "Invalid protection value for EPB h = %d\n", hprot);				
+		opj_event_msg(j2k->cinfo, EVT_ERROR, "Invalid protection value for EPB h = %d\n", hprot);
 		return NULL;
 	}
 
@@ -303,27 +303,27 @@ jpwl_epb_ms_t *jpwl_epb_create(opj_j2k_t *j2k, opj_bool latest, opj_bool packed,
 void jpwl_epb_write(opj_j2k_t *j2k, jpwl_epb_ms_t *epb, unsigned char *buf) {
 
 	/* Marker */
-	*(buf++) = (unsigned char) (J2K_MS_EPB >> 8); 
-	*(buf++) = (unsigned char) (J2K_MS_EPB >> 0); 
+	*(buf++) = (unsigned char) (J2K_MS_EPB >> 8);
+	*(buf++) = (unsigned char) (J2K_MS_EPB >> 0);
 
 	/* Lepb */
-	*(buf++) = (unsigned char) (epb->Lepb >> 8); 
-	*(buf++) = (unsigned char) (epb->Lepb >> 0); 
+	*(buf++) = (unsigned char) (epb->Lepb >> 8);
+	*(buf++) = (unsigned char) (epb->Lepb >> 0);
 
 	/* Depb */
-	*(buf++) = (unsigned char) (epb->Depb >> 0); 
+	*(buf++) = (unsigned char) (epb->Depb >> 0);
 
 	/* LDPepb */
-	*(buf++) = (unsigned char) (epb->LDPepb >> 24); 
-	*(buf++) = (unsigned char) (epb->LDPepb >> 16); 
-	*(buf++) = (unsigned char) (epb->LDPepb >> 8); 
-	*(buf++) = (unsigned char) (epb->LDPepb >> 0); 
+	*(buf++) = (unsigned char) (epb->LDPepb >> 24);
+	*(buf++) = (unsigned char) (epb->LDPepb >> 16);
+	*(buf++) = (unsigned char) (epb->LDPepb >> 8);
+	*(buf++) = (unsigned char) (epb->LDPepb >> 0);
 
 	/* Pepb */
-	*(buf++) = (unsigned char) (epb->Pepb >> 24); 
-	*(buf++) = (unsigned char) (epb->Pepb >> 16); 
-	*(buf++) = (unsigned char) (epb->Pepb >> 8); 
-	*(buf++) = (unsigned char) (epb->Pepb >> 0); 
+	*(buf++) = (unsigned char) (epb->Pepb >> 24);
+	*(buf++) = (unsigned char) (epb->Pepb >> 16);
+	*(buf++) = (unsigned char) (epb->Pepb >> 8);
+	*(buf++) = (unsigned char) (epb->Pepb >> 0);
 
 	/* Data */
 	/*memcpy(buf, epb->data, (size_t) epb->Lepb - 11);*/
@@ -448,7 +448,7 @@ opj_bool jpwl_epb_fill(opj_j2k_t *j2k, jpwl_epb_ms_t *epb, unsigned char *buf, u
 				"Possible encoding error in codeword @ position #%d\n", (L1_buf - buf) / epb->k_pre);
 
 		/* copy parity bytes only in redundancy buffer */
-		memcpy(L2_buf, parityword, P); 
+		memcpy(L2_buf, parityword, P);
 
 		/* advance parity buffer */
 		L2_buf += P;
@@ -463,7 +463,7 @@ opj_bool jpwl_epb_fill(opj_j2k_t *j2k, jpwl_epb_ms_t *epb, unsigned char *buf, u
 	if (epb->hprot < 0) {
 
 		/* there should be no EPB */
-		
+
 	} else if (epb->hprot == 0) {
 
 		/* no protection for the data */
@@ -536,7 +536,7 @@ opj_bool jpwl_epb_fill(opj_j2k_t *j2k, jpwl_epb_ms_t *epb, unsigned char *buf, u
 					"Possible encoding error in codeword @ position #%d\n", (L4_buf - buf) / epb->k_post);
 
 			/* copy parity bytes only in redundancy buffer */
-			memcpy(L3_buf, parityword, P); 
+			memcpy(L3_buf, parityword, P);
 
 			/* advance parity buffer */
 			L3_buf += P;
@@ -662,7 +662,7 @@ opj_bool jpwl_correct(opj_j2k_t *j2k) {
 
 	/* nope, no EPBs probably, or they are so damaged that we can give up */
 	return OPJ_FALSE;
-	
+
 	return OPJ_TRUE;
 
 	/* AN ATTEMPT OF PARSER */
@@ -739,7 +739,7 @@ opj_bool jpwl_correct(opj_j2k_t *j2k) {
 		}
 
 		/* skip to marker's end */
-		cio_skip(cio, skips);	
+		cio_skip(cio, skips);
 
 	}
 
@@ -769,7 +769,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 	char str1[25] = "";
 	int myconn, errnum = 0;
 	opj_bool errflag = OPJ_FALSE;
-	
+
 	opj_cio_t *cio = j2k->cio;
 
 	/* check for common errors */
@@ -777,7 +777,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 		opj_event_msg(j2k->cinfo, EVT_ERROR, "The EPB pointer is a NULL buffer\n");
 		return OPJ_FALSE;
 	}
-	
+
 	/* set bignesses */
 	L1 = pre_len + 13;
 
@@ -829,7 +829,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 	L2_buf = buffer + 13;
 	remaining = L1;
 	while (remaining) {
- 
+
 		/* always zero-pad codewords */
 		/* (this is required, since after decoding the zeros in the long codeword
 		    could change, and keep unchanged in subsequent calls) */
@@ -842,7 +842,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 			memcpy(codeword, L1_buf, k_pre);
 
 		/* copy redundancy buffer in parity bytes */
-		memcpy(parityword, L2_buf, P); 
+		memcpy(parityword, L2_buf, P);
 
 		/* Decode the buffer and possibly obtain corrected bytes */
 		status = eras_dec_rs(codeword, NULL, 0);
@@ -976,7 +976,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 		L4_buf = buffer + myconn;
 	else
 		L4_buf = *L4_bufp;
-	if (post_len == -1) 
+	if (post_len == -1)
 		L4 = LDPepb - pre_len - 13;
 	else if (post_len == 0)
 		L4 = 0;
@@ -1015,7 +1015,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 				if (conn == NULL)
 					opj_event_msg(j2k->cinfo, EVT_WARNING, "- CRC is KO (r=%d, c=%d)\n", filecrc, mycrc);
 				errflag = OPJ_TRUE;
-			}	
+			}
 		}
 
 		if ((16 * ((Pepb & 0x00000001) + 1)) == 32) {
@@ -1080,7 +1080,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 		L3_buf = L2_buf;
 		remaining = L4;
 		while (remaining) {
- 
+
 			/* always zero-pad codewords */
 			/* (this is required, since after decoding the zeros in the long codeword
 				could change, and keep unchanged in subsequent calls) */
@@ -1093,7 +1093,7 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 				memcpy(codeword, L4_buf, k_post);
 
 			/* copy redundancy buffer in parity bytes */
-			memcpy(parityword, L3_buf, P); 
+			memcpy(parityword, L3_buf, P);
 
 			/* Decode the buffer and possibly obtain corrected bytes */
 			status = eras_dec_rs(codeword, NULL, 0);
@@ -1168,25 +1168,25 @@ opj_bool jpwl_epb_correct(opj_j2k_t *j2k, unsigned char *buffer, int type, int p
 void jpwl_epc_write(opj_j2k_t *j2k, jpwl_epc_ms_t *epc, unsigned char *buf) {
 
 	/* Marker */
-	*(buf++) = (unsigned char) (J2K_MS_EPC >> 8); 
-	*(buf++) = (unsigned char) (J2K_MS_EPC >> 0); 
+	*(buf++) = (unsigned char) (J2K_MS_EPC >> 8);
+	*(buf++) = (unsigned char) (J2K_MS_EPC >> 0);
 
 	/* Lepc */
-	*(buf++) = (unsigned char) (epc->Lepc >> 8); 
-	*(buf++) = (unsigned char) (epc->Lepc >> 0); 
+	*(buf++) = (unsigned char) (epc->Lepc >> 8);
+	*(buf++) = (unsigned char) (epc->Lepc >> 0);
 
 	/* Pcrc */
-	*(buf++) = (unsigned char) (epc->Pcrc >> 8); 
+	*(buf++) = (unsigned char) (epc->Pcrc >> 8);
 	*(buf++) = (unsigned char) (epc->Pcrc >> 0);
 
 	/* DL */
-	*(buf++) = (unsigned char) (epc->DL >> 24); 
-	*(buf++) = (unsigned char) (epc->DL >> 16); 
-	*(buf++) = (unsigned char) (epc->DL >> 8); 
-	*(buf++) = (unsigned char) (epc->DL >> 0); 
+	*(buf++) = (unsigned char) (epc->DL >> 24);
+	*(buf++) = (unsigned char) (epc->DL >> 16);
+	*(buf++) = (unsigned char) (epc->DL >> 8);
+	*(buf++) = (unsigned char) (epc->DL >> 0);
 
 	/* Pepc */
-	*(buf++) = (unsigned char) (epc->Pepc >> 0); 
+	*(buf++) = (unsigned char) (epc->Pepc >> 0);
 
 	/* Data */
 	/*memcpy(buf, epc->data, (size_t) epc->Lepc - 9);*/
@@ -1205,7 +1205,7 @@ int jpwl_esds_add(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int *jwmarker_num,
 	return 0;
 }
 
-jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp, 
+jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 	unsigned char addrm, unsigned char ad_size,
 	unsigned char senst, int se_size, int tileno,
 	unsigned long int svalnum, void *sensval) {
@@ -1231,14 +1231,14 @@ jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 		opj_event_msg(j2k->cinfo, EVT_ERROR, "Sensitivity size %d for ESD MS is forbidden\n", se_size);
 		return NULL;
 	}
-	
+
 	/* ... depends on the addressing mode */
 	switch (addrm) {
 
 	/* packet mode */
 	case (0):
 		ad_size = 0; /* as per the standard */
-		esd->sensval_size = (unsigned int)se_size; 
+		esd->sensval_size = (unsigned int)se_size;
 		break;
 
 	/* byte range */
@@ -1248,7 +1248,7 @@ jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 			/* if there are more than 66% of (2^16 - 1) bytes, switch to 4 bytes
 			 (we keep space for possible EPBs being inserted) */
 			ad_size = (j2k->cstr_info->codestream_size > (1 * 65535 / 3)) ? 4 : 2;
-		esd->sensval_size = ad_size + ad_size + se_size; 
+		esd->sensval_size = ad_size + ad_size + se_size;
 		break;
 
 	/* packet range */
@@ -1257,7 +1257,7 @@ jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 		if (ad_size == 0)
 			/* if there are more than 2^16 - 1 packets, switch to 4 bytes */
 			ad_size = (j2k->cstr_info->packno > 65535) ? 4 : 2;
-		esd->sensval_size = ad_size + ad_size + se_size; 
+		esd->sensval_size = ad_size + ad_size + se_size;
 		break;
 
 	case (3):
@@ -1291,7 +1291,7 @@ jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 			break;
 
 		}
-	}		
+	}
 
 	/* fill private fields */
 	esd->senst = senst;
@@ -1301,7 +1301,7 @@ jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comp,
 	esd->svalnum = svalnum;
 	esd->numcomps = j2k->image->numcomps;
 	esd->tileno = tileno;
-	
+
 	/* Set the ESD parameters */
 	/* length, excluding data field */
 	if (esd->numcomps < 257)
@@ -1370,7 +1370,7 @@ opj_bool jpwl_esd_fill(opj_j2k_t *j2k, jpwl_esd_ms_t *esd, unsigned char *buf) {
 	/* if pointer of esd->data is not null, simply write down all the values byte by byte */
 	if (esd->data) {
 		for (i = 0; i < (int) esd->svalnum; i++)
-			*(buf++) = esd->data[i]; 
+			*(buf++) = esd->data[i];
 		return OPJ_TRUE;
 	}
 
@@ -1476,22 +1476,22 @@ opj_bool jpwl_esd_fill(opj_j2k_t *j2k, jpwl_esd_ms_t *esd, unsigned char *buf) {
 
 		case (2):
 			/* two bytes */
-			*(buf++) = (unsigned char) (addr1 >> 8); 
-			*(buf++) = (unsigned char) (addr1 >> 0); 
-			*(buf++) = (unsigned char) (addr2 >> 8); 
-			*(buf++) = (unsigned char) (addr2 >> 0); 
+			*(buf++) = (unsigned char) (addr1 >> 8);
+			*(buf++) = (unsigned char) (addr1 >> 0);
+			*(buf++) = (unsigned char) (addr2 >> 8);
+			*(buf++) = (unsigned char) (addr2 >> 0);
 			break;
 
 		case (4):
 			/* four bytes */
-			*(buf++) = (unsigned char) (addr1 >> 24); 
-			*(buf++) = (unsigned char) (addr1 >> 16); 
-			*(buf++) = (unsigned char) (addr1 >> 8); 
-			*(buf++) = (unsigned char) (addr1 >> 0); 
-			*(buf++) = (unsigned char) (addr2 >> 24); 
-			*(buf++) = (unsigned char) (addr2 >> 16); 
-			*(buf++) = (unsigned char) (addr2 >> 8); 
-			*(buf++) = (unsigned char) (addr2 >> 0); 
+			*(buf++) = (unsigned char) (addr1 >> 24);
+			*(buf++) = (unsigned char) (addr1 >> 16);
+			*(buf++) = (unsigned char) (addr1 >> 8);
+			*(buf++) = (unsigned char) (addr1 >> 0);
+			*(buf++) = (unsigned char) (addr2 >> 24);
+			*(buf++) = (unsigned char) (addr2 >> 16);
+			*(buf++) = (unsigned char) (addr2 >> 8);
+			*(buf++) = (unsigned char) (addr2 >> 0);
 			break;
 
 		default:
@@ -1571,13 +1571,13 @@ opj_bool jpwl_esd_fill(opj_j2k_t *j2k, jpwl_esd_ms_t *esd, unsigned char *buf) {
 
 		case (1):
 			/* one byte */
-			*(buf++) = (unsigned char) (pfpvalue >> 0); 
+			*(buf++) = (unsigned char) (pfpvalue >> 0);
 			break;
 
 		case (2):
 			/* two bytes */
-			*(buf++) = (unsigned char) (pfpvalue >> 8); 
-			*(buf++) = (unsigned char) (pfpvalue >> 0); 
+			*(buf++) = (unsigned char) (pfpvalue >> 8);
+			*(buf++) = (unsigned char) (pfpvalue >> 0);
 			break;
 		}
 
@@ -1589,20 +1589,20 @@ opj_bool jpwl_esd_fill(opj_j2k_t *j2k, jpwl_esd_ms_t *esd, unsigned char *buf) {
 opj_bool jpwl_esd_write(opj_j2k_t *j2k, jpwl_esd_ms_t *esd, unsigned char *buf) {
 
 	/* Marker */
-	*(buf++) = (unsigned char) (J2K_MS_ESD >> 8); 
-	*(buf++) = (unsigned char) (J2K_MS_ESD >> 0); 
+	*(buf++) = (unsigned char) (J2K_MS_ESD >> 8);
+	*(buf++) = (unsigned char) (J2K_MS_ESD >> 0);
 
 	/* Lesd */
-	*(buf++) = (unsigned char) (esd->Lesd >> 8); 
-	*(buf++) = (unsigned char) (esd->Lesd >> 0); 
+	*(buf++) = (unsigned char) (esd->Lesd >> 8);
+	*(buf++) = (unsigned char) (esd->Lesd >> 0);
 
 	/* Cesd */
 	if (esd->numcomps >= 257)
-		*(buf++) = (unsigned char) (esd->Cesd >> 8); 
-	*(buf++) = (unsigned char) (esd->Cesd >> 0); 
+		*(buf++) = (unsigned char) (esd->Cesd >> 8);
+	*(buf++) = (unsigned char) (esd->Cesd >> 0);
 
 	/* Pesd */
-	*(buf++) = (unsigned char) (esd->Pesd >> 0); 
+	*(buf++) = (unsigned char) (esd->Pesd >> 0);
 
 	/* Data */
 	if (esd->numcomps < 257)
@@ -1636,7 +1636,7 @@ unsigned short int jpwl_double_to_pfp(double V, int bytes) {
 			e = (unsigned short int) (floor(log(V) * 1.44269504088896) / 4.0);
 			m = (unsigned short int) (0.5 + (V / (pow(2.0, (double) (4 * e)))));
 		}
-		em = ((e & 0x000F) << 4) + (m & 0x000F);		
+		em = ((e & 0x000F) << 4) + (m & 0x000F);
 		break;
 
 	case (2):
@@ -1767,7 +1767,7 @@ opj_bool jpwl_update_info(opj_j2k_t *j2k, jpwl_marker_t *jwmarker, int jwmarker_
 
 		/* navigate through all the packets in this tile */
 		for (packno = 0; packno < numpacks; packno++) {
-			
+
 			/* start_pos: increment with markers before the packet */
 			/* disabled for the same reason as before */
 			addlen = 0;

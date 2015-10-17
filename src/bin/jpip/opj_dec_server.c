@@ -42,7 +42,7 @@
  *     quit\n
  *  Be sure all image viewers are closed.\n
  *  Cache file in JPT format is stored in the working directly before it quites.
- *  
+ *
  */
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ WSADATA initialisation_win32;
 #endif
 
 int main(int argc, char *argv[]){
-  
+
   dec_server_record_t *server_record;
   client_t client;
   int port = 50000;
@@ -72,13 +72,13 @@ int main(int argc, char *argv[]){
   else
     printf( "Initialisation Winsock\n");
 #endif /*_WIN32*/
-  
+
   server_record = init_dec_server( port);
-  
+
   while(( client = accept_connection( server_record)) != -1 )
     if(!handle_clientreq( client, server_record))
       break;
-  
+
   terminate_dec_server( &server_record);
 
 #ifdef _WIN32

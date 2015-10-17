@@ -1,11 +1,11 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
  * Copyright (c) 2010, Mathieu Malaterre, GDCM
- * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+ * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France
  * Copyright (c) 2012, CS Systemes d'Information, France
  * All rights reserved.
  *
@@ -119,7 +119,7 @@ static void decode_help_display(void) {
 /* -------------------------------------------------------------------------- */
 static int get_num_images(char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int num_images = 0;
 
 	/*Reading the input images from given input directory*/
@@ -129,7 +129,7 @@ static int get_num_images(char *imgdirpath){
 		fprintf(stderr,"Could not open Folder %s\n",imgdirpath);
 		return 0;
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -142,7 +142,7 @@ static int get_num_images(char *imgdirpath){
 /* -------------------------------------------------------------------------- */
 static int load_images(dircnt_t *dirptr, char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int i = 0;
 
 	/*Reading the input images from given input directory*/
@@ -154,7 +154,7 @@ static int load_images(dircnt_t *dirptr, char *imgdirpath){
 	}else	{
 		fprintf(stderr,"Folder opened successfully\n");
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -163,7 +163,7 @@ static int load_images(dircnt_t *dirptr, char *imgdirpath){
 		i++;
 	}
 	closedir(dir);
-	return 0;	
+	return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -228,7 +228,7 @@ static int infile_format(const char *fname)
 	const char *s, *magic_s;
 	int ext_format, magic_format;
 	unsigned char buf[12];
-	size_t l_nb_read; 
+	size_t l_nb_read;
 
 	reader = fopen(fname, "rb");
 
@@ -325,7 +325,7 @@ static int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *param
 				}
 			}
 			break;
-				
+
 				/* ----------------------------------------------------- */
       case 'f': 			/* flag */
         img_fol->flag = atoi(opj_optarg);
@@ -334,7 +334,7 @@ static int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *param
 
 			case 'h': 			/* display an help description */
 				decode_help_display();
-				return 1;				
+				return 1;
 
 				/* ------------------------------------------------------ */
 
@@ -353,7 +353,7 @@ static int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *param
                 parameters->m_verbose = 1;
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
         default:
             fprintf(stderr, "[WARNING] An invalid option has been ignored.\n");
@@ -452,7 +452,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Initialize reading of directory */
-	if(img_fol.set_imgdir==1){	
+	if(img_fol.set_imgdir==1){
 		int it_image;
 		num_images=get_num_images(img_fol.imgdirpath);
 
@@ -541,7 +541,7 @@ int main(int argc, char *argv[])
 				continue;
 		}
 
-		/* catch events using our callbacks and give a local context */		
+		/* catch events using our callbacks and give a local context */
 		opj_set_info_handler(l_codec, info_callback,00);
 		opj_set_warning_handler(l_codec, warning_callback,00);
 		opj_set_error_handler(l_codec, error_callback,00);

@@ -44,18 +44,18 @@ unsigned int OPJ_CALLCONV yuv_num_frames(mj2_tk_t * tk, char *infile)
 	FILE *f;
 
   f = fopen(infile,"rb");
-  if (!f) {  
+  if (!f) {
     fprintf(stderr, "failed to open %s for reading\n",infile);
     return 0;
   }
 	prec_size = (tk->depth + 7)/8;/* bytes of precision */
 
   frame_size = (long) (tk->w * tk->h * (1.0 + (double) 2 / (double) (tk->CbCr_subsampling_dx * tk->CbCr_subsampling_dy)));	/* Calculate frame size */
-	frame_size *= prec_size; 
-	
+	frame_size *= prec_size;
+
   fseek(f, 0, SEEK_END);
   end_of_f = ftell(f);		/* Calculate file size */
-	
+
   if (end_of_f < frame_size) {
     fprintf(stderr,
 			"YUV does not contains any frame of %d x %d size\n", tk->w,
@@ -63,7 +63,7 @@ unsigned int OPJ_CALLCONV yuv_num_frames(mj2_tk_t * tk, char *infile)
     return 0;
   }
   fclose(f);
-	
+
   return (unsigned int)(end_of_f / frame_size);
 }
 
@@ -88,7 +88,7 @@ opj_image_t * OPJ_CALLCONV mj2_image_create(mj2_tk_t * tk, opj_cparameters_t *pa
 	for(i = 0; i < numcomps; i++) {
 		cmptparm[i].prec = tk->depth;
 		cmptparm[i].bpp = tk->depth;
-		cmptparm[i].sgnd = 0;		
+		cmptparm[i].sgnd = 0;
 		cmptparm[i].dx = i ? subsampling_dx * tk->CbCr_subsampling_dx : subsampling_dx;
 		cmptparm[i].dy = i ? subsampling_dy * tk->CbCr_subsampling_dy : subsampling_dy;
 		cmptparm[i].w = tk->w;
@@ -112,7 +112,7 @@ char OPJ_CALLCONV yuvtoimage(mj2_tk_t * tk, opj_image_t * img, int frame_num, op
 	unsigned char uc;
 
   yuvfile = fopen(infile,"rb");
-  if (!yuvfile) {  
+  if (!yuvfile) {
     fprintf(stderr, "failed to open %s for readings\n",parameters->infile);
     return 1;
   }
@@ -133,7 +133,7 @@ char OPJ_CALLCONV yuvtoimage(mj2_tk_t * tk, opj_image_t * img, int frame_num, op
 		fclose(yuvfile);
     return 1;
   }
-	
+
   img->x0 = tk->Dim[0];
   img->y0 = tk->Dim[1];
   img->x1 = !tk->Dim[0] ? (tk->w - 1) * subsampling_dx + 1 : tk->Dim[0] +
@@ -142,8 +142,8 @@ char OPJ_CALLCONV yuvtoimage(mj2_tk_t * tk, opj_image_t * img, int frame_num, op
     (tk->h - 1) * subsampling_dy + 1;
 
 	size = tk->w * tk->h * prec_bytes;
-	
-	for(compno = 0; compno < numcomps; compno++) 
+
+	for(compno = 0; compno < numcomps; compno++)
    {
 	max = size/(img->comps[compno].dx * img->comps[compno].dy);
 	data = img->comps[compno].data;
@@ -163,7 +163,7 @@ char OPJ_CALLCONV yuvtoimage(mj2_tk_t * tk, opj_image_t * img, int frame_num, op
   }
    }
 	fclose(yuvfile);
-	
+
   return 0;
 }
 
@@ -196,7 +196,7 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
       "Error with the number of image components(must be one or three)\n");
     return OPJ_FALSE;
   }
-  
+
   f = fopen(outfile, "a+b");
   if (!f) {
     fprintf(stderr, "failed to open %s for writing\n", outfile);
@@ -205,7 +205,7 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
   is_16 = (img->comps[0].prec > 8);
   prec_bytes = (is_16?2:1);
   data = img->comps[0].data;
-  
+
   for (i = 0; i < (img->comps[0].w * img->comps[0].h); i++) {
     v = *data++;
     buf[0] = (unsigned char)v;
@@ -214,8 +214,8 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
 
     fwrite(buf, 1, prec_bytes, f);
   }
-  
-  
+
+
   if (img->numcomps == 3) {
 	data = img->comps[1].data;
 
@@ -228,7 +228,7 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
       fwrite(buf, 1, prec_bytes, f);
     }
     data = img->comps[2].data;
-    
+
     for (i = 0; i < (img->comps[2].w * img->comps[2].h); i++) {
       v = *data++;
       buf[0] = (unsigned char)v;
@@ -239,26 +239,26 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
     }
   } else if (img->numcomps == 1) {
 /* fake CbCr values */
-	if(is_16) 
-  { 
+	if(is_16)
+  {
 	buf[0] = 255;
 	if(img->comps[0].prec == 10) buf[1] = 1;
 	else
 	if(img->comps[0].prec == 12) buf[1] = 3;
 	else
 	 buf[1] = 125;
-  } 
+  }
 	else buf[0] = 125;
 
     for (i = 0; i < (img->comps[0].w * img->comps[0].h * 0.25); i++) {
       fwrite(buf, 1, prec_bytes, f);
     }
-    
-    
+
+
     for (i = 0; i < (img->comps[0].w * img->comps[0].h * 0.25); i++) {
       fwrite(buf, 1, prec_bytes, f);
     }
-  }  
+  }
   fclose(f);
   return OPJ_TRUE;
 }
@@ -273,7 +273,7 @@ opj_bool OPJ_CALLCONV imagetoyuv(opj_image_t * img, char *outfile)
 int OPJ_CALLCONV imagetobmp(opj_image_t * img, char *outfile) {
   int w,wr,h,hr,i,pad;
   FILE *f;
-  
+
   if (img->numcomps == 3 && img->comps[0].dx == img->comps[1].dx
     && img->comps[1].dx == img->comps[2].dx
     && img->comps[0].dy == img->comps[1].dy
@@ -281,25 +281,25 @@ int OPJ_CALLCONV imagetobmp(opj_image_t * img, char *outfile) {
     && img->comps[0].prec == img->comps[1].prec
     && img->comps[1].prec == img->comps[2].prec) {
     /* -->> -->> -->> -->>
-    
+
       24 bits color
-      
+
     <<-- <<-- <<-- <<-- */
-    
+
     f = fopen(outfile, "wb");
     if (!f) {
       fprintf(stderr, "failed to open %s for writing\n", outfile);
       return 1;
-    }   
-    
+    }
+
     w = img->comps[0].w;
     wr = int_ceildivpow2(img->comps[0].w, img->comps[0].factor);
-    
+
     h = img->comps[0].h;
     hr = int_ceildivpow2(img->comps[0].h, img->comps[0].factor);
-    
+
     fprintf(f, "BM");
-    
+
     /* FILE HEADER */
     /* ------------- */
     fprintf(f, "%c%c%c%c",
@@ -315,7 +315,7 @@ int OPJ_CALLCONV imagetobmp(opj_image_t * img, char *outfile) {
       ((0) >> 16) & 0xff, ((0) >> 24) & 0xff);
     fprintf(f, "%c%c%c%c", (54) & 0xff, ((54) >> 8) & 0xff,
       ((54) >> 16) & 0xff, ((54) >> 24) & 0xff);
-    
+
     /* INFO HEADER   */
     /* ------------- */
     fprintf(f, "%c%c%c%c", (40) & 0xff, ((40) >> 8) & 0xff,
@@ -349,7 +349,7 @@ int OPJ_CALLCONV imagetobmp(opj_image_t * img, char *outfile) {
       ((0) >> 16) & 0xff, ((0) >> 24) & 0xff);
     fprintf(f, "%c%c%c%c", (0) & 0xff, ((0) >> 8) & 0xff,
       ((0) >> 16) & 0xff, ((0) >> 24) & 0xff);
-    
+
     for (i = 0; i < wr * hr; i++) {
       unsigned char R, G, B;
       /* a modifier */
@@ -360,7 +360,7 @@ int OPJ_CALLCONV imagetobmp(opj_image_t * img, char *outfile) {
       /* B = img->comps[2].data[w * h - ((i) / (w) + 1) * w + (i) % (w)];*/
       B = img->comps[2].data[w * hr - ((i) / (wr) + 1) * w + (i) % (wr)];
       fprintf(f, "%c%c%c", B, G, R);
-      
+
       if ((i + 1) % wr == 0) {
 				for (pad = (3 * wr) % 4 ? 4 - (3 * wr) % 4 : 0; pad > 0; pad--)	/* ADD */
 					fprintf(f, "%c", 0);

@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2007, Jonathan Ballard <dzonatas@dzonux.net>
@@ -81,7 +81,7 @@ static const OPJ_FLOAT32 opj_c13318 = 1.625732422f;
 /*@}*/
 
 /**
-Virtual function type for wavelet transform in 1-D 
+Virtual function type for wavelet transform in 1-D
 */
 typedef void (*DWT1DFN)(opj_dwt_t* v);
 
@@ -118,7 +118,7 @@ Forward 9-7 wavelet transform in 1-D
 */
 static void opj_dwt_encode_1_real(OPJ_INT32 *a, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32 cas);
 /**
-Explicit calculation of the Quantization Stepsizes 
+Explicit calculation of the Quantization Stepsizes
 */
 static void opj_dwt_encode_stepsize(OPJ_INT32 stepsize, OPJ_INT32 numbps, opj_stepsize_t *bandno_stepsize);
 /**
@@ -184,7 +184,7 @@ static const OPJ_FLOAT64 opj_dwt_norms_real[4][10] = {
 	{2.080, 3.865, 8.307, 17.18, 34.71, 69.59, 139.3, 278.6, 557.2}
 };
 
-/* 
+/*
 ==========================================================
    local functions
 ==========================================================
@@ -192,7 +192,7 @@ static const OPJ_FLOAT64 opj_dwt_norms_real[4][10] = {
 
 /* <summary>			                 */
 /* Forward lazy transform (horizontal).  */
-/* </summary>                            */ 
+/* </summary>                            */
 static void opj_dwt_deinterleave_h(OPJ_INT32 *a, OPJ_INT32 *b, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32 cas) {
 	OPJ_INT32 i;
 	OPJ_INT32 * l_dest = b;
@@ -202,7 +202,7 @@ static void opj_dwt_deinterleave_h(OPJ_INT32 *a, OPJ_INT32 *b, OPJ_INT32 dn, OPJ
 		*l_dest++ = *l_src;
 		l_src += 2;
 	}
-	
+
     l_dest = b + sn;
 	l_src = a + 1 - cas;
 
@@ -212,9 +212,9 @@ static void opj_dwt_deinterleave_h(OPJ_INT32 *a, OPJ_INT32 *b, OPJ_INT32 dn, OPJ
 	}
 }
 
-/* <summary>                             */  
+/* <summary>                             */
 /* Forward lazy transform (vertical).    */
-/* </summary>                            */ 
+/* </summary>                            */
 static void opj_dwt_deinterleave_v(OPJ_INT32 *a, OPJ_INT32 *b, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32 x, OPJ_INT32 cas) {
     OPJ_INT32 i = sn;
 	OPJ_INT32 * l_dest = b;
@@ -228,7 +228,7 @@ static void opj_dwt_deinterleave_v(OPJ_INT32 *a, OPJ_INT32 *b, OPJ_INT32 dn, OPJ
 
 	l_dest = b + sn * x;
 	l_src = a + 1 - cas;
-	
+
 	i = dn;
     while (i--) {
 		*l_dest = *l_src;
@@ -257,9 +257,9 @@ static void opj_dwt_interleave_h(opj_dwt_t* h, OPJ_INT32 *a) {
     }
 }
 
-/* <summary>                             */  
+/* <summary>                             */
 /* Inverse lazy transform (vertical).    */
-/* </summary>                            */ 
+/* </summary>                            */
 static void opj_dwt_interleave_v(opj_dwt_t* v, OPJ_INT32 *a, OPJ_INT32 x) {
     OPJ_INT32 *ai = a;
     OPJ_INT32 *bi = v->mem + v->cas;
@@ -274,7 +274,7 @@ static void opj_dwt_interleave_v(opj_dwt_t* v, OPJ_INT32 *a, OPJ_INT32 x) {
     i = v->dn ;
     while( i-- ) {
       *bi = *ai;
-	  bi += 2;  
+	  bi += 2;
 	  ai += x;
     }
 }
@@ -285,7 +285,7 @@ static void opj_dwt_interleave_v(opj_dwt_t* v, OPJ_INT32 *a, OPJ_INT32 x) {
 /* </summary>                           */
 static void opj_dwt_encode_1(OPJ_INT32 *a, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32 cas) {
 	OPJ_INT32 i;
-	
+
 	if (!cas) {
 		if ((dn > 0) || (sn > 1)) {	/* NEW :  CASE ONE ELEMENT */
 			for (i = 0; i < dn; i++) OPJ_D(i) -= (OPJ_S_(i) + OPJ_S_(i + 1)) >> 1;
@@ -303,10 +303,10 @@ static void opj_dwt_encode_1(OPJ_INT32 *a, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32
 
 /* <summary>                            */
 /* Inverse 5-3 wavelet transform in 1-D. */
-/* </summary>                           */ 
+/* </summary>                           */
 static void opj_dwt_decode_1_(OPJ_INT32 *a, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT32 cas) {
 	OPJ_INT32 i;
-	
+
 	if (!cas) {
 		if ((dn > 0) || (sn > 1)) { /* NEW :  CASE ONE ELEMENT */
 			for (i = 0; i < sn; i++) OPJ_S(i) -= (OPJ_D_(i - 1) + OPJ_D_(i) + 2) >> 2;
@@ -324,7 +324,7 @@ static void opj_dwt_decode_1_(OPJ_INT32 *a, OPJ_INT32 dn, OPJ_INT32 sn, OPJ_INT3
 
 /* <summary>                            */
 /* Inverse 5-3 wavelet transform in 1-D. */
-/* </summary>                           */ 
+/* </summary>                           */
 static void opj_dwt_decode_1(opj_dwt_t *v) {
 	opj_dwt_decode_1_(v->mem, v->dn, v->sn, v->cas);
 }
@@ -375,7 +375,7 @@ static void opj_dwt_encode_stepsize(OPJ_INT32 stepsize, OPJ_INT32 numbps, opj_st
 	bandno_stepsize->expn = numbps - p;
 }
 
-/* 
+/*
 ==========================================================
    DWT interface
 ==========================================================

@@ -59,12 +59,12 @@
 
 #endif /*SERVER*/
 
-/* 
+/*
  *==========================================================
  * JPIP server API
  *==========================================================
  */
- 
+
  #ifdef SERVER
 
 /** Server static records*/
@@ -110,7 +110,7 @@ QR_t * parse_querystring( const char *query_string);
  *
  * @param[in]  rec server static record pointer
  * @param[in]  qr  query/response data pointer
- * @return     true if succeed, otherwise false 
+ * @return     true if succeed, otherwise false
  */
 OPJ_BOOL process_JPIPrequest( server_record_t *rec, QR_t *qr);
 
@@ -123,7 +123,7 @@ OPJ_BOOL process_JPIPrequest( server_record_t *rec, QR_t *qr);
 void send_responsedata( server_record_t *rec, QR_t *qr);
 
 /**
- * 4th (last) process; 
+ * 4th (last) process;
  *
  * @param[in]  rec server static record pinter
  * @param[in]  qr  address of query/response data pointer
@@ -144,7 +144,7 @@ void local_log( OPJ_BOOL query, OPJ_BOOL messages, OPJ_BOOL sessions, OPJ_BOOL t
 
 #endif /*SERVER*/
 
-/* 
+/*
  *==========================================================
  *      JPIP decoding server API
  *==========================================================
@@ -199,7 +199,7 @@ OPJ_API OPJ_BOOL OPJ_CALLCONV handle_clientreq( client_t client, dec_server_reco
 
 #endif /*SERVER*/
 
-/* 
+/*
  *==========================================================
  *     JPIP tool API
  *==========================================================
@@ -281,7 +281,7 @@ typedef index_param_t index_t;
 
 /**
  * Parse JP2 file and get index information from cidx box inside
- * 
+ *
  * @param[in] fd file descriptor of the JP2 file
  * @return       pointer to the generated structure of index parameters
  */

@@ -12,11 +12,11 @@ Anyone. As the OpenJPEG code is released under the [BSD 2-clause "Simplified" Li
 
 ## How to install and use OpenJPEG ?
 API Documentation needs a major refactoring. Meanwhile, you can check [installation](https://github.com/uclouvain/openjpeg/wiki/Installation) instructions and [codec documentation](https://github.com/uclouvain/openjpeg/wiki/DocJ2KCodec).
-    
+
 ## Current Status
 [![badge-build]][link-build]
 
-[![badge-msvc-build]][link-msvc-build] 
+[![badge-msvc-build]][link-msvc-build]
 
 [![badge-coverity]][link-coverity]
 

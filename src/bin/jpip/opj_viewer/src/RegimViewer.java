@@ -34,14 +34,14 @@ import java.awt.image.*;
 import java.awt.geom.AffineTransform;
 
 public class RegimViewer extends JPanel
-{  
+{
     private PnmImage refpnm;
     private int vw, vh;
     private Image refimg;
     private Image jpipImg;
     private double[] affine_matrix;
     private AffineTransform affine;
-    
+
     public RegimViewer( String refname, double[] mat)
     {
 	refpnm = new PnmImage( refname.replaceFirst("jp2", "pgm")); // decoding not realized
@@ -53,7 +53,7 @@ public class RegimViewer extends JPanel
 	affine_matrix[3] = mat[4];
 	affine_matrix[4] = mat[2];
 	affine_matrix[5] = mat[5];
-	
+
 	affine = new AffineTransform();
 
 	for( int i=0; i<3; i++){
@@ -62,7 +62,7 @@ public class RegimViewer extends JPanel
 	    System.out.println();
 	}
     }
-    
+
     public void projection( Image jpipimg, double scale)
     {
 	jpipImg = jpipimg;
@@ -70,43 +70,43 @@ public class RegimViewer extends JPanel
 	vw = refimg.getWidth(this);
 	vh = refimg.getHeight(this);
 	this.setSize( vw, vh);
-	
+
 	affine.setTransform( affine_matrix[0], affine_matrix[1], affine_matrix[2], affine_matrix[3], affine_matrix[4], affine_matrix[5]);
 	repaint();
     }
-    
+
     public void paint(Graphics g)
     {
 	int iw, ih;
 	BufferedImage bi, bi2;
 	Graphics2D big, big2;
 	Graphics2D g2 = (Graphics2D) g;
-		
+
 	g2.clearRect(0, 0, vw, vh);
-	
+
 	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			    RenderingHints.VALUE_ANTIALIAS_ON);
 	g2.setRenderingHint(RenderingHints.KEY_RENDERING,
 			    RenderingHints.VALUE_RENDER_QUALITY);
-	
+
 	iw = refimg.getWidth(this);
 	ih = refimg.getHeight(this);
-	
+
 	bi = new BufferedImage( iw, ih, BufferedImage.TYPE_INT_RGB);
 	big = bi.createGraphics();
 	big.drawImage(refimg, 0, 0, this);
-	
+
 	g2.drawImage(bi, 0, 0, this);
 
 	bi2 = new BufferedImage( jpipImg.getWidth(this), jpipImg.getHeight(this), BufferedImage.TYPE_INT_RGB);
 	big2 = bi2.createGraphics();
 	big2.drawImage( jpipImg, 0, 0, this);
-	
+
 	g2.setTransform(affine);
 
 	g2.drawImage(bi2, 0, 0, this);
     }
-    
+
     public Dimension get_imsize()
     {
 	return (new Dimension( vw, vh));

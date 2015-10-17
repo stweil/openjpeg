@@ -83,7 +83,7 @@ It should display correctly images as large as 4000x2000, provided that a couple
 The log/peek pane is shared among two different subpanels:
 
 - the log panel will report a lot of debugging info coming out from the wx GUI as well as from the openjpeg library
-- the peek pane tries to give a peek on the codestream/file portion which is currently selected in the browsing pane. It shows both hex and ascii values corresponding to the marker/box section. 
+- the peek pane tries to give a peek on the codestream/file portion which is currently selected in the browsing pane. It shows both hex and ascii values corresponding to the marker/box section.
 
 
 4. Known bugs and limitations
@@ -92,7 +92,7 @@ The log/peek pane is shared among two different subpanels:
 4.1. Bugs
 -----------
 
-* 
+*
 
 4.2. Limitations
 ------------------

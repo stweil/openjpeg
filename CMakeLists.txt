@@ -281,7 +281,7 @@ configure_file(
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config.h
  @ONLY
  )
- 
+
  configure_file(
  ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/opj_config_private.h.cmake.in
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config_private.h

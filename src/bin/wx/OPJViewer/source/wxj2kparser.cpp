@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -182,7 +182,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 			OPJ_ADVANCE(1);
 			continue;
 		}
-		
+
 		// search the marker
 		for (m = 0; m < J2KMARK_NUM; m++) {
 			if (currmark == marker_val[m])
@@ -257,7 +257,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 		// append the marker
 		wxTreeItemId currid = m_tree->AppendItem(parentid,
 			wxString::Format(wxT("%03d: "), nmarks) +
-			wxString::FromAscii(marker_name[m]) + 
+			wxString::FromAscii(marker_name[m]) +
 			wxString::Format(wxT(" (0x%04X)"), marker_val[m]),
 			image, imageSel,
 			new OPJMarkerData(wxT("MARK") + wxString::Format(wxT(" (%d)"), marker_val[m]),
@@ -278,7 +278,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 
 		// position and length
 		wxTreeItemId subcurrid2 = m_tree->AppendItem(currid,
-			wxLongLong(offset).ToString() + wxT(" > ") + wxLongLong(offset + currlen + 1).ToString() + 
+			wxLongLong(offset).ToString() + wxT(" > ") + wxLongLong(offset + currlen + 1).ToString() +
 			wxT(", ") + wxString::Format(wxT("%d + 2 (%d)"), currlen, currlen + 2),
 			image, imageSel,
 			new OPJMarkerData(wxT("INFO"))
@@ -573,7 +573,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 		case SIZ_VAL:
 			{
 			int c;
-			
+
 			if (m_file->Read(twobytes, 2) != 2)
 				break;
 			unsigned short int rsiz = STREAM_TO_UINT16(twobytes, 0);
@@ -757,7 +757,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 				image, imageSel,
 				new OPJMarkerData(wxT("INFO"))
 				);
-			
+
 			wxString text;
 			if (scoc & 0x01)
 				text << wxT("Partitioned entropy coder");
@@ -1127,7 +1127,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 				image, imageSel,
 				new OPJMarkerData(wxT("INFO"))
 				);
-			
+
 			if (m_file->Read(onebyte, 1) != 1)
 				break;
 			unsigned char sqcc = onebyte[0];
@@ -1453,9 +1453,9 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 
 		default:
 			break;
-			
+
 		}
-								
+
 		// increment number of markers
 		if (nmarks++ >= maxmarks) {
 			WriteText(wxT("Maximum amount of markers exceeded"));
@@ -1464,7 +1464,7 @@ void OPJParseThread::ParseJ2KFile(wxFile *m_file, wxFileOffset offset, wxFileOff
 
 		// advance position
 		OPJ_ADVANCE(currlen + 2);
-	}	
+	}
 
 	WriteText(wxT("Search finished"));
 }

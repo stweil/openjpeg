@@ -53,7 +53,7 @@ typedef struct imgreg_param{
  * @param[in] numOfreslev number of resolution levels
  * @return                structure of image region parameters
  */
-imgreg_param_t map_viewin2imgreg( const int fx,    const int fy, 
+imgreg_param_t map_viewin2imgreg( const int fx,    const int fy,
 				  const int rx,    const int ry,
 				  const int rw,    const int rh,
 				  const int XOsiz, const int YOsiz,

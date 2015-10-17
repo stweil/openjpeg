@@ -173,7 +173,7 @@ fi
 
 set -x
 # This will print configuration
-# travis-ci doesn't dump cmake version in system info, let's print it 
+# travis-ci doesn't dump cmake version in system info, let's print it
 cmake --version
 
 export TRAVIS_OS_NAME=${TRAVIS_OS_NAME}
@@ -252,7 +252,7 @@ if [ "${OPJ_CI_SKIP_TESTS:-}" != "1" ]; then
 			done < failures.txt
 		fi
 	fi
-	
+
 	if [ ${OPJ_CI_RESULT} -eq 0 ]; then
 		echo "No new/unknown test failure found
 		"
@@ -261,7 +261,7 @@ if [ "${OPJ_CI_SKIP_TESTS:-}" != "1" ]; then
 New/unknown test failure found!!!
 	"
 	fi
-	
+
 	# 4th memcheck step
 	OPJ_MEMCHECK_XML=$(find build -path 'build/Testing/*' -name 'DynamicAnalysis.xml')
 	if [ -f "${OPJ_MEMCHECK_XML}" ]; then

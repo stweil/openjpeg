@@ -55,9 +55,9 @@
 #include "convert.h"
 
 /* -->> -->> -->> -->>
- 
+
  TIFF IMAGE FORMAT
- 
+
  <<-- <<-- <<-- <<-- */
 
 static void tif_32sto10u(const OPJ_INT32* pSrc, OPJ_BYTE* pDst, OPJ_SIZE_T length)
@@ -68,20 +68,20 @@ static void tif_32sto10u(const OPJ_INT32* pSrc, OPJ_BYTE* pDst, OPJ_SIZE_T lengt
 		OPJ_UINT32 src1 = (OPJ_UINT32)pSrc[i+1];
 		OPJ_UINT32 src2 = (OPJ_UINT32)pSrc[i+2];
 		OPJ_UINT32 src3 = (OPJ_UINT32)pSrc[i+3];
-		
+
 		*pDst++ = (OPJ_BYTE)(src0 >> 2);
 		*pDst++ = (OPJ_BYTE)(((src0 & 0x3U) << 6) | (src1 >> 4));
 		*pDst++ = (OPJ_BYTE)(((src1 & 0xFU) << 4) | (src2 >> 6));
 		*pDst++ = (OPJ_BYTE)(((src2 & 0x3FU) << 2) | (src3 >> 8));
 		*pDst++ = (OPJ_BYTE)(src3);
 	}
-	
+
 	if (length & 3U) {
 		OPJ_UINT32 src0 = (OPJ_UINT32)pSrc[i+0];
 		OPJ_UINT32 src1 = 0U;
 		OPJ_UINT32 src2 = 0U;
 		length = length & 3U;
-		
+
 		if (length > 1U) {
 			src1 = (OPJ_UINT32)pSrc[i+1];
 			if (length > 2U) {
@@ -104,12 +104,12 @@ static void tif_32sto12u(const OPJ_INT32* pSrc, OPJ_BYTE* pDst, OPJ_SIZE_T lengt
 	for (i = 0; i < (length & ~(OPJ_SIZE_T)1U); i+=2U) {
 		OPJ_UINT32 src0 = (OPJ_UINT32)pSrc[i+0];
 		OPJ_UINT32 src1 = (OPJ_UINT32)pSrc[i+1];
-		
+
 		*pDst++ = (OPJ_BYTE)(src0 >> 4);
 		*pDst++ = (OPJ_BYTE)(((src0 & 0xFU) << 4) | (src1 >> 8));
 		*pDst++ = (OPJ_BYTE)(src1);
 	}
-	
+
 	if (length & 1U) {
 		OPJ_UINT32 src0 = (OPJ_UINT32)pSrc[i+0];
 		*pDst++ = (OPJ_BYTE)(src0 >> 4);
@@ -124,7 +124,7 @@ static void tif_32sto14u(const OPJ_INT32* pSrc, OPJ_BYTE* pDst, OPJ_SIZE_T lengt
 		OPJ_UINT32 src1 = (OPJ_UINT32)pSrc[i+1];
 		OPJ_UINT32 src2 = (OPJ_UINT32)pSrc[i+2];
 		OPJ_UINT32 src3 = (OPJ_UINT32)pSrc[i+3];
-		
+
 		*pDst++ = (OPJ_BYTE)(src0 >> 6);
 		*pDst++ = (OPJ_BYTE)(((src0 & 0x3FU) << 2) | (src1 >> 12));
 		*pDst++ = (OPJ_BYTE)(src1 >> 4);
@@ -133,13 +133,13 @@ static void tif_32sto14u(const OPJ_INT32* pSrc, OPJ_BYTE* pDst, OPJ_SIZE_T lengt
 		*pDst++ = (OPJ_BYTE)(((src2 & 0x3U) << 6) | (src3 >> 8));
 		*pDst++ = (OPJ_BYTE)(src3);
 	}
-	
+
 	if (length & 3U) {
 		OPJ_UINT32 src0 = (OPJ_UINT32)pSrc[i+0];
 		OPJ_UINT32 src1 = 0U;
 		OPJ_UINT32 src2 = 0U;
 		length = length & 3U;
-		
+
 		if (length > 1U) {
 			src1 = (OPJ_UINT32)pSrc[i+1];
 			if (length > 2U) {
@@ -183,9 +183,9 @@ int imagetotif(opj_image_t * image, const char *outfile)
 
 	bps = (int)image->comps[0].prec;
 	planes[0] = image->comps[0].data;
-	
+
 	numcomps = image->numcomps;
-	
+
 	if (image->color_space == OPJ_CLRSPC_CMYK) {
 		if (numcomps < 4U) {
 			fprintf(stderr,"imagetotif: CMYK images shall be composed of at least 4 planes.\n");
@@ -225,7 +225,7 @@ int imagetotif(opj_image_t * image, const char *outfile)
 		fprintf(stderr,"\tAborting\n");
 		return 1;
 	}
-	
+
 	if((bps > 16) || ((bps != 1) && (bps & 1))) bps = 0;
 	if(bps == 0)
 	{
@@ -271,7 +271,7 @@ int imagetotif(opj_image_t * image, const char *outfile)
 	adjust = sgnd ? 1 << (image->comps[0].prec - 1) : 0;
 	width   = (int)image->comps[0].w;
 	height  = (int)image->comps[0].h;
-	
+
 	TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, width);
 	TIFFSetField(tif, TIFFTAG_IMAGELENGTH, height);
 	TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, numcomps);
@@ -280,7 +280,7 @@ int imagetotif(opj_image_t * image, const char *outfile)
 	TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
 	TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, tiPhoto);
 	TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);
-	
+
 	strip_size = TIFFStripSize(tif);
 	rowStride = ((OPJ_SIZE_T)width * numcomps * (OPJ_SIZE_T)bps + 7U) / 8U;
 	if (rowStride != (OPJ_SIZE_T)strip_size) {
@@ -299,7 +299,7 @@ int imagetotif(opj_image_t * image, const char *outfile)
 		TIFFClose(tif);
 		return 1;
 	}
-	
+
 	for (i = 0; i < image->comps[0].h; ++i) {
 		cvtPxToCx(planes, buffer32s, (OPJ_SIZE_T)width, adjust);
 		cvt32sToTif(buffer32s, (OPJ_BYTE *)buf, (OPJ_SIZE_T)width * numcomps);
@@ -312,7 +312,7 @@ int imagetotif(opj_image_t * image, const char *outfile)
 	_TIFFfree((void*)buf);
 	TIFFClose(tif);
 	free(buffer32s);
-		
+
 	return 0;
 }/* imagetotif() */
 
@@ -325,19 +325,19 @@ static void tif_10uto32s(const OPJ_BYTE* pSrc, OPJ_INT32* pDst, OPJ_SIZE_T lengt
 		OPJ_UINT32 val2 = *pSrc++;
 		OPJ_UINT32 val3 = *pSrc++;
 		OPJ_UINT32 val4 = *pSrc++;
-		
+
 		pDst[i+0] = (OPJ_INT32)((val0 << 2) | (val1 >> 6));
 		pDst[i+1] = (OPJ_INT32)(((val1 & 0x3FU) << 4) | (val2 >> 4));
 		pDst[i+2] = (OPJ_INT32)(((val2 & 0xFU) << 6) | (val3 >> 2));
 		pDst[i+3] = (OPJ_INT32)(((val3 & 0x3U) << 8) | val4);
-		
+
 	}
 	if (length & 3U) {
 		OPJ_UINT32 val0 = *pSrc++;
 		OPJ_UINT32 val1 = *pSrc++;
 		length = length & 3U;
 		pDst[i+0] = (OPJ_INT32)((val0 << 2) | (val1 >> 6));
-		
+
 		if (length > 1U) {
 			OPJ_UINT32 val2 = *pSrc++;
 			pDst[i+1] = (OPJ_INT32)(((val1 & 0x3FU) << 4) | (val2 >> 4));
@@ -376,19 +376,19 @@ static void tif_14uto32s(const OPJ_BYTE* pSrc, OPJ_INT32* pDst, OPJ_SIZE_T lengt
 		OPJ_UINT32 val4 = *pSrc++;
 		OPJ_UINT32 val5 = *pSrc++;
 		OPJ_UINT32 val6 = *pSrc++;
-		
+
 		pDst[i+0] = (OPJ_INT32)((val0 << 6) | (val1 >> 2));
 		pDst[i+1] = (OPJ_INT32)(((val1 & 0x3U) << 12) | (val2 << 4) | (val3 >> 4));
 		pDst[i+2] = (OPJ_INT32)(((val3 & 0xFU) << 10) | (val4 << 2) | (val5 >> 6));
 		pDst[i+3] = (OPJ_INT32)(((val5 & 0x3FU) << 8) | val6);
-		
+
 	}
 	if (length & 3U) {
 		OPJ_UINT32 val0 = *pSrc++;
 		OPJ_UINT32 val1 = *pSrc++;
 		length = length & 3U;
 		pDst[i+0] = (OPJ_INT32)((val0 << 6) | (val1 >> 2));
-		
+
 		if (length > 1U) {
 			OPJ_UINT32 val2 = *pSrc++;
 			OPJ_UINT32 val3 = *pSrc++;
@@ -436,9 +436,9 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	OPJ_INT32* buffer32s = NULL;
 	OPJ_INT32* planes[4];
 	OPJ_SIZE_T rowStride;
-	
+
 	tif = TIFFOpen(filename, "r");
-	
+
 	if(!tif)
 	{
 		fprintf(stderr, "tiftoimage:Failed to open %s for reading\n", filename);
@@ -446,7 +446,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	}
 	tiBps = tiPhoto = tiSf = tiSpp = tiPC = 0;
 	tiWidth = tiHeight = 0;
-	
+
 	TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &tiWidth);
 	TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &tiHeight);
 	TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &tiBps);
@@ -456,7 +456,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	TIFFGetField(tif, TIFFTAG_PLANARCONFIG, &tiPC);
 	w= (int)tiWidth;
 	h= (int)tiHeight;
-	
+
 	if((tiBps > 16U) || ((tiBps != 1U) && (tiBps & 1U))) {
 		fprintf(stderr,"tiftoimage: Bits=%d, Only 1, 2, 4, 6, 8, 10, 12, 14 and 16 bits implemented\n",tiBps);
 		fprintf(stderr,"\tAborting\n");
@@ -469,7 +469,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		TIFFClose(tif);
 		return NULL;
 	}
-	
+
 	switch (tiBps) {
 		case 1:
 		case 2:
@@ -495,14 +495,14 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 			/* never here */
 			break;
 	}
-	
+
 	{/* From: tiff-4.0.x/libtiff/tif_getimage.c : */
 		uint16* sampleinfo;
 		uint16 extrasamples;
-		
+
 		TIFFGetFieldDefaulted(tif, TIFFTAG_EXTRASAMPLES,
 													&extrasamples, &sampleinfo);
-		
+
 		if(extrasamples >= 1)
 		{
 			switch(sampleinfo[0])
@@ -513,7 +513,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 					if(tiSpp > 3)
 						has_alpha = 1;
 					break;
-					
+
 				case EXTRASAMPLE_ASSOCALPHA: /* data pre-multiplied */
 				case EXTRASAMPLE_UNASSALPHA: /* data not pre-multiplied */
 					has_alpha = 1;
@@ -523,10 +523,10 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		else /* extrasamples == 0 */
 			if(tiSpp == 4 || tiSpp == 2) has_alpha = 1;
 	}
-	
+
 	/* initialize image components */
 	memset(&cmptparm[0], 0, 4 * sizeof(opj_image_cmptparm_t));
-	
+
 	if ((tiPhoto == PHOTOMETRIC_RGB) && (is_cinema) && (tiBps != 12U)) {
 		fprintf(stdout,"WARNING:\n"
 						"Input image bitdepth is %d bits\n"
@@ -536,7 +536,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	} else {
 		is_cinema = 0U;
 	}
-	
+
 	if(tiPhoto == PHOTOMETRIC_RGB) /* RGB(A) */
 	{
 		numcomps = 3 + has_alpha;
@@ -547,7 +547,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		numcomps = 1 + has_alpha;
 		color_space = OPJ_CLRSPC_GRAY;
 	}
-	
+
 	cvtCxToPx = convert_32s_CXPX_LUT[numcomps];
 	if (tiPC == PLANARCONFIG_SEPARATE) {
 		cvtCxToPx = convert_32s_CXPX_LUT[1]; /* override */
@@ -563,7 +563,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		cmptparm[j].w = (OPJ_UINT32)w;
 		cmptparm[j].h = (OPJ_UINT32)h;
 	}
-		
+
 	image = opj_image_create((OPJ_UINT32)numcomps, &cmptparm[0], color_space);
 	if(!image)
 	{
@@ -583,9 +583,9 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		planes[j] = image->comps[j].data;
 	}
 	image->comps[numcomps - 1].alpha = (OPJ_UINT16)(1 - (numcomps & 1));
-		
+
 	strip_size = TIFFStripSize(tif);
-	
+
 	buf = _TIFFmalloc(strip_size);
 	if (buf == NULL) {
 		TIFFClose(tif);
@@ -600,7 +600,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		opj_image_destroy(image);
 		return NULL;
 	}
-	
+
 	strip = 0;
 	currentPlane = 0;
 	do
@@ -612,10 +612,10 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		{
 				const OPJ_UINT8 *dat8;
 				OPJ_SIZE_T ssize;
-				
+
 				ssize = (OPJ_SIZE_T)TIFFReadEncodedStrip(tif, strip, buf, strip_size);
 				dat8 = (const OPJ_UINT8*)buf;
-				
+
 				while (ssize >= rowStride) {
 					cvtTifTo32s(dat8, buffer32s, (OPJ_SIZE_T)w * tiSpp);
 					cvtCxToPx(buffer32s, planes, (OPJ_SIZE_T)w);
@@ -630,16 +630,16 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 		}
 		currentPlane++;
 	} while ((tiPC == PLANARCONFIG_SEPARATE) && (currentPlane < numcomps));
-	
+
 	free(buffer32s);
 	_TIFFfree(buf);
 	TIFFClose(tif);
-	
+
 	if (is_cinema) {
 		for (j=0; j < numcomps; ++j) {
 			scale_component(&(image->comps[j]), 12);
 		}
-		
+
 	}
 	return image;
 

@@ -80,7 +80,7 @@
 Decompressed format used in parameters
 YUV = 0
 */
-#define YUV_DFMT 1 
+#define YUV_DFMT 1
 
 /**
 Compressed format used in parameters
@@ -102,7 +102,7 @@ typedef struct mj2_tts {
 /**
 Chunk
 */
-typedef struct mj2_chunk {		
+typedef struct mj2_chunk {
   unsigned int num_samples;
   int sample_descr_idx;
   int offset;
@@ -111,7 +111,7 @@ typedef struct mj2_chunk {
 /**
 Sample to chunk
 */
-typedef struct mj2_sampletochunk {		
+typedef struct mj2_sampletochunk {
   unsigned int first_chunk;
   unsigned int samples_per_chunk;
   int sample_descr_idx;
@@ -120,7 +120,7 @@ typedef struct mj2_sampletochunk {
 /**
 Sample
 */
-typedef struct mj2_sample {		
+typedef struct mj2_sample {
   unsigned int sample_size;
   unsigned int offset;
   unsigned int sample_delta;
@@ -136,7 +136,7 @@ typedef struct mj2_url {
 /**
 URN
 */
-typedef struct mj2_urn {		
+typedef struct mj2_urn {
   int name[2];
   int location[4];
 } mj2_urn_t;
@@ -195,14 +195,14 @@ typedef struct mj2_tk {
   unsigned char voff;
   int trans_matrix[9];
 	/** Number of samples */
-  unsigned int num_samples;	
+  unsigned int num_samples;
   int transorm;
   int handler_type;
   int name_size;
   unsigned char same_sample_size;
   int num_tts;
 	/** Time to sample    */
-  mj2_tts_t *tts;		
+  mj2_tts_t *tts;
   unsigned int num_chunks;
   mj2_chunk_t *chunk;
   unsigned int num_samplestochunk;
@@ -210,8 +210,8 @@ typedef struct mj2_tk {
   char *name;
   opj_jp2_t jp2_struct;
 	/** Sample parameters */
-  mj2_sample_t *sample;		
-} mj2_tk_t;			
+  mj2_sample_t *sample;
+} mj2_tk_t;
 
 /**
 MJ2 box
@@ -225,7 +225,7 @@ typedef struct mj2_box {
 /**
 MJ2 Movie
 */
-typedef struct opj_mj2 {		
+typedef struct opj_mj2 {
 	/** codec context */
 	opj_common_ptr cinfo;
 	/** handle to the J2K codec  */
@@ -246,7 +246,7 @@ typedef struct opj_mj2 {
   int trans_matrix[9];
   int next_tk_id;
 	/** Track Parameters  */
-  mj2_tk_t *tk;			
+  mj2_tk_t *tk;
 } opj_mj2_t;
 
 /**
@@ -258,9 +258,9 @@ typedef struct mj2_dparameters {
 	/** input file name */
 	char infile[OPJ_PATH_LEN];
 	/** output file name */
-	char outfile[OPJ_PATH_LEN];	
+	char outfile[OPJ_PATH_LEN];
 	/** J2K decompression parameters */
-	opj_dparameters_t j2k_parameters;	
+	opj_dparameters_t j2k_parameters;
 } mj2_dparameters_t;
 
 /**
@@ -270,11 +270,11 @@ typedef struct mj2_cparameters {
 	/**@name command line encoder parameters (not used inside the library) */
 	/*@{*/
 	/** J2K compression parameters */
-	opj_cparameters_t j2k_parameters;	
+	opj_cparameters_t j2k_parameters;
 	/** input file name */
 	char infile[OPJ_PATH_LEN];
 	/** output file name */
-	char outfile[OPJ_PATH_LEN];	
+	char outfile[OPJ_PATH_LEN];
 	/** input file format 0:MJ2 */
 	int decod_format;
 	/** output file format 0:YUV */
@@ -286,15 +286,15 @@ typedef struct mj2_cparameters {
 	/** YUV Frame height */
 	int h;
 	/*   Sample rate of YUV 4:4:4, 4:2:2 or 4:2:0 */
-	int CbCr_subsampling_dx;	
+	int CbCr_subsampling_dx;
 	/*   Sample rate of YUV 4:4:4, 4:2:2 or 4:2:0 */
-  int CbCr_subsampling_dy;	
+  int CbCr_subsampling_dy;
 	/*   Video Frame Rate  */
-  int frame_rate;		
+  int frame_rate;
 	/*   In YUV files, numcomps always considered as 3 */
-  int numcomps;			
+  int numcomps;
 	/*   In YUV files, precision always considered as 8 */
-  int prec;		
+  int prec;
   unsigned int meth;
   unsigned int enumcs;
 } mj2_cparameters_t;
@@ -304,7 +304,7 @@ typedef struct mj2_cparameters {
 /*@{*/
 /* ----------------------------------------------------------------------- */
 /**
-Write the JP box 
+Write the JP box
 */
 OPJ_API void OPJ_CALLCONV mj2_write_jp(opj_cio_t *cio);
 /**
@@ -325,7 +325,7 @@ Destroy a MJ2 decompressor handle
 OPJ_API void OPJ_CALLCONV mj2_destroy_decompress(opj_mj2_t *movie);
 /**
 Setup the decoder decoding parameters using user parameters.
-Decoding parameters are returned in mj2->j2k->cp. 
+Decoding parameters are returned in mj2->j2k->cp.
 @param movie MJ2 decompressor handle
 @param mj2_parameters decompression parameters
 */
@@ -348,8 +348,8 @@ Destroy a MJ2 compressor handle
 */
 OPJ_API void OPJ_CALLCONV mj2_destroy_compress(opj_mj2_t *movie);
 /**
-Setup the encoder parameters using the current image and using user parameters. 
-Coding parameters are returned in mj2->j2k->cp. 
+Setup the encoder parameters using the current image and using user parameters.
+Coding parameters are returned in mj2->j2k->cp.
 @param movie MJ2 compressor handle
 @param parameters compression parameters
 */
@@ -373,13 +373,13 @@ OPJ_API int OPJ_CALLCONV mj2_init_stdmovie(opj_mj2_t *movie);
 /**
 Read the structure of an MJ2 file
 @param file MJ2 input File
-@param mj2 J2 movie structure 
+@param mj2 J2 movie structure
 @return Returns 0 if successful, returns 1 otherwise
 */
 OPJ_API int OPJ_CALLCONV mj2_read_struct(FILE *file, opj_mj2_t *mj2);
 /**
 Write the the MOOV box to an output buffer stream
-@param movie MJ2 movie structure 
+@param movie MJ2 movie structure
 @param cio Output buffer stream
 */
 OPJ_API void OPJ_CALLCONV mj2_write_moov(opj_mj2_t *movie, opj_cio_t *cio);

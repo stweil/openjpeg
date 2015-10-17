@@ -55,7 +55,7 @@ boxheader_param_t * gene_boxheader( int fd, OPJ_OFF_T offset)
   boxlen = fetch_4bytebigendian( fd, offset);
   boxtype = (char *)fetch_bytes( fd, offset+4, 4);
   headlen = 8;
-    
+
   if( boxlen == 1){ /* read XLBox */
     boxlen = fetch_8bytebigendian( fd, offset+8);
     headlen = 16;
@@ -66,7 +66,7 @@ boxheader_param_t * gene_boxheader( int fd, OPJ_OFF_T offset)
   boxheader->length = boxlen;
   strncpy( boxheader->type, boxtype, 4);
   boxheader->next = NULL;
-  
+
   free( boxtype);
   return boxheader;
 }

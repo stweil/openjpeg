@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -8,7 +8,7 @@
  * Copyright (c) 2002-2014, Professor Benoit Macq
  * Copyright (c) 2001-2003, David Janssens
  * Copyright (c) 2002-2003, Yannick Verschueren
- * Copyright (c) 2003-2007, Francois-Olivier Devaux 
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux
  * Copyright (c) 2003-2014, Antonin Descampe
  * Copyright (c) 2005, Herve Drolon, FreeImage Team
  * Copyright (c) 2006-2007, Parvatha Elangovan
@@ -132,7 +132,7 @@ void decode_help_display(void) {
 	fprintf(stdout,"    Set the maximum number of quality layers to decode. If there are\n");
 	fprintf(stdout,"    less quality layers than the specified number, all the quality layers\n");
 	fprintf(stdout,"    are decoded.\n");
-	fprintf(stdout,"  -x  \n"); 
+	fprintf(stdout,"  -x  \n");
 	fprintf(stdout,"    Create an index file *.Idx (-x index_name.Idx) \n");
 	fprintf(stdout,"\n");
 /* UniPG>> */
@@ -152,7 +152,7 @@ void decode_help_display(void) {
 
 int get_num_images(char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int num_images = 0;
 
 	/*Reading the input images from given input directory*/
@@ -162,7 +162,7 @@ int get_num_images(char *imgdirpath){
 		fprintf(stderr,"Could not open Folder %s\n",imgdirpath);
 		return 0;
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -173,7 +173,7 @@ int get_num_images(char *imgdirpath){
 
 int load_images(dircnt_t *dirptr, char *imgdirpath){
 	DIR *dir;
-	struct dirent* content;	
+	struct dirent* content;
 	int i = 0;
 
 	/*Reading the input images from given input directory*/
@@ -185,7 +185,7 @@ int load_images(dircnt_t *dirptr, char *imgdirpath){
 	}else	{
 		fprintf(stderr,"Folder opened successfully\n");
 	}
-	
+
 	while((content=readdir(dir))!=NULL){
 		if(strcmp(".",content->d_name)==0 || strcmp("..",content->d_name)==0 )
 			continue;
@@ -193,7 +193,7 @@ int load_images(dircnt_t *dirptr, char *imgdirpath){
 		strcpy(dirptr->filename[i],content->d_name);
 		i++;
 	}
-	return 0;	
+	return 0;
 }
 
 int get_file_format(char *filename) {
@@ -274,15 +274,15 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 					case JPT_CFMT:
 						break;
 					default:
-						fprintf(stderr, 
-							"!! Unrecognized format for infile : %s [accept only *.j2k, *.jp2, *.jpc or *.jpt] !!\n\n", 
+						fprintf(stderr,
+							"!! Unrecognized format for infile : %s [accept only *.j2k, *.jp2, *.jpc or *.jpt] !!\n\n",
 							infile);
 						return 1;
 				}
 				strncpy(parameters->infile, infile, sizeof(parameters->infile)-1);
 			}
 			break;
-				
+
 				/* ----------------------------------------------------- */
 
 			case 'o':			/* output file */
@@ -305,7 +305,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 				strncpy(parameters->outfile, outfile, sizeof(parameters->outfile)-1);
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
 
 			case 'O':			/* output format */
@@ -353,21 +353,21 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 				sscanf(opj_optarg, "%d", &parameters->cp_reduce);
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
-      
+
 
 			case 'l':		/* layering option */
 			{
 				sscanf(opj_optarg, "%d", &parameters->cp_layer);
 			}
 			break;
-			
+
 				/* ----------------------------------------------------- */
 
 			case 'h': 			/* display an help description */
 				decode_help_display();
-				return 1;				
+				return 1;
 
 				/* ------------------------------------------------------ */
 
@@ -378,7 +378,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 					img_fol->set_imgdir=1;
 				}
 				break;
-				/* ----------------------------------------------------- */								
+				/* ----------------------------------------------------- */
 			case 'x':			/* Creation of index file */
 				{
 					char *index = opj_optarg;
@@ -388,7 +388,7 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 				/* ----------------------------------------------------- */
 				/* UniPG>> */
 #ifdef USE_JPWL
-			
+
 			case 'W': 			/* activate JPWL correction */
 			{
 				char *token = NULL;
@@ -453,12 +453,12 @@ int parse_cmdline_decoder(int argc, char **argv, opj_dparameters_t *parameters,i
 				fprintf(stdout, "JPWL correction capability activated\n");
 				fprintf(stdout, "- expecting %d components\n", parameters->jpwl_exp_comps);
 			}
-			break;	
+			break;
 #endif /* USE_JPWL */
-/* <<UniPG */            
+/* <<UniPG */
 
 				/* ----------------------------------------------------- */
-			
+
 			default:
 				fprintf(stderr,"WARNING -> this option is not valid \"-%c %s\"\n",c, opj_optarg);
 				break;
@@ -552,7 +552,7 @@ int main(int argc, char **argv) {
 	}
 
 	/* Initialize reading of directory */
-	if(img_fol.set_imgdir==1){	
+	if(img_fol.set_imgdir==1){
 		num_images=get_num_images(img_fol.imgdirpath);
 
 		dirptr=(dircnt_t*)malloc(sizeof(dircnt_t));
@@ -677,7 +677,7 @@ int main(int argc, char **argv) {
 			if (*indexfilename)				/* If need to extract codestream information*/
 				image = opj_decode_with_info(dinfo, cio, &cstr_info);
 			else
-				image = opj_decode(dinfo, cio);			
+				image = opj_decode(dinfo, cio);
 			if(!image) {
 				fprintf(stderr, "ERROR -> j2k_to_image: failed to decode image!\n");
 				opj_destroy_decompress(dinfo);
@@ -845,7 +845,7 @@ int main(int argc, char **argv) {
 			opj_destroy_decompress(dinfo);
 		}
 		/* free codestream information structure */
-		if (*indexfilename)	
+		if (*indexfilename)
 			opj_destroy_cstr_info(&cstr_info);
 		/* free image data structure */
 		opj_image_destroy(image);

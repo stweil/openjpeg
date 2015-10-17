@@ -39,7 +39,7 @@ public class PnmImage extends Component
     private int width = 0;
     private int height = 0;
     private int channel = 0;
-    
+
     public PnmImage( int c, int w, int h)
     {
 	channel = c;
@@ -47,7 +47,7 @@ public class PnmImage extends Component
 	height  = h;
 	data = new byte [ w*h*c];
     }
-       
+
     public PnmImage( String filename)
     {
 	String  str;
@@ -55,11 +55,11 @@ public class PnmImage extends Component
 	Matcher mat;
 	int bytes;
 	int r, offset = 0;
-		
+
 	try {
-	    FileInputStream fis = new FileInputStream( new File(filename));    
+	    FileInputStream fis = new FileInputStream( new File(filename));
 	    DataInputStream is = new DataInputStream( fis);
-	    
+
 	    pat = Pattern.compile("^P([56])$");
 	    mat = pat.matcher(str = is.readLine());
 	    if( !mat.matches()){
@@ -71,7 +71,7 @@ public class PnmImage extends Component
 		channel = 1;
 	    else
 		channel = 3;
-	    
+
 	    pat = Pattern.compile("^(\\d+) (\\d+)$");
 	    mat = pat.matcher(str = is.readLine());
 	    if( !mat.matches()){
@@ -82,10 +82,10 @@ public class PnmImage extends Component
 	    height = Integer.parseInt( mat.group(2));
 
 	    str = is.readLine(); // 255
-	    
+
 	    bytes = width*height*channel;
 	    data = new byte[bytes];
-	    	    
+
 	    while( bytes > 0){
 		try {
 		    r = is.read(data, offset, bytes);
@@ -93,11 +93,11 @@ public class PnmImage extends Component
 			System.err.println("    failed to read()");
 			break;
 		    }
-		    offset += r; 
-		    bytes -= r; 
+		    offset += r;
+		    bytes -= r;
 		}
 		catch (IOException e) { e.printStackTrace(); }
-	    }    
+	    }
 	    fis.close();
 	} catch (IOException e) { e.printStackTrace(); }
     }
@@ -105,23 +105,23 @@ public class PnmImage extends Component
     public byte [] get_data(){	return data;}
     public int get_width() { return width;}
     public int get_height(){ return height;}
-    
+
     public Image createROIImage( int rx, int ry, int rw, int rh)
     {
 	int []pix = new int[ rw*rh];
-	
+
 	for( int i=0; i<rh; i++)
 	    for( int j=0; j<rw; j++){
 		pix[i*rw+j] = 0xFF << 24; // transparency
 		if( channel == 1){
 		    Byte lum = data[(ry+i)*width+rx+j];
 		    short slum;
-	  
+
 		    if( lum < 0)
 			slum = (short)(2*128+lum);
 		    else
 			slum = (short)lum;
-	  
+
 		    for( int c=0; c<3; c++){
 			pix[i*rw+j] = pix[i*rw+j] | slum << (8*c);
 		    }
@@ -130,12 +130,12 @@ public class PnmImage extends Component
 		    for( int c=0; c<3; c++){
 			Byte lum = data[ ((ry+i)*width+rx+j)*channel+(2-c)];
 			short slum;
-	    
+
 			if( lum < 0)
 			    slum = (short)(2*128+lum);
 			else
 			    slum = (short)lum;
-	    
+
 			pix[i*rw+j] = pix[i*rw+j] | slum << (8*c);
 		    }
 	    }
@@ -145,10 +145,10 @@ public class PnmImage extends Component
 
     public Image createScaleImage( double scale)
     {
-    	Image src = createROIImage( 0, 0, width, height);	
+    	Image src = createROIImage( 0, 0, width, height);
     	ImageFilter replicate = new ReplicateScaleFilter( (int)(width*scale), (int)(height*scale));
     	ImageProducer prod = new FilteredImageSource( src.getSource(), replicate);
-	
+
     	return createImage(prod);
     }
 }

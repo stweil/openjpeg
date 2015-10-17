@@ -1,6 +1,6 @@
 /*
- * The copyright in this software is being made available under the 2-clauses 
- * BSD License, included below. This software may be subject to other third 
+ * The copyright in this software is being made available under the 2-clauses
+ * BSD License, included below. This software may be subject to other third
  * party and contributor rights, including patent rights, and no such rights
  * are granted under this license.
  *
@@ -47,7 +47,7 @@
 /** number of JPWL prepared markers */
 static int jwmarker_num;
 /** properties of JPWL markers to insert */
-static jpwl_marker_t jwmarker[JPWL_MAX_NO_MARKERS]; 
+static jpwl_marker_t jwmarker[JPWL_MAX_NO_MARKERS];
 
 /*@}*/
 
@@ -80,11 +80,11 @@ jpwl_epc_ms_t *jpwl_epc_create(opj_j2k_t *j2k, opj_bool esd_on, opj_bool red_on,
 @param sensval pointer to an array of sensitivity values (if NULL, they will be automatically filled)
 @return returns the freshly created ESD
 */
-jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comps, 
+jpwl_esd_ms_t *jpwl_esd_create(opj_j2k_t *j2k, int comps,
         unsigned char addrm, unsigned char ad_size,
         unsigned char senst, int se_size, int tileno,
         unsigned long int svalnum, void *sensval);
-                        
+
 /** this function is used to compare two JPWL markers based on
 their relevant wishlist position
 @param arg1 pointer to first marker
@@ -219,7 +219,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
         cio_seek(cio, soc_pos + 0);
         socp = cio_getbp(cio); /* pointer to SOC */
 
-        /* 
+        /*
          EPC MS for Main Header: if we are here it's required
         */
         /* create the EPC */
@@ -254,10 +254,10 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
         } else {
                 /* ooops, problems */
-                opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH EPC\n");                              
+                opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH EPC\n");
         };
 
-        /* 
+        /*
          ESD MS for Main Header
         */
         /* first of all, must MH have an ESD MS? */
@@ -275,7 +275,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         0 /*j2k->cstr_info->num*/, /* number of packets in codestream */
                         NULL /*sensval*/ /* pointer to sensitivity data of packets */
                         ))) {
-                        
+
                         /* Add this marker to the 'insertanda' list */
                         if (jwmarker_num < JPWL_MAX_NO_MARKERS) {
                                 jwmarker[jwmarker_num].id = J2K_MS_ESD; /* its type */
@@ -297,13 +297,13 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
                 } else {
                         /* ooops, problems */
-                        opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH ESD\n");                              
+                        opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH ESD\n");
                 };
 
         }
 
-        /* 
-         ESD MSs for Tile Part Headers 
+        /*
+         ESD MSs for Tile Part Headers
         */
         /* cycle through tiles */
         sens = -1; /* default spec: no ESD */
@@ -318,7 +318,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
                 /* for every tile part in the tile */
                 for (tpno = 0; tpno < j2k->cstr_info->tile[tileno].num_tps; tpno++, acc_tpno++) {
-        
+
                         int sot_len, Psot, Psotp, mm;
                         unsigned long sot_pos, post_sod_pos;
 
@@ -326,7 +326,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
                         /******* sot_pos = j2k->cstr_info->tile[tileno].start_pos; */
                         sot_pos = j2k->cstr_info->tile[tileno].tp[tpno].tp_start_pos;
-                        cio_seek(cio, sot_pos + 2); 
+                        cio_seek(cio, sot_pos + 2);
                         sot_len = cio_read(cio, 2); /* SOT Len */
                         cio_skip(cio, 2);
                         Psotp = cio_tell(cio);
@@ -343,7 +343,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                                 left_THmarks_len += jwmarker[mm].len + 2;
                                         else {
                                                 opj_event_msg(j2k->cinfo, EVT_ERROR, "MS %x in %f is not len-ready: could not set up TH EPB\n",
-                                                        jwmarker[mm].id, jwmarker[mm].dpos);                            
+                                                        jwmarker[mm].id, jwmarker[mm].dpos);
                                                 exit(1);
                                         }
                                 }
@@ -353,7 +353,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         if ((tilespec < JPWL_MAX_NO_TILESPECS) && (j2k->cp->sens_TPH_tileno[tilespec] == acc_tpno))
                                 /* we got a specification from this tile onwards */
                                 sens = j2k->cp->sens_TPH[tilespec++];
-                
+
                         /* must this TPH have an ESD MS? */
                         if (j2k->cp->esd_on && (sens >= 0)) {
 
@@ -369,7 +369,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                         0, /* number of packets in codestream */
                                         NULL /* pointer to sensitivity data of packets */
                                         ))) {
-                                        
+
                                         /* Add this marker to the 'insertanda' list */
                                         if (jwmarker_num < JPWL_MAX_NO_MARKERS) {
                                                 jwmarker[jwmarker_num].id = J2K_MS_ESD; /* its type */
@@ -404,12 +404,12 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                 };
 
                         }
-                        
+
                 }
-        
+
         };
 
-        /* 
+        /*
          EPB MS for Main Header
         */
         /* first of all, must MH have an EPB MS? */
@@ -430,7 +430,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                         left_MHmarks_len += jwmarker[mm].len + 2;
                                 else {
                                         opj_event_msg(j2k->cinfo, EVT_ERROR, "MS %x in %f is not len-ready: could not set up MH EPB\n",
-                                                jwmarker[mm].id, jwmarker[mm].dpos);                            
+                                                jwmarker[mm].id, jwmarker[mm].dpos);
                                         exit(1);
                                 }
                         }
@@ -447,7 +447,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         socsiz_len, /* pre-data: only SOC+SIZ */
                         left_MHmarks_len /* post-data: from SOC to SOT, and all JPWL markers within */
                         ))) {
-                        
+
                         /* Add this marker to the 'insertanda' list */
                         if (jwmarker_num < JPWL_MAX_NO_MARKERS) {
                                 jwmarker[jwmarker_num].id = J2K_MS_EPB; /* its type */
@@ -469,11 +469,11 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
                 } else {
                         /* ooops, problems */
-                        opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH EPB\n");                              
+                        opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create MH EPB\n");
                 };
         }
 
-        /* 
+        /*
          EPB MSs for Tile Parts
         */
         /* cycle through TPHs */
@@ -491,8 +491,8 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         );
 
                 /* for every tile part in the tile */
-                for (tpno = 0; tpno < j2k->cstr_info->tile[tileno].num_tps; tpno++, acc_tpno++) { 
-                
+                for (tpno = 0; tpno < j2k->cstr_info->tile[tileno].num_tps; tpno++, acc_tpno++) {
+
                         int sot_len, Psot, Psotp, mm, epb_index = 0, prot_len = 0;
                         unsigned long sot_pos, post_sod_pos;
                         unsigned long int left_THmarks_len/*, epbs_len = 0*/;
@@ -502,7 +502,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 
                         /****** sot_pos = j2k->cstr_info->tile[tileno].start_pos; */
                         sot_pos = j2k->cstr_info->tile[tileno].tp[tpno].tp_start_pos;
-                        cio_seek(cio, sot_pos + 2); 
+                        cio_seek(cio, sot_pos + 2);
                         sot_len = cio_read(cio, 2); /* SOT Len */
                         cio_skip(cio, 2);
                         Psotp = cio_tell(cio);
@@ -520,7 +520,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                                 left_THmarks_len += jwmarker[mm].len + 2;
                                         else {
                                                 opj_event_msg(j2k->cinfo, EVT_ERROR, "MS %x in %f is not len-ready: could not set up TH EPB\n",
-                                                        jwmarker[mm].id, jwmarker[mm].dpos);                            
+                                                        jwmarker[mm].id, jwmarker[mm].dpos);
                                                 exit(1);
                                         }
                                 }
@@ -530,7 +530,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         if ((tilespec < JPWL_MAX_NO_TILESPECS) && (j2k->cp->hprot_TPH_tileno[tilespec] == acc_tpno))
                                 /* we got a specification from this tile part onwards */
                                 hprot = j2k->cp->hprot_TPH[tilespec++];
-                
+
                         /* must this TPH have an EPB MS? */
                         if (j2k->cp->epb_on && (hprot > 0)) {
 
@@ -545,7 +545,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                         sot_len + 2, /* pre-data length: only SOT */
                                         left_THmarks_len /* post-data length: from SOT end to SOD inclusive */
                                         ))) {
-                                        
+
                                         /* Add this marker to the 'insertanda' list */
                                         if (jwmarker_num < JPWL_MAX_NO_MARKERS) {
                                                 jwmarker[jwmarker_num].id = J2K_MS_EPB; /* its type */
@@ -581,8 +581,8 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                         opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not create TPH EPB in #%d,d\n", tileno, tpno);
                                 };
 
-                        }                               
-                
+                        }
+
                         startpack = 0;
                         /* EPB MSs for UEP packet data protection in Tile Parts */
                         /****** for (packno = 0; packno < j2k->cstr_info->num; packno++) { */
@@ -599,7 +599,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                         /* we got a specification from this tile and packet onwards */
                                         /* print the previous spec */
                                         if (packno > 0) {
-                                                stoppack = packno - 1;                          
+                                                stoppack = packno - 1;
                                                 opj_event_msg(j2k->cinfo, EVT_INFO,
                                                         /***** "UEP EPBs: tile %02d, packs. %02d-%02d (B %d-%d), prot. %d\n", */
                                                         "UEP EPBs: tile %02d, part %02d, packs. %02d-%02d (B %d-%d), prot. %d\n",
@@ -653,7 +653,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                                 }
 
                                 /*printf("Tile %02d, pack %02d ==> %d\n", tileno, packno, pprot);*/
-                
+
                         }
 
                         /* we are at the end: print the remaining spec */
@@ -718,7 +718,7 @@ void jpwl_prepare_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         /* write back Psot */
                         cio_seek(cio, Psotp);
                         cio_write(cio, Psot, 4);
-                
+
                 }
 
         };
@@ -742,7 +742,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
         /* Order JPWL markers according to their wishlist position */
         qsort((void *) jwmarker, (size_t) jwmarker_num, sizeof (jpwl_marker_t), jpwl_markcomp);
 
-        /* compute markers total size */ 
+        /* compute markers total size */
         for (mm = 0; mm < jwmarker_num; mm++) {
                 /*printf("%x, %d, %.10f, %d long\n", jwmarker[mm].id, jwmarker[mm].pos,
                         jwmarker[mm].dpos, jwmarker[mm].len);*/
@@ -802,7 +802,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                 /* we update the markers struct */
                 if (j2k->cstr_info)
                         j2k->cstr_info->marker[j2k->cstr_info->marknum - 1].pos = (jpwl_buf - orig_buf);
-                
+
                 /* we set the marker dpos to the new position in the JPWL codestream */
                 jwmarker[mm].dpos = (double) (jpwl_buf - orig_buf);
 
@@ -815,7 +815,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
         memcpy(jpwl_buf, cio_getbp(cio), old_size - (orig_pos - soc_pos));
         jpwl_buf += old_size - (orig_pos - soc_pos);
         cio_seek(cio, soc_pos + old_size);
-        
+
         /*
         update info file based on added markers
         */
@@ -823,8 +823,8 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                 opj_event_msg(j2k->cinfo, EVT_ERROR, "Could not update OPJ cstr_info structure\n");
 
         /* now we need to repass some markers and fill their data fields */
-        
-        /* first of all, DL and Pcrc in EPCs */ 
+
+        /* first of all, DL and Pcrc in EPCs */
         for (mm = 0; mm < jwmarker_num; mm++) {
 
                 /* find the EPCs */
@@ -854,7 +854,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                 }
         }
 
-        /* then, sensitivity data in ESDs */ 
+        /* then, sensitivity data in ESDs */
         esdcoding_time = opj_clock();
         for (mm = 0; mm < jwmarker_num; mm++) {
 
@@ -865,7 +865,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         int esd_pos = (int) jwmarker[mm].dpos;
 
                         jpwl_esd_fill(j2k, jwmarker[mm].m.esdmark, &orig_buf[esd_pos]);
-                
+
                 }
 
         }
@@ -873,7 +873,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
         if (j2k->cp->esd_on)
                 opj_event_msg(j2k->cinfo, EVT_INFO, "ESDs sensitivities computed in %f s\n", esdcoding_time);
 
-        /* finally, RS or CRC parity in EPBs */ 
+        /* finally, RS or CRC parity in EPBs */
         epbcoding_time = opj_clock();
         for (mm = 0; mm < jwmarker_num; mm++) {
 
@@ -894,7 +894,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
                         /* fill the current (first) EPB with post-data starting from the computed position */
                         jpwl_epb_fill(j2k, jwmarker[mm].m.epbmark, &orig_buf[(int) jwmarker[mm].dpos],
                                 &orig_buf[(int) jwmarker[mm].dpos + accum_len]);
-                
+
                         /* fill the remaining EPBs in the header with post-data starting from the last position */
                         for (nn = mm + 1; (nn < jwmarker_num) && (jwmarker[nn].id == J2K_MS_EPB) &&
                                 (jwmarker[nn].pos == jwmarker[mm].pos); nn++)
@@ -926,7 +926,7 @@ void jpwl_dump_marks(opj_j2k_t *j2k, opj_cio_t *cio, opj_image_t *image) {
 void j2k_read_epc(opj_j2k_t *j2k) {
         unsigned long int DL, Lepcp, Pcrcp, l;
         unsigned short int Lepc, Pcrc = 0x0000;
-        unsigned char Pepc;     
+        unsigned char Pepc;
         opj_cio_t *cio = j2k->cio;
         const char *ans1;
 
@@ -942,26 +942,26 @@ void j2k_read_epc(opj_j2k_t *j2k) {
         cio_seek(cio, Lepcp - 2);
 
                 /* Marker */
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* Length */
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* skip Pcrc */
                 cio_skip(cio, 2);
 
                 /* read all remaining */
                 for (l = 4; l < Lepc; l++)
-                        jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                        jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* check Pcrc with the result */
                 cio_seek(cio, Pcrcp);
                 ans1 = (Pcrc == (unsigned short int) cio_read(cio, 2)) ? "crc-ok" : "crc-ko";
 
         /* now we write them to screen */
-        opj_event_msg(j2k->cinfo, EVT_INFO, 
+        opj_event_msg(j2k->cinfo, EVT_INFO,
                 "EPC(%u,%d): %s, DL=%d%s %s %s\n",
                 Lepcp - 2,
                 Lepc,
@@ -971,7 +971,7 @@ void j2k_read_epc(opj_j2k_t *j2k) {
                 (Pepc & 0x20) ? ", red" : "", /* RED is present */
                 (Pepc & 0x40) ? ", epb" : ""); /* EPB is present */
 
-        cio_seek(cio, Lepcp + Lepc);  
+        cio_seek(cio, Lepcp + Lepc);
 }
 
 #if 0
@@ -979,7 +979,7 @@ void j2k_write_epc(opj_j2k_t *j2k) {
 
         unsigned long int DL, Lepcp, Pcrcp, l;
         unsigned short int Lepc, Pcrc;
-        unsigned char Pepc;     
+        unsigned char Pepc;
 
         opj_cio_t *cio = j2k->cio;
 
@@ -1011,19 +1011,19 @@ void j2k_write_epc(opj_j2k_t *j2k) {
         cio_seek(cio, Lepcp - 2);
 
                 /* Marker */
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* Length */
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
-                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
+                jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* skip Pcrc */
                 cio_skip(cio, 2);
 
                 /* read all remaining */
                 for (l = 4; l < Lepc; l++)
-                        jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1)); 
+                        jpwl_updateCRC16(&Pcrc, (unsigned char) cio_read(cio, 1));
 
                 /* fill Pcrc with the result */
                 cio_seek(cio, Pcrcp);
@@ -1046,7 +1046,7 @@ void j2k_read_epb(opj_j2k_t *j2k) {
         static opj_bool first_in_tph = OPJ_TRUE;
         int type, pre_len, post_len;
         static unsigned char *redund = NULL;
-        
+
         opj_cio_t *cio = j2k->cio;
 
         /* B/W = 45, RGB = 51 */
@@ -1104,7 +1104,7 @@ void j2k_read_epb(opj_j2k_t *j2k) {
                         opj_event_msg(j2k->cinfo, EVT_ERROR, "JPWL correction could not be performed\n");
 
                         /* advance to EPB endpoint */
-                        cio_skip(cio, Lepb + 2);  
+                        cio_skip(cio, Lepb + 2);
 
                         return;
                 }
@@ -1116,7 +1116,7 @@ void j2k_read_epb(opj_j2k_t *j2k) {
                 }
 
                 /* advance to EPB endpoint */
-                cio_skip(cio, Lepb - 11);  
+                cio_skip(cio, Lepb - 11);
 
         } else {
 
@@ -1148,7 +1148,7 @@ void j2k_read_epb(opj_j2k_t *j2k) {
                         LDPepb, /*length of the data protected by the EPB */
                         str1); /* protection method */
 
-                cio_skip(cio, Lepb - 11);  
+                cio_skip(cio, Lepb - 11);
         }
 }
 
@@ -1196,7 +1196,7 @@ void j2k_read_esd(opj_j2k_t *j2k) {
 
         char str1[4][4] = {"p", "br", "pr", "res"};
         char str2[8][8] = {"res", "mse", "mse-r", "psnr", "psnr-i", "maxerr", "tse", "res"};
-        
+
         opj_cio_t *cio = j2k->cio;
 
         /* Simply read the ESD parameters */
@@ -1215,14 +1215,14 @@ void j2k_read_esd(opj_j2k_t *j2k) {
                 ((Pesd & (unsigned char) 0x02) >> 1) ? "4Ba" : "2Ba",
                 (Pesd & (unsigned char) 0x01) ? "avgc" : "");
 
-        cio_skip(cio, Lesd - (3 + cesdsize));  
+        cio_skip(cio, Lesd - (3 + cesdsize));
 }
 
 void j2k_read_red(opj_j2k_t *j2k) {
         unsigned short int Lred;
         unsigned char Pred;
         char str1[4][4] = {"p", "br", "pr", "res"};
-        
+
         opj_cio_t *cio = j2k->cio;
 
         /* Simply read the RED parameters */
@@ -1238,7 +1238,7 @@ void j2k_read_red(opj_j2k_t *j2k) {
                 ((Pred & (unsigned char) 0x02) >> 1) ? "4Ba" : "2Ba", /* address range */
                 (Pred & (unsigned char) 0x01) ? "errs" : "free"); /* error free? */
 
-        cio_skip(cio, Lred - 3);  
+        cio_skip(cio, Lred - 3);
 }
 
 opj_bool jpwl_check_tile(opj_j2k_t *j2k, opj_tcd_t *tcd, int tileno) {
@@ -1261,10 +1261,10 @@ opj_bool jpwl_check_tile(opj_j2k_t *j2k, opj_tcd_t *tcd, int tileno) {
         opj_tcd_resolution_t *res;
 
         /* will keep the subband */
-        opj_tcd_band_t *band; 
+        opj_tcd_band_t *band;
 
         /* will keep the precinct */
-        opj_tcd_precinct_t *prec; 
+        opj_tcd_precinct_t *prec;
 
         /* will keep the codeblock */
         opj_tcd_cblk_t *block;
@@ -1300,7 +1300,7 @@ opj_bool jpwl_check_tile(opj_j2k_t *j2k, opj_tcd_t *tcd, int tileno) {
                                                                 return OPJ_FALSE;
                                                 };
                                         }
-                                }                               
+                                }
                         }
                 }
         }
@@ -1330,7 +1330,7 @@ opj_bool jpwl_check_tile(opj_j2k_t *j2k, opj_tcd_t *tcd, int tileno) {
 
 void j2k_read_sec(opj_j2k_t *j2k) {
         unsigned short int Lsec;
-        
+
         opj_cio_t *cio = j2k->cio;
 
         /* Simply read the SEC length */
@@ -1342,7 +1342,7 @@ void j2k_read_sec(opj_j2k_t *j2k) {
                 cio_tell(cio) - 2
                 );
 
-        cio_skip(cio, Lsec - 2);  
+        cio_skip(cio, Lsec - 2);
 }
 
 void j2k_write_sec(opj_j2k_t *j2k) {
@@ -1361,7 +1361,7 @@ void j2k_write_sec(opj_j2k_t *j2k) {
 
 void j2k_read_insec(opj_j2k_t *j2k) {
         unsigned short int Linsec;
-        
+
         opj_cio_t *cio = j2k->cio;
 
         /* Simply read the INSEC length */
@@ -1373,7 +1373,7 @@ void j2k_read_insec(opj_j2k_t *j2k) {
                 cio_tell(cio) - 2
                 );
 
-        cio_skip(cio, Linsec - 2);  
+        cio_skip(cio, Linsec - 2);
 }
 
 

@@ -37,7 +37,7 @@
 
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
-/* 
+/*
  * Get number of maximum tile parts per tile
  *
  * @param[in] cstr_info codestream information
@@ -46,7 +46,7 @@
 int get_num_max_tile_parts( opj_codestream_info_t cstr_info);
 
 
-/* 
+/*
  * Write faix box of tpix
  *
  * @param[in] coff offset of j2k codestream
@@ -57,8 +57,8 @@ int get_num_max_tile_parts( opj_codestream_info_t cstr_info);
  * @return              length of faix box
  */
 
-int opj_write_tpix( int coff, 
-                    opj_codestream_info_t cstr_info, 
+int opj_write_tpix( int coff,
+                    opj_codestream_info_t cstr_info,
                     int j2klen, opj_stream_private_t *cio,
                     opj_event_mgr_t * p_manager )
 {
@@ -70,11 +70,11 @@ int opj_write_tpix( int coff,
   opj_stream_skip(cio, 4, p_manager);
   opj_write_bytes(l_data_header,JPIP_TPIX,4); /* TPIX */
   opj_stream_write_data(cio,l_data_header,4,p_manager);
-  
+
   opj_write_tpixfaix( coff, 0, cstr_info, j2klen, cio,p_manager);
 
   len = (OPJ_UINT32)(opj_stream_tell(cio)-lenp);
- 
+
   opj_stream_skip(cio, lenp, p_manager);
   opj_write_bytes(l_data_header,len,4);/* L              */
   opj_stream_write_data(cio,l_data_header,4,p_manager);
@@ -84,9 +84,9 @@ int opj_write_tpix( int coff,
 }
 
 int opj_write_tpixfaix( int coff,
-                        int compno, 
-                        opj_codestream_info_t cstr_info, 
-                        int j2klen, 
+                        int compno,
+                        opj_codestream_info_t cstr_info,
+                        int j2klen,
                         opj_stream_private_t *cio,
                         opj_event_mgr_t * p_manager )
 {
@@ -164,7 +164,7 @@ int opj_write_tpixfaix( int coff,
       j++;
       }
     }
-  
+
   len = (OPJ_UINT32)(opj_stream_tell(cio)-lenp);
   opj_stream_seek(cio, lenp,p_manager);
   opj_write_bytes(l_data_header,len,4);/* L  */
@@ -180,6 +180,6 @@ int get_num_max_tile_parts( opj_codestream_info_t cstr_info)
 
   for( i=0; i<cstr_info.tw*cstr_info.th; i++)
     num_max_tp = MAX( cstr_info.tile[i].num_tps, num_max_tp);
-  
+
   return num_max_tp;
 }

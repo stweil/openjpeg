@@ -49,7 +49,7 @@ cachemodellist_param_t * gene_cachemodellist(void)
   cachemodellist_param_t *cachemodellist;
 
   cachemodellist = (cachemodellist_param_t *)opj_malloc( sizeof(cachemodellist_param_t));
-  
+
   cachemodellist->first = NULL;
   cachemodellist->last  = NULL;
 
@@ -68,7 +68,7 @@ cachemodel_param_t * gene_cachemodel( cachemodellist_param_t *cachemodellist, ta
   cachemodel = (cachemodel_param_t *)opj_malloc( sizeof(cachemodel_param_t));
 
   refer_target( target, &cachemodel->target);
-  
+
   if( reqJPP){
     if( target->jppstream)
       cachemodel->jppstream = OPJ_TRUE;
@@ -82,7 +82,7 @@ cachemodel_param_t * gene_cachemodel( cachemodellist_param_t *cachemodellist, ta
   }
 
   cachemodel->mhead_model = OPJ_FALSE;
-  
+
   tilepart = target->codeidx->tilepart;
   numOftiles = get_m( tilepart);
   numOfelem = get_nmax( tilepart)*numOftiles;
@@ -94,7 +94,7 @@ cachemodel_param_t * gene_cachemodel( cachemodellist_param_t *cachemodellist, ta
     cachemodel->pp_model[i] = (OPJ_BOOL *)opj_calloc( 1, get_nmax(precpacket)*get_m(precpacket)*sizeof(OPJ_BOOL));
   }
   cachemodel->next = NULL;
-  
+
   if( cachemodellist){
     if( cachemodellist->first) /* there are one or more entries */
       cachemodellist->last->next = cachemodel;
@@ -107,7 +107,7 @@ cachemodel_param_t * gene_cachemodel( cachemodellist_param_t *cachemodellist, ta
   fprintf( logstream, "local log: cachemodel generated\n");
 #endif
 
-  return cachemodel; 
+  return cachemodel;
 }
 
 void print_cachemodel( cachemodel_param_t cachemodel)
@@ -119,7 +119,7 @@ void print_cachemodel( cachemodel_param_t cachemodel)
   int n; /* FIXME: Is this large enough ? */
 
   target = cachemodel.target;
-  
+
   fprintf( logstream, "target: %s\n", target->targetname);
   fprintf( logstream, "\t main header model: %d\n", cachemodel.mhead_model);
 
@@ -153,19 +153,19 @@ cachemodel_param_t * search_cachemodel( target_param_t *target, cachemodellist_p
   cachemodel_param_t *foundcachemodel;
 
   foundcachemodel = cachemodellist->first;
-  
+
   while( foundcachemodel != NULL){
-    
+
     if( foundcachemodel->target == target)
       return foundcachemodel;
-      
+
     foundcachemodel = foundcachemodel->next;
   }
   return NULL;
 }
 
 void delete_cachemodellist( cachemodellist_param_t **cachemodellist)
-{  
+{
   cachemodel_param_t *cachemodelPtr, *cachemodelNext;
 
   cachemodelPtr = (*cachemodellist)->first;
@@ -182,10 +182,10 @@ void delete_cachemodel( cachemodel_param_t **cachemodel)
   int i;
 
   unrefer_target( (*cachemodel)->target);
-  
+
   opj_free( (*cachemodel)->tp_model);
   opj_free( (*cachemodel)->th_model);
-  
+
   for( i=0; i<(*cachemodel)->target->codeidx->SIZ.Csiz; i++)
     opj_free( (*cachemodel)->pp_model[i]);
   opj_free( (*cachemodel)->pp_model);
@@ -205,7 +205,7 @@ OPJ_BOOL is_allsent( cachemodel_param_t cachemodel)
   int n; /* FIXME: is this large enough ? */
 
   target = cachemodel.target;
-  
+
   if( !cachemodel.mhead_model)
     return OPJ_FALSE;
 
@@ -215,7 +215,7 @@ OPJ_BOOL is_allsent( cachemodel_param_t cachemodel)
     for( i=0; i<target->codeidx->SIZ.XTnum*target->codeidx->SIZ.YTnum; i++){
       if( !cachemodel.th_model[i])
 	return OPJ_FALSE;
-      
+
       for( j=0; j<target->codeidx->SIZ.Csiz; j++){
 	Pmax = get_nmax( target->codeidx->precpacket[j]);
 	for( k=0; k<Pmax; k++)

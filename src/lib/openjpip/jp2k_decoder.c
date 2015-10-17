@@ -111,7 +111,7 @@ Byte_t * j2k_to_pnm( const char *fn, ihdrbox_param_t **ihdrbox)
 
   /* close the byte stream */
   opj_stream_destroy(l_stream);
-  
+
   /* create output image */
   /* ------------------- */
   if( (pnmstream = imagetopnm( image, ihdrbox))==NULL)
@@ -124,7 +124,7 @@ Byte_t * j2k_to_pnm( const char *fn, ihdrbox_param_t **ihdrbox)
 
   /* free image data structure */
   opj_image_destroy(image);
-  
+
   return pnmstream;
 }
 
@@ -159,14 +159,14 @@ static Byte_t * imagetopnm(opj_image_t *image, ihdrbox_param_t **ihdrbox)
   OPJ_SIZE_T datasize;
   Byte_t *pix=NULL, *ptr=NULL;
   OPJ_UINT32 i;
-  
+
   if(*ihdrbox){
     if( (*ihdrbox)->nc != image->numcomps)
       fprintf( stderr, "Exception: num of components not identical, codestream: %d, ihdrbox: %d\n", image->numcomps, (*ihdrbox)->nc);
 
     if( (*ihdrbox)->width != image->comps[0].w)
       (*ihdrbox)->width = image->comps[0].w;
-    
+
     if( (*ihdrbox)->height != image->comps[0].h)
       (*ihdrbox)->height = image->comps[0].h;
 
@@ -182,29 +182,29 @@ static Byte_t * imagetopnm(opj_image_t *image, ihdrbox_param_t **ihdrbox)
     assert( image->numcomps < USHRT_MAX );
     (*ihdrbox)->nc     = (Byte2_t)image->numcomps;
   }
-  
+
   datasize = (image->numcomps)*(image->comps[0].w)*(image->comps[0].h);
-  
+
   if (image->comps[0].prec > 8) {
     adjustR = image->comps[0].prec - 8;
     printf("PNM CONVERSION: Truncating component 0 from %d bits to 8 bits\n", image->comps[0].prec);
   }
   else
     adjustR = 0;
-  
+
   if( image->numcomps == 3){
     if (image->comps[1].prec > 8) {
       adjustG = image->comps[1].prec - 8;
       printf("PNM CONVERSION: Truncating component 1 from %d bits to 8 bits\n", image->comps[1].prec);
     }
-    else 
+    else
       adjustG = 0;
-    
+
     if (image->comps[2].prec > 8) {
       adjustB = image->comps[2].prec - 8;
       printf("PNM CONVERSION: Truncating component 2 from %d bits to 8 bits\n", image->comps[2].prec);
     }
-    else 
+    else
       adjustB = 0;
   }
 
@@ -215,7 +215,7 @@ static Byte_t * imagetopnm(opj_image_t *image, ihdrbox_param_t **ihdrbox)
     int r, g, b;
     r = image->comps[0].data[i];
     r += (image->comps[0].sgnd ? 1 << (image->comps[0].prec - 1) : 0);
-    
+
     /*    if( adjustR > 0) */
     *(ptr++) = (Byte_t) ((r >> adjustR)+((r >> (adjustR-1))%2));
 
@@ -223,7 +223,7 @@ static Byte_t * imagetopnm(opj_image_t *image, ihdrbox_param_t **ihdrbox)
       g = image->comps[1].data[i];
       g += (image->comps[1].sgnd ? 1 << (image->comps[1].prec - 1) : 0);
       *(ptr++) = (Byte_t) ((g >> adjustG)+((g >> (adjustG-1))%2));
-      
+
       b = image->comps[2].data[i];
       b += (image->comps[2].sgnd ? 1 << (image->comps[2].prec - 1) : 0);
       *(ptr++) = (Byte_t) ((b >> adjustB)+((b >> (adjustB-1))%2));
