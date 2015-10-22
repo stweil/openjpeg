@@ -40,9 +40,11 @@ opj_image_t* OPJ_CALLCONV opj_image_create(OPJ_UINT32 numcmpts, opj_image_cmptpa
 	OPJ_UINT32 compno;
 	opj_image_t *image = NULL;
 
-	image = (opj_image_t*) opj_calloc(1, sizeof(opj_image_t));
+	image = (opj_image_t*) opj_malloc(sizeof(opj_image_t));
 	if(image) {
 		image->color_space = clrspc;
+		image->icc_profile_len = 0;
+		image->icc_profile_buf = NULL;
 		image->numcomps = numcmpts;
 		/* allocate memory for the per-component information */
 		image->comps = (opj_image_comp_t*)opj_calloc(1,image->numcomps * sizeof(opj_image_comp_t));
@@ -64,7 +66,7 @@ opj_image_t* OPJ_CALLCONV opj_image_create(OPJ_UINT32 numcmpts, opj_image_cmptpa
 			comp->prec = cmptparms[compno].prec;
 			comp->bpp = cmptparms[compno].bpp;
 			comp->sgnd = cmptparms[compno].sgnd;
-			comp->data = (OPJ_INT32*) opj_calloc(comp->w * comp->h, sizeof(OPJ_INT32));
+			comp->data = (OPJ_INT32*) opj_malloc(comp->w * comp->h * sizeof(OPJ_INT32));
 			if(!comp->data) {
 				/* TODO replace with event manager, breaks API */
 				/* fprintf(stderr,"Unable to allocate memory for image.\n"); */
