@@ -40,6 +40,8 @@ static INLINE void *opj_aligned_alloc_n(size_t alignment, size_t size)
 {
   void* ptr;
 
+  /* alignment <= 8 should be handled by normal malloc */
+  assert(alignment > 8);
   /* alignment shall be power of 2 */
   assert( (alignment != 0U) && ((alignment & (alignment - 1U)) == 0U));
   /* alignment shall be at least sizeof(void*) */
@@ -49,7 +51,9 @@ static INLINE void *opj_aligned_alloc_n(size_t alignment, size_t size)
     return NULL;
   }
 
-#if defined(OPJ_HAVE_POSIX_MEMALIGN)
+#if defined(HAVE_ALIGNED_ALLOC)
+  ptr = aligned_alloc(alignment, size);
+#elif defined(OPJ_HAVE_POSIX_MEMALIGN)
   /* aligned_alloc requires c11, restrict to posix_memalign for now. Quote:
    * This function was introduced in POSIX 1003.1d. Although this function is
    * superseded by aligned_alloc, it is more portable to older POSIX systems
@@ -104,6 +108,8 @@ static INLINE void *opj_aligned_realloc_n(void *ptr, size_t alignment, size_t ne
 {
   void *r_ptr;
 
+  /* alignment <= 8 should be handled by normal malloc */
+  assert(alignment > 8);
   /* alignment shall be power of 2 */
   assert( (alignment != 0U) && ((alignment & (alignment - 1U)) == 0U));
   /* alignment shall be at least sizeof(void*) */
@@ -114,11 +120,12 @@ static INLINE void *opj_aligned_realloc_n(void *ptr, size_t alignment, size_t ne
   }
 
 /* no portable aligned realloc */
-#if defined(OPJ_HAVE_POSIX_MEMALIGN) || defined(OPJ_HAVE_MEMALIGN)
+#if defined(OPJ_HAVE_ALIGNED_ALLOC) || \
+    defined(OPJ_HAVE_POSIX_MEMALIGN) || defined(OPJ_HAVE_MEMALIGN)
   /* glibc doc states one can mixed aligned malloc with realloc */
   r_ptr = realloc( ptr, new_size ); /* fast path */
-  /* we simply use `size_t` to cast, since we are only interest in binary AND
-   * operator */
+  /* we simply use `size_t` to cast, since we are only interested
+   * in binary AND operator */
   if( ((size_t)r_ptr & (alignment - 1U)) != 0U ) {
     /* this is non-trivial to implement a portable aligned realloc, so use a
      * simple approach where we do not need a function that return the size of an
@@ -210,7 +217,8 @@ void * opj_aligned_realloc(void *ptr, size_t size)
 
 void opj_aligned_free(void* ptr)
 {
-#if defined(OPJ_HAVE_POSIX_MEMALIGN) || defined(OPJ_HAVE_MEMALIGN)
+#if defined(OPJ_HAVE_ALIGNED_ALLOC) || \
+    defined(OPJ_HAVE_POSIX_MEMALIGN) || defined(OPJ_HAVE_MEMALIGN)
   free( ptr );
 #elif defined(OPJ_HAVE__ALIGNED_MALLOC)
   _aligned_free( ptr );

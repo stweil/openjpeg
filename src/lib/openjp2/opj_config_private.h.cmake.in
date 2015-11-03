@@ -28,6 +28,11 @@
 /* check if function `posix_memalign` exists */
 #cmakedefine OPJ_HAVE_POSIX_MEMALIGN
 
+#if defined(OPJ_HAVE_ALIGNED_ALLOC) && !defined(_ISOC11_SOURCE)
+/* Get declaration of aligned_alloc. */
+#define _ISOC11_SOURCE 1
+#endif
+
 #if !defined(_POSIX_C_SOURCE)
 #if defined(OPJ_HAVE_FSEEKO) || defined(OPJ_HAVE_POSIX_MEMALIGN)
 /* Get declarations of fseeko, ftello, posix_memalign. */
