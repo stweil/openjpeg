@@ -1235,13 +1235,13 @@ static OPJ_BOOL opj_t2_read_packet_data(   opj_t2_t* p_t2,
         return OPJ_TRUE;
 }
 
-static OPJ_BOOL opj_t2_skip_packet_data(   opj_t2_t* p_t2,
-                                    opj_tcd_tile_t *p_tile,
-                                    opj_pi_iterator_t *p_pi,
-                                    OPJ_UINT32 * p_data_read,
-                                    OPJ_UINT32 p_max_length,
-                                    opj_packet_info_t *pack_info,
-                                    opj_event_mgr_t *p_manager)
+static OPJ_BOOL opj_t2_skip_packet_data(opj_t2_t* p_t2,
+                                        opj_tcd_tile_t *p_tile,
+                                        opj_pi_iterator_t *p_pi,
+                                        OPJ_UINT32 * p_data_read,
+                                        OPJ_UINT32 p_max_length,
+                                        opj_packet_info_t *pack_info,
+                                        opj_event_mgr_t *p_manager)
 {
         OPJ_UINT32 bandno, cblkno;
         OPJ_UINT32 l_nb_code_blocks;
