@@ -52,7 +52,7 @@ The library is developed and maintained by the Image and Signal Processing Group
 
 See [LICENSE][link-license] for license and copyright information.
 
-See [INSTALL](https://github.com/uclouvain/openjpeg/blob/master/INSTALL) for installation procedures.
+See [INSTALL.md](https://github.com/uclouvain/openjpeg/blob/master/INSTALL.md) for installation procedures.
 
 See [NEWS](https://github.com/uclouvain/openjpeg/blob/master/NEWS) for user visible changes in successive releases.
 
