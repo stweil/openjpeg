@@ -82,7 +82,7 @@ typedef struct opj_tcd_cblk_enc {
               y1;     /* dimension of the code-blocks : left upper corner (x0, y0) right low corner (x1,y1) */
     OPJ_UINT32 numbps;
     OPJ_UINT32 numlenbits;
-    OPJ_UINT32 data_size;         /* Size of allocated data buffer */
+    size_t data_size;             /* Size of allocated data buffer */
     OPJ_UINT32
     numpasses;         /* number of pass already done for the code-blocks */
     OPJ_UINT32 numpassesinlayers; /* number of passes in the layer */
@@ -198,7 +198,7 @@ typedef struct opj_tcd_tilecomp {
     /* resolutions information */
     opj_tcd_resolution_t *resolutions;
     /* size of data for resolutions (in bytes) */
-    OPJ_UINT32 resolutions_size;
+    size_t resolutions_size;
 
     /* data of the component. For decoding, only valid if tcd->whole_tile_decoding is set (so exclusive of data_win member) */
     OPJ_INT32 *data;
