@@ -32,6 +32,8 @@
 #define OPJ_SKIP_POISON
 #include "opj_includes.h"
 
+#include <errno.h>
+
 #if defined(OPJ_HAVE_MALLOC_H) && defined(OPJ_HAVE_MEMALIGN)
 # include <malloc.h>
 #endif
@@ -199,6 +201,11 @@ void * opj_calloc(size_t num, size_t size)
 {
     if (num == 0 || size == 0) {
         /* prevent implementation defined behavior of realloc */
+        return NULL;
+    }
+    if (num > SIZE_MAX / size) {
+        /* prevent overflow */
+        errno = ENOMEM;
         return NULL;
     }
     return calloc(num, size);
